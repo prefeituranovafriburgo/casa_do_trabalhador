@@ -46,3 +46,16 @@ class Form_Escolaridade(ModelForm):
         model = Escolaridade
         widgets = {'user': forms.HiddenInput()}
         exclude = ['dt_inclusao']
+
+class Form_Candidato(ModelForm):    
+    class Meta:
+        model = Candidato
+        widgets = {
+            'vaga': forms.HiddenInput(),
+            'nome': forms.TextInput(attrs={'class': 'form-control mb-2'}),
+            'data_nascimento': forms.DateInput(attrs={'class': 'form-control mb-2'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control mb-2'}),
+            'celular': forms.TextInput(attrs={'class': 'form-control mb-2'}),
+            'bairro': forms.TextInput(attrs={'class': 'form-control mb-2'}),
+        }
+        exclude = ['dt_inclusao', 'candidato_ativo']

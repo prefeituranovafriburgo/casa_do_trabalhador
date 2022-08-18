@@ -434,12 +434,38 @@ def encaminhar(request, id):
         
     return redirect('vagas:encaminhamento', id)
 
+
 @login_required
 def encaminhamento(request, id):    
     context={
         'id': id
     }
     return render(request, 'vagas/encaminhamento.html', context)
+
+@login_required
+def candidatarse(request, id):    
+    form=Form_Candidato(initial={'vaga': id})
+    if request.method=='POST':
+        form=Form_Candidato(request.POST)
+        if form.is_valid():
+            form.save()
+            from datetime import date
+            today = date.today()
+            vaga=Vaga_Emprego.objects.get(id=id)
+            context={
+                'vaga': vaga,
+                'date': today,
+                'candidato': {'nome': request.POST['nome']},
+                'sistema': True
+
+            }        
+            return render(request, 'vagas/encaminhar.html', context)
+
+    context={
+        'id': id,
+        'form': form
+    }
+    return render(request, 'vagas/candidatarse.html', context)
 
 @login_required
 def sair(request):

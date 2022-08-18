@@ -87,3 +87,22 @@ class Vaga_Emprego(models.Model):
     ativo=models.BooleanField(default=True)        
     def __str__(self):
         return '%s - %s' % (self.empresa, self.cargo)
+
+class Candidato(models.Model):
+
+    class Meta:
+        verbose_name_plural = "Candidatos"
+        verbose_name = "Candidato"
+        ordering = ['nome']
+
+    vaga=models.ForeignKey(Vaga_Emprego, on_delete=models.CASCADE)
+    nome=models.CharField(max_length=100, verbose_name='Nome do candidato', blank=False, null=False)        
+    data_nascimento=models.DateField(verbose_name='Data de nascimento do candidato', blank=False, null=False)
+    email=models.EmailField(max_length=254, verbose_name="Email p/ contato com o candidato", blank=False, null=False)    
+    celular=models.CharField(max_length=11, validators=[validate_TELEFONE], verbose_name='Celular p/ contato com o candidato', blank=True, null=True)
+    bairro=models.CharField(max_length=100, verbose_name='Bairro', blank=True, null=True)    
+    dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+    candidato_ativo=models.BooleanField(default=True)
+
+    def __str__(self):
+        return '%s - %s' % (self.vaga.cargo, self.nome)
