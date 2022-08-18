@@ -33,13 +33,15 @@ header a:hover{
 .btn-primary{
     background-color: #507B9B;
     border-color: #507B9B;
+    transition:  transform 0.2s;
+    box-shadow:  4px 4px 2px #507b9b52;
 }
 .btn-primary:hover{    
-    margin-top: -3px;
-    margin-bottom: 3px;
+    transform: scale(1.01);
     background-color: #507B9B;
     border-color: #507B9B;
-    box-shadow:  4px 4px 2px #507b9b52;
+    box-shadow:  1px 1px 2px #507b9b52;
+    
 }
 .btn-primary:focus{
     margin-top: -3px;
@@ -70,15 +72,21 @@ header .menu:focus{
     border-radius: 0;
 }
 
-
+.btn-success{
+    transition: transform 0.8s;
+}
+.btn-success:hover{
+    transform: scale(1.05);
+}
 .btn-btfl{
     box-shadow:  4px 4px 2px #507b9ba9;
     background-color: #329787;
     color: white;  
+    transition: transform 0.8s;
 }
 .btn-btfl:hover{
     color: white;
-    padding: 10px 18px;
+    transform: scale(1.05);
     box-shadow:  4px 4px 2px #507b9b;
 }
 .btn-btfl:focus{

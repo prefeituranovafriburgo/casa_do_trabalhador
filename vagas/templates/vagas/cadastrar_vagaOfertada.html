@@ -104,9 +104,11 @@
                 {{f.errors}}
             </div>
             {% endfor %}
+            {% if tipo_cadastro == '' %}
             <a href="{% url 'vagas:candidatarse' id %}" class="btn btn-primary text-white w-100 mt-3">
                 CANDITATAR-SE
             </a>
+            {% endif %}
             {% if tipo_cadastro != '' %}
             <button type="submit" class="btn btn-primary text-white w-100 mt-3">
             {{tipo_cadastro}}
