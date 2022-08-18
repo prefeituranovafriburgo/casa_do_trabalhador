@@ -83,27 +83,31 @@
                 Desde já agradecemos e continuamos a disposição de V. srª para maiores
                  informações no telefone (22)2525-9205.                 
             </p>
+            {% if not sistema %}
             <p style="margin-bottom: 0; text-indent: 0;">
                 Atenciosamente, <br>
                 <span >{{user.first_name}},</span><br>
                 <span >mat.: {{user.last_name}}.</span>
             </p>
+            {% endif %}
             <p style="text-align: center; margin-top: 40px; text-indent: 0;">
                 Nova Friburgo, {{date}}.
             </p>
             <p style="text-align: center; margin: 80px; text-indent: 0;">
                 João Carlos Rodrigues<br>
-                Subsecretário de Trabalho e Renda
+                Subsecretário de Trabalho e Renda                
             </p>
 
         </main>
     </div>
     <script>        
         
-        window.onload = function(){
-            cnpj=String(document.getElementById('cnpj').innerHTML);
-            console.log(cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5"));
-            document.getElementById('cnpj').innerHTML=cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+        window.onload = function(){  
+            ocultar_info_empresa='{{vaga.empresa.ocultar}}'             
+            if(ocultar_info_empresa!='True'){                
+                document.getElementById('cnpj').innerHTML=cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+            }            
+            window.print()
         };
     </script>
 </body>
