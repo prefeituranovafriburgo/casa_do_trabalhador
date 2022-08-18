@@ -428,7 +428,7 @@ def encaminhar(request, id):
         context={
             'vaga': vaga,
             'date': today,
-            'candidato': {'nome': request.POST['nome'], 'cpf': request.POST['cpf']}
+            'candidato': {'nome': request.POST['nome']}
         }        
         return render(request, 'vagas/encaminhar.html', context)
         

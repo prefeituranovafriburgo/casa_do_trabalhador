@@ -66,7 +66,9 @@
 
                       <div>
                         <small>Vagas: {{vaga.quantidadeVagas}}</small>
+                        {% if vaga.experiencia == 'Sim' %}
                         <span class="ms-4 text-gray"><i>Requer experiência!</i></span>
+                        {% endif %}
                       </div>
                     </div>
                     <div class="ms-auto text-center">
