@@ -442,9 +442,12 @@ def encaminhamento(request, id):
     }
     return render(request, 'vagas/encaminhamento.html', context)
 
-@login_required
 def candidatarse(request, id):    
-    form=Form_Candidato(initial={'vaga': id})
+    if request.user.is_authenticated:
+        form=Form_Candidato(initial={'vaga': id})
+    else:
+        form=Form_Candidato(initial={'vaga': id, 'candidato_online': True}) 
+
     if request.method=='POST':
         form=Form_Candidato(request.POST)
         if form.is_valid():
