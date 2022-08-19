@@ -58,7 +58,7 @@ class Vaga_Emprego(models.Model):
     class Meta:
         verbose_name_plural = "Vagas de Emprego"
         verbose_name = "Vaga de Emprego"
-        ordering = ['empresa']
+        ordering = ['empresa', 'cargo']
 
     EXPERIENCIA_CHOICES=(
                             ('Sim', 'Sim'),
