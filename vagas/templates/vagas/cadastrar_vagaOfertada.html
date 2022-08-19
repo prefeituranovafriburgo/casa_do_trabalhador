@@ -22,7 +22,7 @@
             <span class="ms-auto"><a class="btn btn-btfl bg-danger" href="{% url 'vagas:remover_vaga' id %}">Remover</a></span>
             {% endif %}      
             {% if tipo_cadastro == '' %}
-            <span class="ms-auto"><a class="btn btn-btfl bg-primary" href="{% url 'vagas:encaminhamento' id %}">Encaminhar</a></span>      
+            <span class="ms-auto"><a class="btn btn-btfl bg-primary" href="#">Candidatos</a></span>      
             {% endif %}
         {% endif %}
 
@@ -35,9 +35,7 @@
             {% if tipo_cadastro == 'alterar' %}
             <span class="ms-2"><a class="btn btn-btfl bg-primary" href="{% url 'vagas:visualizar_vaga' id %}">Voltar</a></span>
             {% endif %}
-        {% endif %}
-
-      
+        {% endif %}      
     </div>
   </div>
   <div class="row">
