@@ -471,6 +471,18 @@ def candidatarse(request, id):
     return render(request, 'vagas/candidatarse.html', context)
 
 @login_required
+def candidatosporvaga(request, id):
+    candidatos=Candidato.objects.filter(vaga=id)
+    context={
+        'candidatos': candidatos,
+        'id': id
+    }
+    return render(request, 'vagas/listar_candidatos.html', context)
+
+# @login_required
+# def candidatosporvaga_(request, id):
+    
+@login_required
 def sair(request):
     if request.user.is_authenticated:
         logout(request)

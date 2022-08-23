@@ -1,0 +1,46 @@
+{% extends 'base_site.html' %}
+{% block title %}{{tipo_cadastro}} Vaga{% endblock %}
+{% block css %}
+{{block.super}}
+{% endblock%}
+{% block main_conteudo %}
+{% load widget_tweaks %}   
+{% load bootstrap5 %}  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+{% if success.0 %}
+<div class="row px-4 mb-3">
+    <div class="col d-flex bg-success py-2">
+        <p class="m-auto text-white">{{success.1}}</p>
+    </div>
+</div>
+{% endif %}                  
+<div class="row">    
+    <div class="col d-flex">
+        <h2 class="text-start text-uppercase">{{ tipo_cadastro }} VAGA OFERTADA</h2>
+      
+            <span class="ms-auto"><a class="btn btn-btfl bg-primary" href="{% url 'vagas:visualizar_vaga' id %}">Voltar</a></span>
+   
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+        <table class="table table-hover">
+            <thead>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Celular</th>
+            </thead>
+            </tbody>
+        {% for candidato in candidatos %}
+            
+            <tr>
+                <td>{{candidato.nome}}</td>
+                <td>{{candidato.email}}</td>
+                <td>{{candidato.celular}}</td>
+            </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+  </div>
+{% endblock %}

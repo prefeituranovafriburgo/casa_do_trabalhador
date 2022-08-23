@@ -27,5 +27,6 @@ urlpatterns = [
     path('get_vaga/', views.get_cargo, name='get_vaga' ),
     path('get_empresa/', views.get_empresa, name='get_empresa' ),
     path('logout/', views.sair, name='logout'),
-    path('login/', views.login_view, name='login')
+    path('login/', views.login_view, name='login'),
+    path('visualizar-vaga/alt0x#<id>001/listar-canditados/blablabla', views.candidatosporvaga, name='listar_candidatos')
 ]

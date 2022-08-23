@@ -95,11 +95,11 @@ class Candidato(models.Model):
         verbose_name = "Candidato"
         ordering = ['nome']
 
-    SEXO_CHOICES=(
+    SEXO_CHOICES=[
         ('m', 'Masculino'), 
         ('f', 'Feminino'),
         ('o', 'Outro')
-    )
+    ]
     
     vaga=models.ForeignKey(Vaga_Emprego, on_delete=models.CASCADE)
     nome=models.CharField(max_length=100, verbose_name='Nome do candidato', blank=False, null=False)        
@@ -112,6 +112,8 @@ class Candidato(models.Model):
     candidato_online=models.BooleanField(default=False, verbose_name='Candidato online')
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
     candidato_ativo=models.BooleanField(default=True)
+    conseguiu_vaga=models.BooleanField(default=False)
+    dt_aquisicao = models.CharField(max_length=10, default='')
     
     def __str__(self):
         return '%s - %s' % (self.vaga.cargo, self.nome)

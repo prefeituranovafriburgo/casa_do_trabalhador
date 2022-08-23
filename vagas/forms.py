@@ -61,4 +61,4 @@ class Form_Candidato(ModelForm):
             'escolaridade': forms.Select(attrs={'class': 'form-control mb-2'}),
             'candidato_online': forms.HiddenInput(),
         }
-        exclude = ['dt_inclusao', 'candidato_ativo']
+        exclude = ['dt_inclusao', 'candidato_ativo', 'conseguiu_vaga','dt_aquisicao']
