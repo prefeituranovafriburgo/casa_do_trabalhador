@@ -479,9 +479,24 @@ def candidatosporvaga(request, id):
     }
     return render(request, 'vagas/listar_candidatos.html', context)
 
-# @login_required
-# def candidatosporvaga_(request, id):
+@login_required
+def vagascomcandidatos(request):
+    vagas=Vaga_Emprego.objects.filter(ativo=True)
+    vagas_com_candidatos=[]
+    for vaga in vagas:
+        candidatos=Candidato.objects.filter(vaga=vaga.id)
+
+        if len(candidatos)>0:
+            vagas_com_candidatos.append(vaga)
+
+    context={
+        'vagas':vagas_com_candidatos
+        # 'id':
+    }
     
+    return render(request, 'vagas/vagas_com_candidatos.html', context)
+
+
 @login_required
 def sair(request):
     if request.user.is_authenticated:

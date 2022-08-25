@@ -42,7 +42,7 @@
         }
         #form_cadastro_vaga button:hover{
             background-color: #329787 !important;
-            border-color: #329787
+            border-color: #329787;
             color: white !important;
         }
         #form_cadastro button, .btn-primary{
@@ -88,7 +88,13 @@
                                                                 //de novo (para o segundo bloco de numeros)
             v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2") //Coloca um hifen entre o terceiro e o quarto digitos
             return v
-        }    
+        }
+        function icelular(v){
+        v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+        v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
+        v=v.replace(/(\d{5})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+        return v
+        }
 </script>
 
 

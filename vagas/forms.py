@@ -53,10 +53,10 @@ class Form_Candidato(ModelForm):
         widgets = {
             'vaga': forms.HiddenInput(),
             'nome': forms.TextInput(attrs={'class': 'form-control mb-2'}),
-            'data_nascimento': forms.DateInput(attrs={'class': 'form-control mb-2'}),
+            'data_nascimento': forms.DateInput(attrs={'class': 'form-control mb-2', 'type':'date'}),
             'sexo': forms.Select(attrs={'class': 'form-control mb-2'}),
             'email': forms.EmailInput(attrs={'class': 'form-control mb-2'}),
-            'celular': forms.TextInput(attrs={'class': 'form-control mb-2'}),
+            'celular': forms.TextInput(attrs={'class': 'form-control mb-2', 'onkeydown':'mascara(this, icelular)'}),
             'bairro': forms.TextInput(attrs={'class': 'form-control mb-2'}),
             'escolaridade': forms.Select(attrs={'class': 'form-control mb-2'}),
             'candidato_online': forms.HiddenInput(),
