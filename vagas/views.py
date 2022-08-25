@@ -491,7 +491,6 @@ def vagascomcandidatos(request):
 
     context={
         'vagas':vagas_com_candidatos
-        # 'id':
     }
     
     return render(request, 'vagas/vagas_com_candidatos.html', context)
