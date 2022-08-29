@@ -95,23 +95,26 @@ class Candidato(models.Model):
         verbose_name = "Candidato"
         ordering = ['nome']
 
-    SEXO_CHOICES=(
+    SEXO_CHOICES=[
         ('m', 'Masculino'), 
         ('f', 'Feminino'),
         ('o', 'Outro')
-    )
+    ]
     
     vaga=models.ForeignKey(Vaga_Emprego, on_delete=models.CASCADE)
     nome=models.CharField(max_length=100, verbose_name='Nome do candidato', blank=False, null=False)        
     data_nascimento=models.DateField(verbose_name='Data de nascimento do candidato', blank=False, null=False)
     sexo=models.CharField(max_length=1, choices=SEXO_CHOICES, verbose_name='Sexo do candidato')
     email=models.EmailField(max_length=254, verbose_name="Email p/ contato com o candidato", blank=False, null=False)    
-    celular=models.CharField(max_length=11, validators=[validate_TELEFONE], verbose_name='Celular p/ contato com o candidato', blank=True, null=True)
+    celular=models.CharField(max_length=15, validators=[validate_TELEFONE], verbose_name='Celular p/ contato com o candidato', blank=True, null=True)
     bairro=models.CharField(max_length=100, verbose_name='Bairro do candidato', blank=True, null=True)    
     escolaridade=models.ForeignKey(Escolaridade, on_delete=models.CASCADE)
     candidato_online=models.BooleanField(default=False, verbose_name='Candidato online')
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
     candidato_ativo=models.BooleanField(default=True)
+    # Talvez seja interessante inserir um campo que informe se o candidato entrou em contato com o RH  da empresa
+    conseguiu_vaga=models.BooleanField(default=False)
+    dt_aquisicao = models.CharField(max_length=10, default='')
     
     def __str__(self):
         return '%s - %s' % (self.vaga.cargo, self.nome)
