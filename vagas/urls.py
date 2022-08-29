@@ -29,5 +29,6 @@ urlpatterns = [
     path('logout/', views.sair, name='logout'),
     path('login/', views.login_view, name='login'),
     path('visualizar-vaga/alt0x#<id>001/listar-canditados/', views.candidatosporvaga, name='listar_candidatos'),
-    path('vagas-com-candidatos/', views.vagascomcandidatos, name='vagas_com_candidatos')
+    path('vagas-com-candidatos/', views.vagascomcandidatos, name='vagas_com_candidatos'),
+    path('gambiarra/', views.gambiarra, name='gambiarra'),    
 ]
