@@ -10,7 +10,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-env_vars = open(str(BASE_DIR.parent) + "\\balcao-envvar", "r")
+env_vars = open(str(BASE_DIR.parent) + "/.balcao-envvar", "r")
 
 env = []
 for linha in env_vars:
