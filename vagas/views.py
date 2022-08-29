@@ -369,7 +369,7 @@ def listar_cargos(request):
 
 def imprimir_vagas(request):
     context={
-        'vagas': Vaga_Emprego.objects.filter(ativo=True).order_by('cargo')
+        'vagas': Vaga_Emprego.objects.filter(ativo=True).order_by('cargo__nome')
     }
     return render(request, 'vagas/imprimir_vagas.html', context)
 
