@@ -482,11 +482,13 @@ def candidatosporvaga(request, id):
 @login_required
 def vagascomcandidatos(request):
     vagas=Vaga_Emprego.objects.filter(ativo=True)
-    balcao=Candidato.objects.filter(vaga=vaga.id, candidato_online=False)
-    online=Candidato.objects.filter(vaga=vaga.id, candidato_online=True)
+    balcao=[]
+    online=[]
     vagas_com_candidatos=[]
     for vaga in vagas:
         candidatos=Candidato.objects.filter(vaga=vaga.id)        
+        balcao.append(Candidato.objects.filter(vaga=vaga.id, candidato_online=False))
+        online.append(Candidato.objects.filter(vaga=vaga.id, candidato_online=True))
         if len(candidatos)>0:
             vagas_com_candidatos.append(vaga)
 
