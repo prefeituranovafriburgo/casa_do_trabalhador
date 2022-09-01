@@ -485,12 +485,15 @@ def vagascomcandidatos(request):
     vagas_com_candidatos=[]
     for vaga in vagas:
         candidatos=Candidato.objects.filter(vaga=vaga.id)
-
+        balcao=Candidato.objects.filter(vaga=vaga.id, candidato_online=False)
+        online=Candidato.objects.filter(vaga=vaga.id, candidato_online=True)
         if len(candidatos)>0:
             vagas_com_candidatos.append(vaga)
 
     context={
-        'vagas':vagas_com_candidatos
+        'vagas':vagas_com_candidatos,
+        'balcao': len(balcao),
+        'online': len(online)
     }
     
     return render(request, 'vagas/vagas_com_candidatos.html', context)
