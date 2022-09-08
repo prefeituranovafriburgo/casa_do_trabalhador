@@ -60,7 +60,7 @@
                   <div class="col d-flex">
                     <div>
                       <div class="d-flex">                        
-                        <h4 id="{{forloop.counter}}-cargo" class="cargo">{{vaga.cargo}}</h4>                        
+                        <h4 id="{{forloop.counter}}-cargo" class="cargo">{% if request.user.is_staff %}{{vaga.empresa}} - {% endif %}{{vaga.cargo}}</h4>                        
                       </div>
                       
 
