@@ -28,6 +28,7 @@ class Empresa(models.Model):
     nome=models.CharField(max_length=150, verbose_name='NOME', unique=True)
     cnpj=models.CharField(max_length=14, validators=[validate_CNPJ], verbose_name='CNPJ', unique=True)
     endereco=models.CharField(max_length=60, blank=True, verbose_name='Endereço p/ encaminhamento')
+    bairro=models.CharField(max_length=60, blank=True, default='', verbose_name='Bairro')
     telefone=models.CharField(max_length=11, validators=[validate_TELEFONE], blank=True, verbose_name='Telefone p/ encaminhamento')
     whatsapp=models.CharField(max_length=11, validators=[validate_TELEFONE], blank=True, verbose_name='Whatsapp p/ encaminhamento')
     email=models.EmailField(max_length=254, verbose_name="Email p/ encaminhamento", blank=True)
