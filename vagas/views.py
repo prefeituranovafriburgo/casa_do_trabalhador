@@ -458,10 +458,10 @@ def encaminhamento(request, id, user_id=0):
 
 def gera_encaminhamento_to_pdf(request, id, user_id=0):
     try:
-        # url_pdf='/home/casa_do_trabalhador/site/balcao_de_emprego/vagas/static/pdf/'+id+'.pdf'    
-        url_pdf='/home/eduardo/projects/casadotrabalhador/vagas/static/pdf/'+id+'.pdf'    
-        # pdfkit.from_url('https://casadotrabalhador.pmnf.rj.gov.br/encaminhamento/'+id+'NF', url_pdf)        
-        pdfkit.from_url('http://localhost:8000/visualizar-vaga/alt0x'+str(id)+'0'+str(user_id)+'01/encaminhamento', url_pdf)        
+        url_pdf='/home/casa_do_trabalhador/site/balcao_de_emprego/vagas/static/pdf/'+id+'.pdf'    
+        # url_pdf='/home/eduardo/projects/casadotrabalhador/vagas/static/pdf/'+id+'.pdf'    
+        pdfkit.from_url('https://casadotrabalhador.pmnf.rj.gov.br/visualizar-vaga/alt0x'+str(id)+'0'+str(user_id)+'01/encaminhamento', url_pdf)        
+        # pdfkit.from_url('http://localhost:8000/visualizar-vaga/alt0x'+str(id)+'0'+str(user_id)+'01/encaminhamento', url_pdf)        
         
         context={
             'pdf': url_pdf 
