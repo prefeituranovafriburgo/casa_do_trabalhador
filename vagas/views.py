@@ -487,8 +487,8 @@ def candidatarse(request, id):
             candidato=form.save()                         
             # return render(request, 'vagas/encaminhar.html', context)
             if request.user.is_authenticated:
-                return redirect('vagas:encaminhamento_pdf', id=candidato.id, user_id=request.user.id)
-            return redirect('vagas:encaminhamento_pdf', id=candidato.id, user_id=0)
+                return redirect('vagas:encaminhamento', id=candidato.id, user_id=request.user.id)
+            return redirect('vagas:encaminhamento', id=candidato.id, user_id=0)
 
     context={
         'id': id,
