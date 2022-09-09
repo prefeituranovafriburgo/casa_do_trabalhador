@@ -17,15 +17,12 @@
 
         var data = google.visualization.arrayToDataTable([
           ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
+          ['Balcão',     {{balcao}}],
+          ['Online',      {{online}}],
         ]);
 
         var options = {
-          title: 'My Daily Activities'
+          title: 'Totais'
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -44,6 +41,7 @@
     <div class="col d-flex">
         <h2 class="text-start text-uppercase">{{ tipo_cadastro }} VAGAS COM CANDIDATOS</h2>   
 		<div class="ms-auto">
+			<a href="{% url 'vagas:pesquisar_candidatos' %}" class="btn btn-btfl me-2"><i class="fas fa-search me-2"></i>Candidato</a>
 			<button class="btn btn-btfl"><i class="fas fa-filter me-2"></i>Filtrar</button>
 		</div>
     </div>
