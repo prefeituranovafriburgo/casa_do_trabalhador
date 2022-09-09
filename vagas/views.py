@@ -440,7 +440,7 @@ def encaminhar(request, id):
 
 def encaminhamento(request, id, user_id=0): 
     candidato=Candidato.objects.get(id=id)
-    if user_id!=0:
+    if str(int(user_id))!=str(int(0)):
         user=User.objects.get(id=user_id)
     else:
         user=False
