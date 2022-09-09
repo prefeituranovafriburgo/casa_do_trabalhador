@@ -83,7 +83,7 @@
                 Desde já agradecemos e continuamos a disposição de V. srª para maiores
                  informações no telefone (22)2525-9205.                 
             </p>
-            {% if request.user.is_authenticated %}
+            {% if user %}
             <p style="margin-bottom: 0; text-indent: 0;">
                 Atenciosamente, <br>
                 <span >{{user.first_name}},</span><br>

@@ -7,8 +7,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 # MODELS E FORMS
 from .forms import *
+from django.contrib.auth.models import User
 # OUTROS
+from django.http import FileResponse, Http404
 import requests
+import pdfkit
 
 # VIEWS
 def home(request):    
@@ -419,7 +422,7 @@ def login_view(request):
             return render(request, 'registration/login.html', context)
     return render(request, 'registration/login.html')
 
-@login_required
+
 def encaminhar(request, id):
     from datetime import date
     today = date.today()
@@ -435,12 +438,42 @@ def encaminhar(request, id):
     return redirect('vagas:encaminhamento', id)
 
 
-@login_required
-def encaminhamento(request, id):    
+def encaminhamento(request, id, user_id=0): 
+    candidato=Candidato.objects.get(id=id)
+    if user_id!=0:
+        user=User.objects.get(id=user_id)
+    else:
+        user=False
+
+    from datetime import date
+    today = date.today()    
     context={
-        'id': id
-    }
-    return render(request, 'vagas/encaminhamento.html', context)
+                'vaga': candidato.vaga,
+                'date': today,
+                'candidato': candidato,
+                'sistema': True,   
+                'user': user             
+            }
+    return render(request, 'vagas/encaminhar.html', context)
+
+def gera_encaminhamento_to_pdf(request, id, user_id=0):
+    try:
+        # url_pdf='/home/casa_do_trabalhador/site/balcao_de_emprego/vagas/static/pdf/'+id+'.pdf'    
+        url_pdf='/home/eduardo/projects/casadotrabalhador/vagas/static/pdf/'+id+'.pdf'    
+        # pdfkit.from_url('https://casadotrabalhador.pmnf.rj.gov.br/encaminhamento/'+id+'NF', url_pdf)        
+        pdfkit.from_url('http://localhost:8000/visualizar-vaga/alt0x'+str(id)+'0'+str(user_id)+'01/encaminhamento', url_pdf)        
+        
+        context={
+            'pdf': url_pdf 
+        }
+        try:
+            return FileResponse(open(url_pdf, 'rb'), content_type='application/pdf')
+        except Exception as E:
+            print(E)
+            raise Http404()
+    except Exception as E:
+        print(E)
+        return redirect('/')
 
 def candidatarse(request, id):    
     if request.user.is_authenticated:
@@ -451,18 +484,11 @@ def candidatarse(request, id):
     if request.method=='POST':
         form=Form_Candidato(request.POST)
         if form.is_valid():
-            form.save()
-            from datetime import date
-            today = date.today()
-            vaga=Vaga_Emprego.objects.get(id=id)
-            context={
-                'vaga': vaga,
-                'date': today,
-                'candidato': {'nome': request.POST['nome']},
-                'sistema': True
-
-            }        
-            return render(request, 'vagas/encaminhar.html', context)
+            candidato=form.save()                         
+            # return render(request, 'vagas/encaminhar.html', context)
+            if request.user.is_authenticated:
+                return redirect('vagas:encaminhamento_pdf', id=candidato.id, user_id=request.user.id)
+            return redirect('vagas:encaminhamento_pdf', id=candidato.id)
 
     context={
         'id': id,
@@ -498,6 +524,7 @@ def get_candidatos(request):
     }
     return render(request, 'vagas/pesquisar_candidatos_result.html', context)
 
+@login_required
 def visualizar_candidato(request, id):
     candidato=Candidato.objects.get(id=id)
     context={
