@@ -40,11 +40,11 @@
                 <td>{{candidato.email}}</td>
                 <td>{{candidato.celular}}</td>
                 <td>
-                    {% if candidato_ativo %}
+                    {% if candidato.candidato_online %}
                     <span class="text-success">Online</span>
                     {% else %}
                     <span class="text-danger">Balcão</span>
-                    {% endif %}
+                    {% endif %}                    
                 </td>
                 <td>{{candidato.dt_inclusao}}</td>
             </tr>

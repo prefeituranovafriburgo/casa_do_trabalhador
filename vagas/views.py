@@ -477,14 +477,14 @@ def gera_encaminhamento_to_pdf(request, id, user_id=0):
 
 def candidatarse(request, id):    
     if request.user.is_authenticated:
-        form=Form_Candidato(initial={'vaga': id})
+        form=Form_Candidato(initial={'vaga': id, 'candidato_online': False})
     else:
         form=Form_Candidato(initial={'vaga': id, 'candidato_online': True}) 
 
     if request.method=='POST':
         form=Form_Candidato(request.POST)
         if form.is_valid():
-            candidato=form.save()                         
+            candidato=form.save()                       
             # return render(request, 'vagas/encaminhar.html', context)
             if request.user.is_authenticated:
                 return redirect('vagas:encaminhamento', id=candidato.id, user_id=request.user.id)
