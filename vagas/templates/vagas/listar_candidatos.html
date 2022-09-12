@@ -36,7 +36,7 @@
         {% for candidato in candidatos %}
             
             <tr>
-                <td class="text-lowercase text-capitalize">{{candidato.nome}}</td>
+                <td class="text-capitalize">{{candidato.nome|lower}}</td>
                 <td>{{candidato.email}}</td>
                 <td>{{candidato.celular}}</td>
                 <td>
