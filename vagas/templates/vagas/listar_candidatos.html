@@ -29,14 +29,24 @@
                 <th>Nome</th>
                 <th>Email</th>
                 <th>Celular</th>
+                <th>Encaminhamento</th>
+                <th>Data de registro</th>
             </thead>
             </tbody>
         {% for candidato in candidatos %}
             
             <tr>
-                <td>{{candidato.nome}}</td>
+                <td class="text-capitalize">{{candidato.nome}}</td>
                 <td>{{candidato.email}}</td>
                 <td>{{candidato.celular}}</td>
+                <td>
+                    {% if candidato_ativo %}
+                    <span class="text-success">Online</span>
+                    {% else %}
+                    <span class="text-danger">Balcão</span>
+                    {% endif %}
+                </td>
+                <td>{{candidato.dt_inclusao}}</td>
             </tr>
         {% endfor %}
             </tbody>
