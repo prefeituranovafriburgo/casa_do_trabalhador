@@ -498,7 +498,7 @@ def candidatarse(request, id):
 
 @login_required
 def candidatosporvaga(request, id):
-    candidatos=Candidato.objects.filter(vaga=id)
+    candidatos=Candidato.objects.filter(vaga=id).order_by('dt_inclusao')
     context={
         'candidatos': candidatos,
         'id': id
