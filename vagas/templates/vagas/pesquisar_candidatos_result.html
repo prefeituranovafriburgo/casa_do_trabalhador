@@ -1,0 +1,12 @@
+{% for candidato in candidatos %}
+<tr style="background-color: rgba(230, 230, 230, 0.274);"></tr>						
+    <td>
+        <a href="{% url 'vagas:visualizar_candidato' candidato.id %}">
+            {{candidato.nome}}
+        </a>
+    </td>              
+    <td>{{candidato.vaga.cargo}}</td>          
+    <td>{{candidato.vaga}}</td>      
+    <td>{{candidato.vaga.empresa}}</td>												
+</tr>
+{% endfor %}

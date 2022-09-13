@@ -22,7 +22,7 @@
             <span class="ms-auto"><a class="btn btn-btfl bg-danger" href="{% url 'vagas:remover_vaga' id %}">Remover</a></span>
             {% endif %}      
             {% if tipo_cadastro == '' %}
-            <span class="ms-auto"><a class="btn btn-btfl bg-primary" href="{% url 'vagas:encaminhamento' id %}">Encaminhar</a></span>      
+            <span class="ms-auto"><a class="btn btn-btfl bg-primary" href="{% url 'vagas:listar_candidatos' id %}">Candidatos</a></span>      
             {% endif %}
         {% endif %}
 
@@ -35,9 +35,7 @@
             {% if tipo_cadastro == 'alterar' %}
             <span class="ms-2"><a class="btn btn-btfl bg-primary" href="{% url 'vagas:visualizar_vaga' id %}">Voltar</a></span>
             {% endif %}
-        {% endif %}
-
-      
+        {% endif %}      
     </div>
   </div>
   <div class="row">
@@ -46,7 +44,7 @@
         <p><b>Para mais informações sobre essa vaga:</b></p>
         <p><i class="fab fa-whatsapp me-1"></i> (22) 99793-5451</p>
         <p><i class="fas fa-phone-alt me-1"></i> (22) 2525-9205</p>
-        <p><i class="fas fa-map-marker-alt me-2"></i> Av. Alberto Braunes - 223 (Antiga rodoviária)</p>
+        <p><i class="fas fa-map-marker-alt me-2"></i> Av. Alberto Braune - 223 (Antiga rodoviária)</p>
        </div>
     </div>
   </div>
@@ -104,6 +102,11 @@
                 {{f.errors}}
             </div>
             {% endfor %}
+            {% if tipo_cadastro == '' %}
+            <a href="{% url 'vagas:candidatarse' id %}" class="btn btn-primary text-white w-100 mt-3">
+                CANDIDATAR-SE
+            </a>
+            {% endif %}
             {% if tipo_cadastro != '' %}
             <button type="submit" class="btn btn-primary text-white w-100 mt-3">
             {{tipo_cadastro}}

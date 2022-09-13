@@ -1,0 +1,114 @@
+{% extends 'base_site.html' %}
+{% block title %}{{tipo_cadastro}} Vaga{% endblock %}
+{% block css %}
+{{block.super}}
+{% endblock%}
+{% block main_conteudo %}
+{% load widget_tweaks %}   
+{% load bootstrap5 %}  
+{% load qntvagas %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Balcão',     {{balcao}}],
+          ['Online',      {{online}}],
+        ]);
+
+        var options = {
+          title: 'Totais'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+{% if success.0 %}
+<div class="row px-4 mb-3">
+    <div class="col d-flex bg-success py-2">
+        <p class="m-auto text-white">{{success.1}}</p>
+    </div>
+</div>
+{% endif %}                  
+<div class="row">    
+    <div class="col d-flex">
+        <h2 class="text-start text-uppercase">{{ tipo_cadastro }} VAGAS COM CANDIDATOS</h2>   
+		<div class="ms-auto">
+			<a href="{% url 'vagas:pesquisar_candidatos' %}" class="btn btn-btfl me-2"><i class="fas fa-search me-2"></i>Candidato</a>
+			<button class="btn btn-btfl"><i class="fas fa-filter me-2"></i>Filtrar</button>
+		</div>
+    </div>
+  </div>
+ 
+<form id="form_cadastro_vaga" {% if tipo_cadastro != '' %}method="post"{% endif %} class="form w-100 text-start">
+    <div class="row px-4 text-center my-3">
+		<div class="col border py-4 me-2 indicador d-flex flex-column">
+            <b>Total de candidatos do Balcão</b>
+			<span>{{balcao}}</span>
+        </div>
+        <div class="col border py-4 ms-2 indicador d-flex flex-column">
+            <b>Total de Candidatos Online</b>
+			<span>{{online}}</span>
+        </div>
+    </div>
+	<div class="row">
+		<div class="col d-flex">
+			<div class="mx-auto" id="piechart" style="width: 900px; height: 500px;"></div>
+		</div>
+	</div>
+    <div class="row">
+        <div class="col pt-3 px-5">
+			<table class="table table-hover text-center">
+				<thead>
+					<tr>
+						
+						<th class="text-center">Qnt. Candidatos</th>						
+						<th scope="col" >Cargo</th>
+						<th scope="col">Vagas</th>
+						<th scope="col">Experiência</th>
+						<th scope="col">Escolaridade</th>						
+						<th scope="col"></th>
+			
+					  </tr>
+					</thead>
+					<tbody>
+					{% for vaga in vagas %}        
+					<tr style="background-color: rgba(230, 230, 230, 0.274);"></tr>
+						<th class="text-center">{{vaga|qntcandidatos}}</th>						
+						<td>{{vaga}}</td>              
+						<td scope="row">{{vaga.quantidadeVagas}}</td>          
+						<td>{{vaga.experiencia}}</td>      
+						<td>{{vaga.escolaridade}}</td>						
+						<td><a target="_blank" href="{% url 'vagas:listar_candidatos' vaga.id %}">Listar Candidatos</a></td>  
+					  </tr>
+					{% endfor %}
+				</tbody>
+			  </table>
+			  <style>
+				table{
+				  font-size:  0.9em;
+				}
+				.indicador{
+					background-color: #507B9B;
+					color: white;
+				}
+				.indicador span{
+					font-size: 40pt;
+				}
+			  </style>
+        </div>      
+    </div>    
+    
+
+<script>
+   
+</script>
+
+{% endblock %}

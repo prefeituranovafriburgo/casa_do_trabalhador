@@ -19,11 +19,13 @@ urlpatterns = [
     path('alterar-cargo/alt0x#<id>001', views.alterar_cargo, name='alterar_cargo'),    
 
     path('visualizar-vaga/alt0x#<id>001', views.visualizar_vaga, name='visualizar_vaga'),    
-    path('visualizar-vaga/alt0x#<id>/encaminhar', views.encaminhar, name='encaminhar'),    
-    path('visualizar-vaga/alt0x#<id>001/encaminhamento', views.encaminhamento, name='encaminhamento'),  
-
     path('remover-vaga/alt0x#<id>001', views.remover_vaga, name='remover_vaga'),    
-
+    path('visualizar-vaga/alt0x#<id>/candidatar-se', views.candidatarse, name='candidatarse'),        
+    path('visualizar-vaga/alt0x#<id>/encaminhar', views.encaminhar, name='encaminhar'),    
+    
+    path('visualizar-vaga/alt0x<id>0<user_id>01/encaminhamento', views.encaminhamento, name='encaminhamento'),    
+    path('visualizar-vaga/alt0x<id>0<user_id>02/encaminhamento', views.gera_encaminhamento_to_pdf, name='encaminhamento_pdf'),    
+    
     path('vagas/', views.vagas, name='vagas'),    
     path('vagas/imprimir', views.imprimir_vagas, name='imprimir'),    
     path('listar-cargos/', views.listar_cargos, name='listar_cargos'),   
@@ -34,7 +36,11 @@ urlpatterns = [
 
     path('get_vaga/', views.get_cargo, name='get_vaga' ),
     path('get_empresa/', views.get_empresa, name='get_empresa' ),
-
+    path('get_candidatos/', views.get_candidatos, name='get_candidatos' ),
     path('logout/', views.sair, name='logout'),
-    path('login/', views.login_view, name='login')
+    path('login/', views.login_view, name='login'),
+    path('visualizar-vaga/alt0x#<id>001/listar-canditados/', views.candidatosporvaga, name='listar_candidatos'),
+    path('vagas-com-candidatos/', views.vagascomcandidatos, name='vagas_com_candidatos'),
+    path('pesquisar-candidatos/', views.pesquisar_candidatos, name='pesquisar_candidatos'), 
+    path('visualizar-candidatos/<id>', views.visualizar_candidato, name='visualizar_candidato'), 
 ]

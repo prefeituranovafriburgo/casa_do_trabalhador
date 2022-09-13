@@ -7,8 +7,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 # MODELS E FORMS
 from .forms import *
+from django.contrib.auth.models import User
 # OUTROS
+from django.http import FileResponse, Http404
 import requests
+import pdfkit
 
 # VIEWS
 def home(request):    
@@ -359,7 +362,7 @@ def alterar_vaga(request, id):
 
 def vagas(request):
     context={
-        'vagas': Vaga_Emprego.objects.filter(ativo=True).order_by('cargo')
+        'vagas': Vaga_Emprego.objects.filter(ativo=True).order_by('cargo__nome')
     }
     return render(request, 'vagas/vagas_disponiveis.html', context)
 
@@ -383,7 +386,7 @@ def listar_cargos(request):
 
 def imprimir_vagas(request):
     context={
-        'vagas': Vaga_Emprego.objects.filter(ativo=True).order_by('cargo')
+        'vagas': Vaga_Emprego.objects.filter(ativo=True).order_by('cargo__nome')
     }
     return render(request, 'vagas/imprimir_vagas.html', context)
 
@@ -433,7 +436,7 @@ def login_view(request):
             return render(request, 'registration/login.html', context)
     return render(request, 'registration/login.html')
 
-@login_required
+
 def encaminhar(request, id):
     from datetime import date
     today = date.today()
@@ -442,18 +445,133 @@ def encaminhar(request, id):
         context={
             'vaga': vaga,
             'date': today,
-            'candidato': {'nome': request.POST['nome'], 'cpf': request.POST['cpf']}
+            'candidato': {'nome': request.POST['nome']}
         }        
         return render(request, 'vagas/encaminhar.html', context)
         
     return redirect('vagas:encaminhamento', id)
 
-@login_required
-def encaminhamento(request, id):    
+
+def encaminhamento(request, id, user_id=0): 
+    candidato=Candidato.objects.get(id=id)
+    if str(int(user_id))!=str(int(0)):
+        user=User.objects.get(id=user_id)
+    else:
+        user=False
+
+    from datetime import date
+    today = date.today()    
     context={
+                'vaga': candidato.vaga,
+                'date': today,
+                'candidato': candidato,
+                'sistema': True,   
+                'user': user             
+            }
+    return render(request, 'vagas/encaminhar.html', context)
+
+def gera_encaminhamento_to_pdf(request, id, user_id=0):
+    try:
+        url_pdf='/home/casa_do_trabalhador/site/balcao_de_emprego/vagas/static/pdf/'+str(id)+'.pdf'    
+        # url_pdf='/home/eduardo/projects/casadotrabalhador/vagas/static/pdf/'+id+'.pdf'    
+        pdfkit.from_url('https://casadotrabalhador.pmnf.rj.gov.br/visualizar-vaga/alt0x'+str(id)+'0'+str(user_id)+'01/encaminhamento', url_pdf)        
+        # pdfkit.from_url('http://localhost:8000/visualizar-vaga/alt0x'+str(id)+'0'+str(user_id)+'01/encaminhamento', url_pdf)        
+        
+        context={
+            'pdf': url_pdf 
+        }
+        try:
+            return FileResponse(open(url_pdf, 'rb'), content_type='application/pdf')
+        except Exception as E:
+            print(E)
+            raise Http404()
+    except Exception as E:
+        print(E)
+        return redirect('/')
+
+def candidatarse(request, id):    
+    if request.user.is_authenticated:
+        form=Form_Candidato(initial={'vaga': id, 'candidato_online': False})
+    else:
+        form=Form_Candidato(initial={'vaga': id, 'candidato_online': True}) 
+
+    if request.method=='POST':
+        form=Form_Candidato(request.POST)
+        if form.is_valid():
+            candidato=form.save()                       
+            # return render(request, 'vagas/encaminhar.html', context)
+            if request.user.is_authenticated:
+                return redirect('vagas:encaminhamento', id=candidato.id, user_id=request.user.id)
+            return redirect('vagas:encaminhamento', id=candidato.id, user_id=0)
+
+    context={
+        'id': id,
+        'form': form
+    }
+    return render(request, 'vagas/candidatarse.html', context)
+
+@login_required
+def candidatosporvaga(request, id):
+    candidatos=Candidato.objects.filter(vaga=id).order_by('dt_inclusao')
+    context={
+        'candidatos': candidatos,
         'id': id
     }
-    return render(request, 'vagas/encaminhamento.html', context)
+    return render(request, 'vagas/listar_candidatos.html', context)
+
+@login_required
+def pesquisar_candidatos(request):
+    context={}
+    return render(request, 'vagas/pesquisar_candidatos.html', context) 
+
+@login_required
+def get_candidatos(request):
+    try:
+        # empresas=Empresa.objects.filter(nome__startswith=request.GET.get('nome')).order_by('nome')
+        candidatos=Candidato.objects.filter(nome__icontains=request.GET.get('candidatos')).order_by('nome')
+    except Exception as E:
+        print(E)
+        candidatos=None
+    
+    context={
+        'candidatos': candidatos,
+    }
+    return render(request, 'vagas/pesquisar_candidatos_result.html', context)
+
+@login_required
+def visualizar_candidato(request, id):
+    candidato=Candidato.objects.get(id=id)
+    context={
+        'candidato': candidato,
+        'form': Form_Candidato(instance=candidato)
+    }
+    return render(request, 'vagas/pesquisar_candidatos_visualizar.html', context)
+
+@login_required
+def vagascomcandidatos(request):
+    vagas=Vaga_Emprego.objects.filter(ativo=True)
+    balcao=0
+    online=0
+    vagas_com_candidatos=[]
+    for vaga in vagas:
+        candidatos=Candidato.objects.filter(vaga=vaga.id)                
+        if len(candidatos)>0:
+            vagas_com_candidatos.append(vaga)
+            balcao_=Candidato.objects.filter(vaga=vaga.id, candidato_online=False)
+            if len(balcao_)>0:
+                balcao+=len(balcao_)
+            online_=Candidato.objects.filter(vaga=vaga.id, candidato_online=True)
+            if len(online_)>0:
+                online+=len(online_)
+            
+
+    context={
+        'vagas':vagas_com_candidatos,
+        'balcao': balcao,
+        'online': online
+    }
+    
+    return render(request, 'vagas/vagas_com_candidatos.html', context)
 
 @login_required
 def sair(request):
