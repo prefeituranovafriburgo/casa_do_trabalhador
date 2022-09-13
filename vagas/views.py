@@ -236,6 +236,20 @@ def cadastrar_vaga_emLote(request):
     }
     return render(request, 'vagas/cadastrar_vagas_emLote.html', context)
 
+def cadastrar_candidato(request):
+    if request.method=='POST': 
+        pass
+
+    form=Form_Candidato(request.POST)
+
+    context={
+        'tipo_cadastro': 'cadastrar',
+        'form': form,
+        'hidden': ['user', 'ativo']
+    }
+
+    return render(request, 'vagas/cadastrar_candidato.html', context)
+
 def get_empresa(request):
     try:
         # empresas=Empresa.objects.filter(nome__startswith=request.GET.get('nome')).order_by('nome')

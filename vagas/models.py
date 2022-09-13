@@ -1,10 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .validations import validate_CNPJ, validate_TELEFONE
+from .validations import validate_CNPJ, validate_CPF, validate_TELEFONE
 # Create your models here.
 
+class Candidato(models.Model):
+    nome=models.CharField(max_length=150, verbose_name='Nome:', unique=True)
+    cpf=models.CharField(max_length=14, verbose_name='CPF:', validators=[validate_CPF], unique=True)
+    data_nascimento = models.DateField(verbose_name='Data Nascimento')
+    email=models.EmailField(verbose_name='Email:', unique=True)
+    bairro=models.CharField(max_length=40, verbose_name='Bairro:')
+    dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+    telefone=models.CharField(max_length=11, validators=[validate_TELEFONE], blank=True, verbose_name='Telefone:')
+
 class Escolaridade(models.Model):
-    
     nome=models.CharField(max_length=150, verbose_name='Nome da escolaridade', unique=True)
     user=models.ForeignKey(User, on_delete=models.PROTECT)                    
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
