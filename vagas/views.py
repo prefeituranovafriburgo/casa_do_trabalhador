@@ -386,8 +386,15 @@ def listar_cargos(request):
     return render(request, 'vagas/listar_cargos.html', context)
 
 def imprimir_vagas(request):
+    vagas=Vaga_Emprego.objects.filter(ativo=True).order_by('cargo__nome')    
+    cont=0
+    for i in vagas:
+        cont+=i.quantidadeVagas
+
+
     context={
-        'vagas': Vaga_Emprego.objects.filter(ativo=True).order_by('cargo__nome')
+        'vagas': vagas,
+        'total': cont
     }
     return render(request, 'vagas/imprimir_vagas.html', context)
 
