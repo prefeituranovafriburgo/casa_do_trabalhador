@@ -16,7 +16,16 @@
           <a class="btn btn-btfl me-2 px-3" href="{% url 'vagas:imprimir' %}"><i class="fas fa-print"></i></a>
           <a class="btn btn-btfl" href="{% url 'vagas:cadastrar' %}">CADASTRAR</a>
         </span>
+        
         {% endif %}
+        {% comment %} <button class="btn btn-primary" id='filtros'>FILTROS</button>
+        <div class="opcoes-filtros filter-hidden" id="opcoes-filtros">
+          {% for escolatidade in escolaridades %}
+          <input type="checkbox" id="" name="vehicle1" value="Bike">
+          <label for="vehicle1"> I have a bike</label><br>
+          {% endfor %} {% endcomment %}
+
+        </div>
       </div>
     </div>
     <div class="row mt-4">
@@ -121,6 +130,15 @@
       .text-gray{
         color: gray;
       }
+      .filter-hidden{
+        display: none;
+      }
+      .opcoes-filtros{
+        width: 100%;
+        background-color: purple;
+
+      }
+      
     </style>
     <script>
       function showEditIcon(id){
@@ -161,6 +179,13 @@
       gtag('js', new Date());
 
       gtag('config', 'G-J1XYYXN5V6');
+
+      window.onload = function(){
+        document.querySelector("#filtros").addEventListener('click', ()=>{
+          document.getElementById('opcoes-filtros').classList.remove('filter-hidden')
+        })
+      }
+
     </script>
 </div>
 {% endblock %}
