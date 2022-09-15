@@ -39,7 +39,7 @@ class Empresa(models.Model):
     bairro=models.CharField(max_length=60, blank=True, default='', verbose_name='Bairro')
     telefone=models.CharField(max_length=11, validators=[validate_TELEFONE], blank=True, verbose_name='Telefone p/ encaminhamento')
     whatsapp=models.CharField(max_length=11, validators=[validate_TELEFONE], blank=True, verbose_name='Whatsapp p/ encaminhamento')
-    email=models.EmailField(max_length=254, verbose_name="Email p/ encaminhamento", blank=True)
+    email=models.CharField(max_length=254, verbose_name="Email p/ encaminhamento", blank=True)
     ocultar=models.BooleanField(default=True, verbose_name='Informações da empresa', choices=OCULTAR_CHOICES)
     contato_presencial=models.BooleanField(default=False, verbose_name='Contato presencial')
     contato_email=models.BooleanField(default=False, verbose_name='Contato por email')    
