@@ -363,7 +363,8 @@ def alterar_vaga(request, id):
 def vagas(request):
     context={
         'vagas': Vaga_Emprego.objects.filter(ativo=True).order_by('cargo__nome'),
-        'escolaridades': Escolaridade.objects.all()
+        'bairros': Empresa.objects.order_by('bairro').values_list('bairro').distinct(),
+        'escolaridades': Escolaridade.objects.all().values()
     }
     return render(request, 'vagas/vagas_disponiveis.html', context)
 
