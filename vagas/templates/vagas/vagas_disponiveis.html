@@ -31,33 +31,41 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
       <div class="escolaridades">
         <h5>Escolaridade</h5>
 
-        {% for escolaridade in escolaridades %}
-        <input
-          type="radio"
-          name="escolaridade"
-          id="escolaridade-{{escolaridade.nome}}"
-          value="{{escolaridade.nome}}"
-        />
-        <label for="escolaridade-{{escolaridade.nome}}">
-          {{escolaridade.nome}} </label
-        ><br />
-        {% endfor %}
+        <select class="form-select" id="escolaridade">
+          <option disabled selected value="" id="defaultSelect">
+            -- Selecione uma escolaridade --
+          </option>
+          {% for escolaridade in escolaridades %}
+          <option
+            name="escolaridade"
+            id="escolaridade-{{escolaridade.nome}}"
+            value="{{escolaridade.nome}}"
+          >{{escolaridade.nome}}</option>
+          {% endfor %}
+        </select>
+
+
       </div>
 
-      <div class="bairros">
-      <h5>Bairros</h5>
+      <div class="bairros ">
+      <h5 class="text-start">Bairros</h5>
 
-      {% for bairro in bairros %}
-      <input
-        type="radio"
-        name="bairro"
-        id="bairro-{{bairro.0}}"
-        value="{{bairro.0}}"
-      />
-      <label for="bairro-{{bairro.0}}">
-        {{bairro.0}} </label
-      ><br />
-      {% endfor %}
+      <select class="form-select" id="bairro">
+
+        <option disabled selected value="" id="defaultSelect">
+          -- Selecione um bairro --
+        </option>
+
+        {% for bairro in bairros %}
+        <option
+          name="bairro"
+          id="bairro-{{bairro.0}}"
+          value="{{bairro.0}}"> {{bairro.0}}</option>
+        
+        {% endfor %}
+      </select>
+
+
       
       </div>
 
@@ -66,39 +74,39 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
         TIPO_DE_VAGA_CHOICES=( ('NML', 'Padrão'), ('JAP', 'Jovem aprendiz'),
         ('PED', 'Pessoa com deficiência') ('EST', 'Estágio') ) {% endcomment %}
         <h5>Tipo de Vaga</h5>
-        <input
-          type="radio"
+        <select class="form-select" id="tipo_de_vaga">
+
+          <option disabled selected value="" id="defaultSelect">
+            -- Selecione um tipo de vaga --
+          </option>
+
+          <option
           name="tipos_de_vaga"
           id="tipos_de_vaga-padrao"
           value="NML"
-        />
-        <label for="tipos_de_vaga-padrao"> Padrão </label><br />
+        >Padrão</option>
 
-        <input
-          type="radio"
+        <option
           name="tipos_de_vaga"
           id="tipos_de_vaga-jovem_aprendiz"
           value="JAP"
-        />
-        <label for="tipos_de_vaga-jovem_aprendiz"> Jovem aprendiz </label><br />
+        >Jovem aprendiz</option>
 
-        <input
-          type="radio"
+        <option
           name="tipos_de_vaga"
           id="tipos_de_vaga-estagio"
           value="EST"
-        />
-        <label for="tipos_de_vaga-estagio"> Estágio </label><br />
+        >Estágio</option>
 
-        <input
+        <option
           type="radio"
           name="tipos_de_vaga"
           id="tipos_de_vaga-pessoa_com_deficiencia"
           value="PED"
-        />
-        <label for="tipos_de_vaga-pessoa_com_deficiencia">
-          Pessoa com deficiência </label
-        ><br />
+        >Pessoa com deficiência</option>
+
+        </select>
+        
       </div>
 
       <div>
@@ -186,9 +194,8 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
               <div>
                 <span
                   ><b class="me-1">Escolaridade:</b>
-                  <p id="{{forloop.counter}}-escolaridade">
                     {{vaga.escolaridade}}
-                  </p></span
+                  </span
                 >
                 <span class="ms-4"
                   ><b>Carga hóraria:</b> {{vaga.carga_horaria}}</span
@@ -199,7 +206,6 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
                 >
                 <span class="ms-4"><b>Bairro:</b> {{vaga.empresa.bairro}}</span>
               </div>
-              <div></div>
             </div>
           </div>
         </div>
@@ -237,6 +243,7 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
       margin-top: 32px;
       width: 100%;
       display: grid;
+      gap: 0 20px;
       grid-template-columns: repeat(4, 1fr);
     }
   </style>
@@ -278,8 +285,6 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
             tipo.indexOf(activeFilters.tipo_de_vaga) >= 0 &&
             bairro.indexOf(activeFilters.bairro) >= 0) {
 
-              console.log('hi')
-              
           div.style.display = "block";
           tr.style.display = "block";
           div.classList.remove("filtrado");
@@ -301,7 +306,8 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
           const tr = document.getElementById(this.id);
           const div = document.getElementById(this.id + "-div");
 
-          cargo = tr.dataset.cargo.toLowerCase();
+          
+          cargo = document.getElementById(this.id+'-cargo').innerText.toLowerCase() 
 
           if (cargo.indexOf(activeFilters.name) >= 0) {
             if (!div.classList.contains("filtrado")) {
@@ -330,9 +336,9 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
 
 
 
-      const escolaridadeInputs = document.querySelector(".escolaridades").querySelectorAll("input")
-      const bairrosInputs = document.querySelector(".bairros").querySelectorAll("input")
-      const tipos_de_vagaInputs = document.querySelector(".tipos_de_vaga").querySelectorAll("input")
+      const escolaridadeInput = document.querySelector("#escolaridade")
+      const bairrosInput = document.querySelector("#bairro")
+      const tipos_de_vagaInput = document.querySelector("#tipo_de_vaga")
 
 
       function clear(){
@@ -341,12 +347,13 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
         activeFilters.escolaridade= "",
         activeFilters.name= "",
 
-       escolaridadeInputs.forEach(e => e.checked = false)
-       bairrosInputs.forEach(e => e.checked = false)
-       tipos_de_vagaInputs.forEach(e => e.checked = false)
+       escolaridadeInput.querySelector('#defaultSelect').selected = false
+       tipos_de_vagaInput.querySelector('#defaultSelect').selected = true
+       bairrosInput.querySelector('#defaultSelect').selected = true
 
        filtrar()
       }
+
       document.querySelector("#removerFilters").addEventListener("click", clear)
 
       document.querySelector("#filtros").addEventListener("click", () => {
@@ -357,32 +364,32 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
         else {
           
           filtros.classList.add("filter-hidden");
-          clear()
+          //clear()
         }
       });
 
 
-        escolaridadeInputs.forEach((e) => e.addEventListener("change", (e) => {
+        escolaridadeInput.addEventListener("change", (e) => {
           
           activeFilters.escolaridade = e.target.value.toLowerCase();
           filtrar()
         
-        }));
+        });
 
 
-        bairrosInputs.forEach((e) => e.addEventListener("change", (e) => {
+        bairrosInput.addEventListener("change", (e) => {
           
           activeFilters.bairro = e.target.value.toLowerCase();
           filtrar()
-        }));
+        });
 
 
-        tipos_de_vagaInputs.forEach((e) => e.addEventListener("change", (e) => {
+        tipos_de_vagaInput.addEventListener("change", (e) => {
           
           activeFilters.tipo_de_vaga = e.target.value.toLowerCase();
           filtrar()
         
-        }));
+        });
     };
   </script>
   <!-- Google tag (gtag.js) -->
