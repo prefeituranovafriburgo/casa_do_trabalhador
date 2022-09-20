@@ -29,7 +29,7 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
     </div>
     <div class="opcoes-filtros filter-hidden" id="opcoes-filtros">
       <div class="escolaridades">
-        <h5>Escolaridade</h5>
+        <h5 class="text-start">Escolaridade</h5>
 
         <select class="form-select" id="escolaridade">
           <option disabled selected value="" id="defaultSelect">
@@ -73,7 +73,7 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
         {% comment %} !!! SE ISSO MUDAR NO MODEL, TEM QUE MUDAR AQUI TBM !!!!
         TIPO_DE_VAGA_CHOICES=( ('NML', 'Padrão'), ('JAP', 'Jovem aprendiz'),
         ('PED', 'Pessoa com deficiência') ('EST', 'Estágio') ) {% endcomment %}
-        <h5>Tipo de Vaga</h5>
+        <h5 class="text-start">Tipo de Vaga</h5>
         <select class="form-select" id="tipo_de_vaga">
 
           <option disabled selected value="" id="defaultSelect">
@@ -347,7 +347,7 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
         activeFilters.escolaridade= "",
         activeFilters.name= "",
 
-       escolaridadeInput.querySelector('#defaultSelect').selected = false
+       escolaridadeInput.querySelector('#defaultSelect').selected = true
        tipos_de_vagaInput.querySelector('#defaultSelect').selected = true
        bairrosInput.querySelector('#defaultSelect').selected = true
 
