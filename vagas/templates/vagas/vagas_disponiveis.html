@@ -10,22 +10,23 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
   <div class="row">
     <div class="col d-flex">
       <h2 class="text-start">VAGAS OFERTADAS</h2>
+      <div class="ms-auto px-3">
+        <button class="btn btn-btfl2 me-2" id="filtros">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
+          </svg>
+        </button>
       {% if request.user.is_staff %}
-      <span class="ms-auto">
-        <a class="btn btn-btfl me-2 px-3" href="{% url 'vagas:imprimir' %}"
+
+      <span>
+        <a class="btn btn-btfl me-2" href="{% url 'vagas:imprimir' %}"
           ><i class="fas fa-print"></i
         ></a>
         <a class="btn btn-btfl" href="{% url 'vagas:cadastrar' %}">CADASTRAR</a>
       </span>
 
       {% endif %}
-      <span class="me-2 px-3">
-        <button class="btn btn-primary ml-2 px-3" id="filtros">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
-          </svg>
-        </button>
-      </span>
+    </div>
     </div>
     <div class="opcoes-filtros filter-hidden" id="opcoes-filtros">
       <div class="escolaridades">
@@ -109,8 +110,8 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
         
       </div>
 
-      <div>
-      <button class="btn btn-btfl" id="removerFilters">
+      <div class="removeFiltersContainer">
+      <button class="btn btn-primary" id="removeFilters">
         Remover Filtros
       </button>
     </div>
@@ -240,11 +241,17 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
       display: none !important;
     }
     .opcoes-filtros {
-      margin-top: 32px;
+      margin-top: 48px;
       width: 100%;
       display: grid;
       gap: 0 20px;
       grid-template-columns: repeat(4, 1fr);
+    }
+    .removeFiltersContainer{
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
     }
   </style>
   <script>
@@ -354,7 +361,7 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
        filtrar()
       }
 
-      document.querySelector("#removerFilters").addEventListener("click", clear)
+      document.querySelector("#removeFilters").addEventListener("click", clear)
 
       document.querySelector("#filtros").addEventListener("click", () => {
 
