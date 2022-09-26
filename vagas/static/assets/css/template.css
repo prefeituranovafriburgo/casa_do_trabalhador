@@ -95,6 +95,22 @@ header .menu:focus{
     box-shadow:  4px 4px 2px #507b9b;
 }
 
+.btn-btfl2{
+    box-shadow:  4px 4px 2px #507b9ba9;
+    background-color: #507B9B;
+    color: white;  
+    transition: transform 0.8s;
+}
+.btn-btfl2:hover{
+    color: white;
+    transform: scale3d(1.05);
+    box-shadow:  4px 4px 2px #507b9b;
+}
+.btn-btfl2:focus{
+    padding: 8px 16px;
+    color: white;
+    box-shadow:  4px 4px 2px #507b9b;
+}
 #mobile{
     display: none;
 }
