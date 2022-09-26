@@ -584,7 +584,7 @@ def vagascomcandidatos(request):
             vagas_desativadas_com_candidatos.append(vaga)
             balcao_desativada=Candidato.objects.filter(vaga=vaga.id, candidato_online=False)
             if len(balcao_desativada)>0:
-                balcao2+=len(balcao_)
+                balcao2+=len(balcao_desativada)
             online_desativada=Candidato.objects.filter(vaga=vaga.id, candidato_online=True)
             if len(online_desativada)>0:
                 online2+=len(online_desativada)
