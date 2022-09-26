@@ -18,11 +18,13 @@
         var data = google.visualization.arrayToDataTable([
           ['Task', 'Hours per Day'],
           ['Balcão',     {{balcao}}],
+		  ['Balcão/Encerrado',     {{balcao2}}],
           ['Online',      {{online}}],
+		  ['Online/Encerrado',      {{online2}}],
         ]);
 
         var options = {
-          title: 'Totais'
+          title: ''
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -48,6 +50,9 @@
   </div>
  
 <form id="form_cadastro_vaga" {% if tipo_cadastro != '' %}method="post"{% endif %} class="form w-100 text-start">
+	<div class="row px-4 text-center my-3">
+		<h3>Vagas em aberto</h3>
+	</div>
     <div class="row px-4 text-center my-3">
 		<div class="col border py-4 me-2 indicador d-flex flex-column">
             <b>Total de candidatos do Balcão</b>
@@ -59,12 +64,15 @@
         </div>
     </div>
 	<div class="row px-4 text-center my-3">
+		<h3>Vagas encerradas</h3>
+	</div>
+	<div class="row px-4 text-center my-3">
 		<div class="col border py-4 me-2 indicador d-flex flex-column bg-secondary">
-            <b>Total de candidatos desativados do Balcão</b>
+            <b>Total de candidatos do Balcão</b>
 			<span>{{balcao2}}</span>
         </div>
         <div class="col border py-4 ms-2 indicador d-flex flex-column bg-secondary">
-            <b>Total de candidatos desativados Online</b>
+            <b>Total de candidatos Online</b>
 			<span>{{online2}}</span>
         </div>
     </div>
@@ -72,9 +80,10 @@
 		<div class="col d-flex">
 			<div class="mx-auto" id="piechart" style="width: 900px; height: 500px;"></div>
 		</div>
-	</div>
+	</div>	
     <div class="row">
         <div class="col pt-3 px-5">
+			<h3>Candidatos por empresa/cargo</h3>
 			<table class="table table-hover text-center">
 				<thead>
 					<tr>
