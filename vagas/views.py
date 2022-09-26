@@ -558,9 +558,13 @@ def visualizar_candidato(request, id):
 @login_required
 def vagascomcandidatos(request):
     vagas=Vaga_Emprego.objects.filter(ativo=True)
+    vagas_desativadas=Vaga_Emprego.objects.filter(ativo=False)
     balcao=0
     online=0
+    balcao2=0
+    online2=0
     vagas_com_candidatos=[]
+    vagas_desativadas_com_candidatos=[]
     for vaga in vagas:
         candidatos=Candidato.objects.filter(vaga=vaga.id)                
         if len(candidatos)>0:
@@ -573,10 +577,23 @@ def vagascomcandidatos(request):
                 online+=len(online_)
             
 
+    for vaga in vagas_desativadas:
+        candidatos_desativados=Candidato.objects.filter(vaga=vaga.id)                
+        if len(candidatos_desativados)>0:
+            vagas_desativadas_com_candidatos.append(vaga)
+            balcao_desativada=Candidato.objects.filter(vaga=vaga.id, candidato_online=False)
+            if len(balcao_desativada)>0:
+                balcao2+=len(balcao_)
+            online_desativada=Candidato.objects.filter(vaga=vaga.id, candidato_online=True)
+            if len(online_desativada)>0:
+                online2+=len(online_desativada)
+    
     context={
         'vagas':vagas_com_candidatos,
         'balcao': balcao,
-        'online': online
+        'online': online,
+        'balcao2': balcao2,
+        'online2': online2
     }
     
     return render(request, 'vagas/vagas_com_candidatos.html', context)
