@@ -1,36 +1,32 @@
 import os
 from pathlib import Path
+from .envvars import load_envars
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+env_vars=load_envars(BASE_DIR)
 
-# SECURITY WARNING: keep the secret key used in production secret!
-
-env_vars = open(str(BASE_DIR.parent) + "\\balcao-envvar", "r")
-
-env = []
-for linha in env_vars:
-    env.append(linha.rstrip())
-
-db_name = env[0]
-db_user = env[1]
-db_passwd = env[2]
-SECRET_KEY = env[3]
-debug = env[4]
-email_user = env[5]
-email_pass = env[6]
+db_name = env_vars['db_name']
+db_user = env_vars['db_user']
+db_passwd = env_vars['db_pw']
+SECRET_KEY = env_vars['django_secret_key']
+debug_mode = env_vars['debug_mode']
+email_user = env_vars['email_sistema']
+email_pass = env_vars['email_pw']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = eval(debug)
+DEBUG = debug_mode
 
-ALLOWED_HOSTS = ['localhost', '192.168.1.109', 'casadotrabalhador.pmnf.rj.gov.br']
+ALLOWED_HOSTS = ['localhost', '192.168.1.109', 'casadotrabalhador.pmnf.rj.gov.br', '127.0.0.1']
 
-RECAPTCHA_PUBLIC_KEY = env[7]
-RECAPTCHA_PRIVATE_KEY = env[8]
+try:
+    hCAPTCHA_PUBLIC_KEY = env_vars['hCAPTCHA_Public_Key']
+    hCAPTCHA_PRIVATE_KEY = env_vars['hCAPTCHA_Secret_Key']
+except:
+    RECAPTCHA_PUBLIC_KEY = ''
+    RECAPTCHA_PRIVATE_KEY = ''
 
 # Application definition
 
@@ -132,7 +128,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
@@ -181,37 +176,37 @@ EMAIL_HOST_USER = email_user
 EMAIL_HOST_PASSWORD = email_pass
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
-JWT_AUTH = {
-    'JWT_ENCODE_HANDLER':
-    'rest_framework_jwt.utils.jwt_encode_handler',
+# JWT_AUTH = {
+#     'JWT_ENCODE_HANDLER':
+#     'rest_framework_jwt.utils.jwt_encode_handler',
 
-    'JWT_DECODE_HANDLER':
-    'rest_framework_jwt.utils.jwt_decode_handler',
+#     'JWT_DECODE_HANDLER':
+#     'rest_framework_jwt.utils.jwt_decode_handler',
 
-    'JWT_PAYLOAD_HANDLER':
-    'rest_framework_jwt.utils.jwt_payload_handler',
+#     'JWT_PAYLOAD_HANDLER':
+#     'rest_framework_jwt.utils.jwt_payload_handler',
 
-    'JWT_PAYLOAD_GET_USER_ID_HANDLER':
-    'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
+#     'JWT_PAYLOAD_GET_USER_ID_HANDLER':
+#     'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
 
-    'JWT_RESPONSE_PAYLOAD_HANDLER':
-    'rest_framework_jwt.utils.jwt_response_payload_handler',
+#     'JWT_RESPONSE_PAYLOAD_HANDLER':
+#     'rest_framework_jwt.utils.jwt_response_payload_handler',
 
-    'JWT_SECRET_KEY': SECRET_KEY,
-    'JWT_GET_USER_SECRET_KEY': None,
-    'JWT_PUBLIC_KEY': None,
-    'JWT_PRIVATE_KEY': None,
-    'JWT_ALGORITHM': 'HS256',
-    'JWT_VERIFY': True,
-    'JWT_VERIFY_EXPIRATION': True,
-    'JWT_LEEWAY': 0,
+#     'JWT_SECRET_KEY': SECRET_KEY,
+#     'JWT_GET_USER_SECRET_KEY': None,
+#     'JWT_PUBLIC_KEY': None,
+#     'JWT_PRIVATE_KEY': None,
+#     'JWT_ALGORITHM': 'HS256',
+#     'JWT_VERIFY': True,
+#     'JWT_VERIFY_EXPIRATION': True,
+#     'JWT_LEEWAY': 0,
 
-    'JWT_AUDIENCE': None,
-    'JWT_ISSUER': None,
+#     'JWT_AUDIENCE': None,
+#     'JWT_ISSUER': None,
 
-    'JWT_ALLOW_REFRESH': False,
+#     'JWT_ALLOW_REFRESH': False,
 
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',
-    'JWT_AUTH_COOKIE': None,
+#     'JWT_AUTH_HEADER_PREFIX': 'JWT',
+#     'JWT_AUTH_COOKIE': None,
 
-}
+# }

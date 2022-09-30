@@ -6,7 +6,12 @@ class CadastroVagasForm(ModelForm):
     class Meta:
         model = Vaga_Emprego
         widgets = {'user': forms.HiddenInput()}
-        exclude = ['dt_inclusao']
+        exclude = ['dt_inclusao', 'dt_desativacao']
+
+# class Form_Candidato(ModelForm):
+#     class Meta:
+#         model = Candidato
+#         exclude = ['dt_inclusao', 'funcionario_encaminhamento']
 
 class Form_Empresa(ModelForm):  
     cnpj = forms.CharField(label='CNPJ', max_length=18, widget = forms.TextInput(attrs={'onkeydown':"mascara(this,icnpj)"}))  
@@ -52,7 +57,8 @@ class Form_Candidato(ModelForm):
         model = Candidato
         widgets = {
             'vaga': forms.HiddenInput(),
-            'nome': forms.TextInput(attrs={'class': 'form-control mb-2'}),
+            'nome': forms.TextInput(attrs={'class': 'form-control mb-2', 'type':'text','onkeydown':'mascara(this, inome)'}),
+            'cpf': forms.TextInput(attrs={'class': 'form-control mb-2', 'onkeydown':'mascara(this, icpf)', 'required': True}),
             'data_nascimento': forms.DateInput(attrs={'class': 'form-control mb-2', 'type':'date'}),
             'sexo': forms.Select(attrs={'class': 'form-control mb-2'}),
             'email': forms.EmailInput(attrs={'class': 'form-control mb-2'}),
@@ -61,4 +67,4 @@ class Form_Candidato(ModelForm):
             'escolaridade': forms.Select(attrs={'class': 'form-control mb-2'}),
             'candidato_online': forms.HiddenInput(),
         }
-        exclude = ['dt_inclusao', 'candidato_ativo', 'conseguiu_vaga','dt_aquisicao']
+        exclude = ['dt_inclusao', 'candidato_ativo', 'conseguiu_vaga','dt_aquisicao', 'funcionario_encaminhamento']

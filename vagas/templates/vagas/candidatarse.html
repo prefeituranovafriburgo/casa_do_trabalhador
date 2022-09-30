@@ -89,6 +89,10 @@
             v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2") //Coloca um hifen entre o terceiro e o quarto digitos
             return v
         }
+        function inome(v){
+            v=v.replace(/[0-9]/g,"")
+            return v
+        }
         function icelular(v){
         v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
         v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos

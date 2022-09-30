@@ -1,3 +1,4 @@
+db_host: localhost
 db_name: turismo
 db_user: turismo
 db_pw: 'turismo123'

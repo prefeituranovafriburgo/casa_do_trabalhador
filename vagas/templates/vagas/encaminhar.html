@@ -47,7 +47,7 @@
             <p>Pedimos ao candidato que busque fazer contato:</p>            
             {% if vaga.empresa.contato_presencial %}
             <p style="margin: 0 30px;">                
-            De forma presencial, munido de seu currículo,  no endereço: <br>
+            De forma presencial, munido de seu currículo e com este encaminhamento em mãos,  no endereço: <br>
             <span style="text-decoration: underline; margin: 0px 30px;">{{vaga.empresa.endereco}}</span></p>
             {% endif %}
             {% if vaga.empresa.contato_telefone %}
@@ -83,7 +83,7 @@
                 Desde já agradecemos e continuamos a disposição de V. srª para maiores
                  informações no telefone (22)2525-9205.                 
             </p>
-            {% if request.user.is_authenticated %}
+            {% if user %}
             <p style="margin-bottom: 0; text-indent: 0;">
                 Atenciosamente, <br>
                 <span >{{user.first_name}},</span><br>
@@ -94,7 +94,7 @@
                 Nova Friburgo, {{date}}.
             </p>
             <p style="text-align: center; margin: 80px; text-indent: 0;">
-                João Carlos Rodrigues<br>
+                João Carlos Rodrigues <br>Matrícula: 063.108<br>
                 Subsecretário de Trabalho e Renda                
             </p>
 
