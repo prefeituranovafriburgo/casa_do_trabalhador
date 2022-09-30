@@ -485,7 +485,6 @@ def vagascomcandidatos(request):
     vagas_com_candidatos=[]
     for vaga in vagas:
         candidatos=Candidato.objects.filter(vaga=vaga.id)
-
         if len(candidatos)>0:
             vagas_com_candidatos.append(vaga)
 
