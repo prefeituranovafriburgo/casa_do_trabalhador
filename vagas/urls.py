@@ -41,6 +41,8 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('visualizar-vaga/alt0x#<id>001/listar-canditados/', views.candidatosporvaga, name='listar_candidatos'),
     path('vagas-com-candidatos/', views.vagascomcandidatos, name='vagas_com_candidatos'),
+    path('candidatos-por-funcionario/', views.candidatosporfuncionario, name='candidatosporfuncionario'),
+    path('candidatos-por-funcionario/<id>', views.funcionario_encaminhados, name='funcionarios_encaminhados'), 
     path('pesquisar-candidatos/', views.pesquisar_candidatos, name='pesquisar_candidatos'), 
     path('visualizar-candidatos/<id>', views.visualizar_candidato, name='visualizar_candidato'), 
 ]

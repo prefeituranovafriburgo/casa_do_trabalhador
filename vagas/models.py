@@ -95,6 +95,7 @@ class Vaga_Emprego(models.Model):
     destaque=models.BooleanField(default=False)
     user=models.ForeignKey(User, on_delete=models.PROTECT)                    
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+    dt_desativacao = models.DateTimeField(verbose_name='Dt. Desativação', null=True, blank=True)
     ativo=models.BooleanField(default=True)        
     def __str__(self):
         return '%s - %s' % (self.empresa, self.cargo)
@@ -114,6 +115,7 @@ class Candidato(models.Model):
     
     vaga=models.ForeignKey(Vaga_Emprego, on_delete=models.CASCADE)
     nome=models.CharField(max_length=100, verbose_name='Nome do candidato', blank=False, null=False)        
+    cpf=models.CharField(max_length=14, verbose_name='CPF do candidato', blank=False, null=False)        
     data_nascimento=models.DateField(verbose_name='Data de nascimento do candidato', blank=False, null=False)
     sexo=models.CharField(max_length=1, choices=SEXO_CHOICES, verbose_name='Sexo do candidato')
     email=models.EmailField(max_length=254, verbose_name="Email p/ contato com o candidato", blank=True, null=False)    
@@ -122,6 +124,7 @@ class Candidato(models.Model):
     escolaridade=models.ForeignKey(Escolaridade, on_delete=models.CASCADE)
     candidato_online=models.BooleanField(default=False, verbose_name='Candidato online')
     dt_inclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+    funcionario_encaminhamento=models.ForeignKey(User, on_delete=models.PROTECT, null=True, blank=True)
     candidato_ativo=models.BooleanField(default=True)
     # Talvez seja interessante inserir um campo que informe se o candidato entrou em contato com o RH  da empresa
     conseguiu_vaga=models.BooleanField(default=False)

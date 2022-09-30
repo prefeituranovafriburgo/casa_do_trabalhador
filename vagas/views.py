@@ -500,6 +500,7 @@ def gera_encaminhamento_to_pdf(request, id, user_id=0):
 
 def candidatarse(request, id):    
     if request.user.is_authenticated:
+
         form=Form_Candidato(initial={'vaga': id, 'candidato_online': False})
     else:
         form=Form_Candidato(initial={'vaga': id, 'candidato_online': True}) 
@@ -507,9 +508,11 @@ def candidatarse(request, id):
     if request.method=='POST':
         form=Form_Candidato(request.POST)
         if form.is_valid():
-            candidato=form.save()                       
+            candidato=form.save()                                   
             # return render(request, 'vagas/encaminhar.html', context)
             if request.user.is_authenticated:
+                candidato.funcionario_encaminhamento=request.user
+                candidato.save()
                 return redirect('vagas:encaminhamento', id=candidato.id, user_id=request.user.id)
             return redirect('vagas:encaminhamento', id=candidato.id, user_id=0)
 
@@ -598,6 +601,32 @@ def vagascomcandidatos(request):
     }
     
     return render(request, 'vagas/vagas_com_candidatos.html', context)
+
+@login_required
+def candidatosporfuncionario(request):
+    usuarios=User.objects.filter(groups__name='atendente')
+    lista=[]
+    for i in usuarios:
+        lista.append([i.first_name, len(Candidato.objects.filter(funcionario_encaminhamento=i)), i.id])
+
+    #deletar abaixo
+    
+    context={        
+        'lista': lista
+    }
+    
+    return render(request, 'vagas/candidatos_por_funcionarios.html', context)
+
+@login_required
+def funcionario_encaminhados(request, id):
+    candidatos=Candidato.objects.filter(funcionario_encaminhamento=id)
+    context={
+        'candidatos': candidatos,
+        'fulano': User.objects.get(id=id).first_name,
+        'id': id
+    }
+    return render(request, 'vagas/candidatos_por_funcionarios_detalhe.html', context)
+
 
 @login_required
 def sair(request):

@@ -56,7 +56,11 @@
     <div class="row px-4 text-center mb-3">
 		<div class="col border py-4 me-2 indicador d-flex flex-column">
             <b>Total de candidatos do Balcão</b>
-			<span>{{balcao}}</span>
+			<span>
+				<a href="{% url 'vagas:candidatosporfuncionario' %}" style="text-decoration: none; color: white;">
+					{{balcao}}
+				</a>
+			</span>
         </div>
         <div class="col border py-4 ms-2 indicador d-flex flex-column">
             <b>Total de candidatos Online</b>
