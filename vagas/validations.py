@@ -6,7 +6,8 @@ from django.forms import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 error_messages = {
-    'invalid_CNPJ': _("CNPJ inválido."),    
+    'invalid_CNPJ': _("CNPJ inválido."),  
+    'max_digits_cpf': _("O CPF deve conter 11 dígitos"),  
     'max_digits': _("Este campo requer 14 dígitos."),
 
     'tel_max_digits': _("O telefone deve conter 10 ou 11 números."),
@@ -49,7 +50,6 @@ def validate_CPF(value):
 #    print(value)
     cpf = [int(char) for char in value if char.isdigit()]
 #    print(cnpj)
-    print(cpf)
     if len(cpf) != 11:
         raise ValidationError(error_messages['max_digits_cpf'])
     if cpf in (c * 11 for c in "1234567890"):
@@ -61,4 +61,5 @@ def validate_CPF(value):
         digit = ((value * 10) % 11) % 10
         if digit != cpf[i]:
             raise ValidationError(error_messages['invalid_CPF'])
+
     return orig_value

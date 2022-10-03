@@ -68,3 +68,10 @@ class Form_Candidato(ModelForm):
             'candidato_online': forms.HiddenInput(),
         }
         exclude = ['dt_inclusao', 'candidato_ativo', 'conseguiu_vaga','dt_aquisicao', 'funcionario_encaminhamento']
+
+    def clean_cpf(self):
+        print(self.cleaned_data["cpf"])
+        cpf = validate_CPF(self.cleaned_data["cpf"])
+        cpf = cpf.replace('.', '')
+        cpf = cpf.replace('-', '')
+        return cpf
