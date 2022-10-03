@@ -570,7 +570,7 @@ def vagascomcandidatos(request):
     vagas_com_candidatos=[]
     vagas_desativadas_com_candidatos=[]
     for vaga in vagas:
-        candidatos=Candidato.objects.filter(vaga=vaga.id)                
+        candidatos=Candidato.objects.filter(vaga=vaga.id)
         if len(candidatos)>0:
             vagas_com_candidatos.append(vaga)
             balcao_=Candidato.objects.filter(vaga=vaga.id, candidato_online=False)

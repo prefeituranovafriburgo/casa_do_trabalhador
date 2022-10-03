@@ -57,8 +57,8 @@ class Form_Candidato(ModelForm):
         model = Candidato
         widgets = {
             'vaga': forms.HiddenInput(),
-            'nome': forms.TextInput(attrs={'class': 'form-control mb-2'}),
-            'cpf': forms.TextInput(attrs={'class': 'form-control mb-2', 'required': True}),
+            'nome': forms.TextInput(attrs={'class': 'form-control mb-2', 'type':'text','onkeydown':'mascara(this, inome)'}),
+            'cpf': forms.TextInput(attrs={'class': 'form-control mb-2', 'onkeydown':'mascara(this, icpf)', 'required': True}),
             'data_nascimento': forms.DateInput(attrs={'class': 'form-control mb-2', 'type':'date'}),
             'sexo': forms.Select(attrs={'class': 'form-control mb-2'}),
             'email': forms.EmailInput(attrs={'class': 'form-control mb-2'}),
