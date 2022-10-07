@@ -16,7 +16,7 @@ urlpatterns = [
     path('alterar-escolaridade/alt0x#<id>001', views.alterar_escolaridade, name='alterar_escolaridade'),    
     path('alterar-cargo/alt0x#<id>001', views.alterar_cargo, name='alterar_cargo'),    
 
-    path('visualizar-vaga/alt0x#<id>001', views.visualizar_vaga, name='visualizar_vaga'),    
+    path('visualizar-vaga/<id>', views.visualizar_vaga, name='visualizar_vaga'),    
     path('remover-vaga/alt0x#<id>001', views.remover_vaga, name='remover_vaga'),    
     path('visualizar-vaga/alt0x#<id>/candidatar-se', views.candidatarse, name='candidatarse'),        
     path('visualizar-vaga/alt0x#<id>/encaminhar', views.encaminhar, name='encaminhar'),    
