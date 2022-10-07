@@ -10,8 +10,6 @@ urlpatterns = [
     path('cadastrar-empresa/', views.cadastrar_empresa, name='cadastrar_empresa'),    
     path('cadastrar-cargo/', views.cadastrar_cargo, name='cadastrar_cargo'),    
     path('cadastrar-vaga-em-lote/', views.cadastrar_vaga_emLote, name='cadastrar_vaga_emLote'), 
-    path('cadastrar-candidato/', views.cadastrar_candidato, name='cadastrar_candidato'), 
-
 
     path('alterar-vaga/alt0x#<id>001', views.alterar_vaga, name='alterar_vaga'),    
     path('alterar-empresa/alt0x#<id>001', views.alterar_empresa, name='alterar_empresa'),    
