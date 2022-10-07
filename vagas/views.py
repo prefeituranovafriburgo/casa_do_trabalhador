@@ -672,3 +672,5 @@ def euOdeioOLuis(request):
     for candidato in candidatos:
         candidato.cpf = validate_CPF(candidato.cpf)
         candidato.save()
+
+    return redirect('vagas/index.html')
