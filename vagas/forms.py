@@ -24,19 +24,16 @@ class Form_Empresa(ModelForm):
         exclude = ['dt_inclusao']
 
     def clean_cnpj(self):
-        print(self.cleaned_data["cnpj"])
         cnpj = validate_CNPJ(self.cleaned_data["cnpj"])
         cnpj = cnpj.replace('.', '')
         cnpj = cnpj.replace('-', '')
         return cnpj
 
     def clean_telefone(self):
-        print(self.cleaned_data["telefone"])
         telefone = validate_TELEFONE(self.cleaned_data["telefone"])        
         return telefone
 
     def clean_whatsapp(self):
-        print(self.cleaned_data["whatsapp"])
         whatsapp = validate_TELEFONE(self.cleaned_data["whatsapp"])        
         return whatsapp
 
@@ -57,8 +54,8 @@ class Form_Candidato(ModelForm):
         model = Candidato
         widgets = {
             'vaga': forms.HiddenInput(),
-            'nome': forms.TextInput(attrs={'class': 'form-control mb-2'}),
-            'cpf': forms.TextInput(attrs={'class': 'form-control mb-2', 'required': True}),
+            'nome': forms.TextInput(attrs={'class': 'form-control mb-2', 'type':'text','onkeydown':'mascara(this, inome)'}),
+            'cpf': forms.TextInput(attrs={'class': 'form-control mb-2', 'onkeydown':'mascara(this, icpf)', 'required': True}),
             'data_nascimento': forms.DateInput(attrs={'class': 'form-control mb-2', 'type':'date'}),
             'sexo': forms.Select(attrs={'class': 'form-control mb-2'}),
             'email': forms.EmailInput(attrs={'class': 'form-control mb-2'}),
@@ -67,10 +64,9 @@ class Form_Candidato(ModelForm):
             'escolaridade': forms.Select(attrs={'class': 'form-control mb-2'}),
             'candidato_online': forms.HiddenInput(),
         }
-        exclude = ['dt_inclusao', 'candidato_ativo', 'conseguiu_vaga','dt_aquisicao', 'funcionario_encaminhamento']
+        exclude = ['dt_inclusao', 'candidato_ativo', 'conseguiu_vaga','dt_aquisicao', 'funcionario_encaminhamento', 'dt_atualizacao']
 
     def clean_cpf(self):
-        print(self.cleaned_data["cpf"])
         cpf = validate_CPF(self.cleaned_data["cpf"])
         cpf = cpf.replace('.', '')
         cpf = cpf.replace('-', '')

@@ -1,10 +1,9 @@
 # PARA AS VIEWS
 from django.views.decorators.clickjacking import xframe_options_exempt
-from multiprocessing import context
 from django.shortcuts import render, redirect
 # AUTH
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth import authenticate, login, logout
 # MODELS E FORMS
 from .forms import *
 from django.contrib.auth.models import User
@@ -12,7 +11,7 @@ from django.contrib.auth.models import User
 from django.http import FileResponse, Http404
 import requests
 import pdfkit
-
+from datetime import date, datetime
 # VIEWS
 
 
@@ -253,15 +252,12 @@ def cadastrar_vaga_emLote(request):
     return render(request, 'vagas/cadastrar_vagas_emLote.html', context)
 
 
-
-
 def get_empresa(request):
     try:
         # empresas=Empresa.objects.filter(nome__startswith=request.GET.get('nome')).order_by('nome')
         empresas = Empresa.objects.filter(
             nome__icontains=request.GET.get('empresa')).order_by('nome')
     except Exception as E:
-        print(E)
         empresas = None
     context = {
         'results': empresas,
@@ -275,7 +271,6 @@ def get_cargo(request):
         cargos = Cargo.objects.filter(
             nome__icontains=request.GET.get('vaga')).order_by('nome')
     except Exception as E:
-        print(E)
         cargos = None
     context = {
         'results': cargos,
@@ -460,7 +455,6 @@ def login_view(request):
 
 
 def encaminhar(request, id):
-    from datetime import date
     today = date.today()
     vaga = Vaga_Emprego.objects.get(id=id)
     if request.method == 'POST':
@@ -481,7 +475,6 @@ def encaminhamento(request, id, user_id=0):
     else:
         user = False
 
-    from datetime import date
     today = date.today()
     context = {
         'vaga': candidato.vaga,
@@ -508,16 +501,13 @@ def gera_encaminhamento_to_pdf(request, id, user_id=0):
         try:
             return FileResponse(open(url_pdf, 'rb'), content_type='application/pdf')
         except Exception as E:
-            print(E)
             raise Http404()
     except Exception as E:
-        print(E)
         return redirect('/')
 
 
 def candidatarse(request, id):
     if request.user.is_authenticated:
-
         form = Form_Candidato(initial={'vaga': id, 'candidato_online': False})
     else:
         form = Form_Candidato(initial={'vaga': id, 'candidato_online': True})
@@ -525,11 +515,22 @@ def candidatarse(request, id):
     if request.method == 'POST':
         form = Form_Candidato(request.POST)
         if form.is_valid():
+
+            try:
+                cpf = validate_CPF(request.POST['cpf'])
+                candidato = Candidato.objects.get(cpf=cpf, vaga_id = id)
+                form = Form_Candidato(request.POST, instance=candidato)
+
+            except Exception as e:
+                pass
+
             candidato = form.save()
             # return render(request, 'vagas/encaminhar.html', context)
             if request.user.is_authenticated:
                 candidato.funcionario_encaminhamento = request.user
+                candidato.dt_atualizacao = datetime.today()
                 candidato.save()
+
                 return redirect('vagas:encaminhamento', id=candidato.id, user_id=request.user.id)
             return redirect('vagas:encaminhamento', id=candidato.id, user_id=0)
 
@@ -563,7 +564,6 @@ def get_candidatos(request):
         candidatos = Candidato.objects.filter(
             nome__icontains=request.GET.get('candidatos')).order_by('nome')
     except Exception as E:
-        print(E)
         candidatos = None
 
     context = {
