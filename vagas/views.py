@@ -670,7 +670,11 @@ def euOdeioOLuis(request):
     candidatos = Candidato.objects.all()
 
     for candidato in candidatos:
-        candidato.cpf = validate_CPF(candidato.cpf)
+        try:
+            candidato.cpf = validate_CPF(candidato.cpf)
+        except Exception as e:
+            candidato.cpf = None
+        
         candidato.save()
 
     return redirect('vagas/index.html')
