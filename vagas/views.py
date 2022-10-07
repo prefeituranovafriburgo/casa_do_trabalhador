@@ -673,7 +673,7 @@ def euOdeioOLuis(request):
         try:
             candidato.cpf = validate_CPF(candidato.cpf)
         except Exception as e:
-            candidato.cpf = None
+            candidato.cpf = 0
         
         candidato.save()
 
