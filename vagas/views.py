@@ -664,3 +664,11 @@ def sair(request):
         return redirect('vagas:home')
     else:
         return redirect('/accounts/login')
+
+
+def euOdeioOLuis(request):
+    candidatos = Candidato.objects.all()
+
+    for candidato in candidatos:
+        candidato.cpf = validate_CPF(candidato.cpf)
+        candidato.save()
