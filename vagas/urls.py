@@ -43,6 +43,8 @@ urlpatterns = [
     path('candidatos-por-funcionario/<id>', views.funcionario_encaminhados, name='funcionarios_encaminhados'), 
     path('pesquisar-candidatos/', views.pesquisar_candidatos, name='pesquisar_candidatos'), 
     path('visualizar-candidatos/<id>', views.visualizar_candidato, name='visualizar_candidato'), 
+    path('painel_administrativo', views.painel_administrativo, name="painel_administrativo"),
+    path('excluir_cpf', views.excluir_cpf, name="excluir_cpf"),
 
     path('euOdeioOLuis', views.euOdeioOLuis, name="euOdeioOLuis")
 ]

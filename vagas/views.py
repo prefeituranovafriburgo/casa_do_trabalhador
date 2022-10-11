@@ -1,4 +1,5 @@
 # PARA AS VIEWS
+import json
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.shortcuts import render, redirect
 # AUTH
@@ -8,7 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import *
 from django.contrib.auth.models import User
 # OUTROS
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, JsonResponse
 import requests
 import pdfkit
 from datetime import date, datetime
@@ -676,6 +677,26 @@ def sair(request):
     else:
         return redirect('/accounts/login')
 
+@login_required
+def painel_administrativo(request):
+
+    return render(request, 'vagas/painel_administrativo.html')
+    
+@login_required
+def excluir_cpf(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode("utf-8"))
+        if data['step'] == 0:
+            cpf = validate_CPF(data['cpf'])
+            potencialmente_excluidos = Candidato.objects.filter(cpf=cpf).count()
+
+            return JsonResponse({'qnt_excluidos': potencialmente_excluidos, 'cpf': cpf, 'step': 1})
+
+        elif data['step'] == 1:
+            cpf = validate_CPF(data['cpf'])
+            excluidos = Candidato.objects.filter(cpf=cpf).delete()
+            return JsonResponse({'qnt_excluidos': excluidos[0], 'cpf': cpf, 'step': 1})
+            
 
 def euOdeioOLuis(request):
     candidatos = Candidato.objects.all()
@@ -689,3 +710,5 @@ def euOdeioOLuis(request):
         candidato.save()
 
     return redirect('vagas/index.html')
+
+

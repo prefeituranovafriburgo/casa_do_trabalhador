@@ -29,6 +29,7 @@
                 </ul>
             </div>
             <a class="btn" href="{% url 'vagas:vagas_com_candidatos' %}"><i class="fas fa-chart-pie me-2"></i><span class="mobile_hidden">Indicadores</span></a>
+            <a class="btn" href="{% url 'vagas:painel_administrativo' %}"><i class="fas fa-cog me-2"></i><span class="mobile_hidden">Painel administrativo</span></a>
             <a class="btn ms-auto" href="/admin"><i class="fas fa-user-cog me-2"></i><span class="mobile_hidden">Administração</span></a>
             {% else %}
             {% if request.user.is_authenticated %}
