@@ -477,7 +477,9 @@ def encaminhamento(request, id, user_id=0):
                 'sistema': True,   
                 'user': user             
             }
-    return render(request, 'vagas/encaminhar.html', context)
+    if request.user.is_authenticated:
+        return render(request, 'vagas/encaminhar.html', context)
+    return render(request, 'vagas/encaminhamento_online.html', context)
 
 def gera_encaminhamento_to_pdf(request, id, user_id=0):
     try:
