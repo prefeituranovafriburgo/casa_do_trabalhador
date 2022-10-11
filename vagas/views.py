@@ -587,12 +587,19 @@ def visualizar_candidato(request, id):
 
 @login_required
 def vagascomcandidatos(request):
-    vagas = Vaga_Emprego.objects.filter(ativo=True)
-    vagas_desativadas = Vaga_Emprego.objects.filter(ativo=False)
     balcao = 0
     online = 0
     balcao2 = 0
     online2 = 0
+    buscar=False
+
+    vagas = Vaga_Emprego.objects.filter(ativo=True)
+    vagas_desativadas = Vaga_Emprego.objects.filter(ativo=False)
+    
+    if request.method=='POST':
+        vagas_filtradas = Vaga_Emprego.objects.filter(ativo=True)
+        buscar=True
+
     vagas_com_candidatos = []
     vagas_desativadas_com_candidatos = []
     for vaga in vagas:
@@ -626,7 +633,8 @@ def vagascomcandidatos(request):
         'balcao': balcao,
         'online': online,
         'balcao2': balcao2,
-        'online2': online2
+        'online2': online2,
+        'buscar': buscar
     }
 
     return render(request, 'vagas/vagas_com_candidatos.html', context)

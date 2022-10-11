@@ -43,13 +43,18 @@
     <div class="col d-flex">
         <h2 class="text-start text-uppercase">{{ tipo_cadastro }} VAGAS COM CANDIDATOS</h2>   
 		<div class="ms-auto">
-			<a href="{% url 'vagas:pesquisar_candidatos' %}" class="btn btn-btfl me-2"><i class="fas fa-search me-2"></i>Candidato</a>
-			<button class="btn btn-btfl"><i class="fas fa-filter me-2"></i>Filtrar</button>
+			<a href="{% url 'vagas:pesquisar_candidatos' %}" class="btn btn-btfl "><i class="fas fa-search me-2"></i>Candidato</a>			
 		</div>
     </div>
-  </div>
- 
-<form id="form_cadastro_vaga" {% if tipo_cadastro != '' %}method="post"{% endif %} class="form w-100 text-start">
+</div>
+  
+<form id="form_cadastro_vaga" method="post" class="form w-100 text-start">
+	<div class="d-flex w-100 py-4">		
+		<input name="data-inicial" type="date" class="form-control my-auto ms-auto" id="" style="width: 180px;">					
+		<input name="data-final" type="date" class="form-control my-auto ms-1"  id="" style="width: 180px;">			
+		<button class="btn btn-btfl my-auto ms-1 me-auto"><i class="fas fa-filter me-2"></i></button>
+	</div>	
+	{% if buscar %}
 	<div class="row px-2 mt-3">
 		<h3>Candidatos por vagas em aberto</h3>
 	</div>
@@ -87,8 +92,10 @@
 	</div>	
     <div class="row">
         <div class="col pt-3 px-5">
-			<h3>Candidatos por empresa/cargo</h3>
-			<table class="table table-hover text-center">
+			<div class="d-flex w-100">
+				<h3 style="display: inline;">Candidatos por empresa/cargo</h3>				
+			</div>			
+			<table class="table table-hover text-center mt-4">
 				<thead>
 					<tr>
 						
@@ -114,6 +121,7 @@
 					{% endfor %}
 				</tbody>
 			  </table>
+			  
 			  <style>
 				table{
 				  font-size:  0.9em;
@@ -128,8 +136,10 @@
 			  </style>
         </div>      
     </div>    
-    
 
+{% endif %}
+{% csrf_token %}
+</form>
 <script>
    
 </script>
