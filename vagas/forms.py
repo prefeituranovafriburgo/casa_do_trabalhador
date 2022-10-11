@@ -20,7 +20,9 @@ class Form_Empresa(ModelForm):
 
     class Meta:
         model = Empresa
-        widgets = {'user': forms.HiddenInput()}
+        widgets = {
+        'user': forms.HiddenInput(),
+        }
         exclude = ['dt_inclusao']
 
     def clean_cnpj(self):

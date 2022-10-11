@@ -30,7 +30,7 @@ class Empresa(models.Model):
     FORMA_CONTATO_CHOICES=(
                             ('T', 'TELEFONE'),
                             ('E', 'EMAIL'),
-                            ('P', 'PRESENCIAL')
+                            ('P', 'PRESENCIAL'),
     )
 
     nome=models.CharField(max_length=150, verbose_name='NOME', unique=True)
