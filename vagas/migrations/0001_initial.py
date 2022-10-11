@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Cargo',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nome', models.CharField(max_length=100, unique=True, verbose_name='Nome do cargo')),
                 ('dt_inclusao', models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Empresa',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nome', models.CharField(max_length=150, unique=True, verbose_name='NOME')),
                 ('cnpj', models.CharField(max_length=14, unique=True, validators=[vagas.validations.validate_CNPJ], verbose_name='CNPJ')),
                 ('endereco', models.CharField(blank=True, max_length=60, verbose_name='Endereço p/ encaminhamento')),
@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Escolaridade',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nome', models.CharField(max_length=150, unique=True, verbose_name='Nome da escolaridade')),
                 ('dt_inclusao', models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Vaga_Emprego',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('quantidadeVagas', models.IntegerField(verbose_name='Quantidade de vagas')),
                 ('tipo_de_vaga', models.CharField(choices=[('NML', 'Padrão'), ('JAP', 'Jovem aprendiz'), ('PED', 'Pessoa com deficiência')], default='NML', max_length=3)),
                 ('salario', models.CharField(blank=True, default='', max_length=50, verbose_name='Salário')),
@@ -81,7 +81,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Candidato',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nome', models.CharField(max_length=100, verbose_name='Nome do candidato')),
                 ('data_nascimento', models.DateField(verbose_name='Data de nascimento do candidato')),
                 ('sexo', models.CharField(choices=[('m', 'Masculino'), ('f', 'Feminino'), ('o', 'Outro')], max_length=1, verbose_name='Sexo do candidato')),
