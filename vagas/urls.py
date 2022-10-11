@@ -10,15 +10,13 @@ urlpatterns = [
     path('cadastrar-empresa/', views.cadastrar_empresa, name='cadastrar_empresa'),    
     path('cadastrar-cargo/', views.cadastrar_cargo, name='cadastrar_cargo'),    
     path('cadastrar-vaga-em-lote/', views.cadastrar_vaga_emLote, name='cadastrar_vaga_emLote'), 
-    path('cadastrar-candidato/', views.cadastrar_candidato, name='cadastrar_candidato'), 
-
 
     path('alterar-vaga/alt0x#<id>001', views.alterar_vaga, name='alterar_vaga'),    
     path('alterar-empresa/alt0x#<id>001', views.alterar_empresa, name='alterar_empresa'),    
     path('alterar-escolaridade/alt0x#<id>001', views.alterar_escolaridade, name='alterar_escolaridade'),    
     path('alterar-cargo/alt0x#<id>001', views.alterar_cargo, name='alterar_cargo'),    
 
-    path('visualizar-vaga/alt0x#<id>001', views.visualizar_vaga, name='visualizar_vaga'),    
+    path('visualizar-vaga/<id>', views.visualizar_vaga, name='visualizar_vaga'),    
     path('remover-vaga/alt0x#<id>001', views.remover_vaga, name='remover_vaga'),    
     path('visualizar-vaga/alt0x#<id>/candidatar-se', views.candidatarse, name='candidatarse'),        
     path('visualizar-vaga/alt0x#<id>/encaminhar', views.encaminhar, name='encaminhar'),    
@@ -45,4 +43,6 @@ urlpatterns = [
     path('candidatos-por-funcionario/<id>', views.funcionario_encaminhados, name='funcionarios_encaminhados'), 
     path('pesquisar-candidatos/', views.pesquisar_candidatos, name='pesquisar_candidatos'), 
     path('visualizar-candidatos/<id>', views.visualizar_candidato, name='visualizar_candidato'), 
+
+    path('euOdeioOLuis', views.euOdeioOLuis, name="euOdeioOLuis")
 ]

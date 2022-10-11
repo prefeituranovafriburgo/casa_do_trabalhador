@@ -129,6 +129,10 @@ class Candidato(models.Model):
     # Talvez seja interessante inserir um campo que informe se o candidato entrou em contato com o RH  da empresa
     conseguiu_vaga=models.BooleanField(default=False)
     dt_aquisicao = models.CharField(max_length=10, default='')
+    dt_inclusao=models.DateTimeField(verbose_name='Data de inclusão do candidato', auto_now_add=True)
+    dt_atualizacao=models.DateTimeField(verbose_name='Data da última atualização do candidato', blank=True, null=True)
+
+
     
     def __str__(self):
         return '%s - %s' % (self.vaga.cargo, self.nome)
