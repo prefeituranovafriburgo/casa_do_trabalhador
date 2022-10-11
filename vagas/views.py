@@ -473,7 +473,6 @@ def encaminhamento(request, id, user_id=0):
     if str(int(user_id)) != str(int(0)):
         user = User.objects.get(id=user_id)
     else:
-<<<<<<< HEAD
         user=False
 
     from datetime import date
@@ -488,19 +487,6 @@ def encaminhamento(request, id, user_id=0):
     if request.user.is_authenticated:
         return render(request, 'vagas/encaminhar.html', context)
     return render(request, 'vagas/encaminhamento_online.html', context)
-=======
-        user = False
-
-    today = date.today()
-    context = {
-        'vaga': candidato.vaga,
-        'date': today,
-        'candidato': candidato,
-        'sistema': True,
-        'user': user
-    }
-    return render(request, 'vagas/encaminhar.html', context)
->>>>>>> caf3688b46f43dd4e6a33b13878e0b3e244c7154
 
 
 def gera_encaminhamento_to_pdf(request, id, user_id=0):
