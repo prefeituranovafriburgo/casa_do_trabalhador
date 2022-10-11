@@ -601,43 +601,44 @@ def vagascomcandidatos(request):
             vagas  = Vaga_Emprego.objects.filter(ativo=True, dt_inclusao__range=[request.POST['data-inicial'], request.POST['data-final']])
         buscar=True
 
-    vagas_com_candidatos = []
-    vagas_desativadas_com_candidatos = []
-    for vaga in vagas:
-        candidatos = Candidato.objects.filter(vaga=vaga.id)
-        if len(candidatos) > 0:
-            vagas_com_candidatos.append(vaga)
-            balcao_ = Candidato.objects.filter(
-                vaga=vaga.id, candidato_online=False)
-            if len(balcao_) > 0:
-                balcao += len(balcao_)
-            online_ = Candidato.objects.filter(
-                vaga=vaga.id, candidato_online=True)
-            if len(online_) > 0:
-                online += len(online_)
+        vagas_com_candidatos = []
+        vagas_desativadas_com_candidatos = []
+        for vaga in vagas:
+            candidatos = Candidato.objects.filter(vaga=vaga.id)
+            if len(candidatos) > 0:
+                vagas_com_candidatos.append(vaga)
+                balcao_ = Candidato.objects.filter(
+                    vaga=vaga.id, candidato_online=False)
+                if len(balcao_) > 0:
+                    balcao += len(balcao_)
+                online_ = Candidato.objects.filter(
+                    vaga=vaga.id, candidato_online=True)
+                if len(online_) > 0:
+                    online += len(online_)
 
-    for vaga in vagas_desativadas:
-        candidatos_desativados = Candidato.objects.filter(vaga=vaga.id)
-        if len(candidatos_desativados) > 0:
-            vagas_desativadas_com_candidatos.append(vaga)
-            balcao_desativada = Candidato.objects.filter(
-                vaga=vaga.id, candidato_online=False)
-            if len(balcao_desativada) > 0:
-                balcao2 += len(balcao_desativada)
-            online_desativada = Candidato.objects.filter(
-                vaga=vaga.id, candidato_online=True)
-            if len(online_desativada) > 0:
-                online2 += len(online_desativada)
-
-    context = {
-        'vagas': vagas_com_candidatos,
-        'balcao': balcao,
-        'online': online,
-        'balcao2': balcao2,
-        'online2': online2,
-        'buscar': buscar
-    }
-
+        for vaga in vagas_desativadas:
+            candidatos_desativados = Candidato.objects.filter(vaga=vaga.id)
+            if len(candidatos_desativados) > 0:
+                vagas_desativadas_com_candidatos.append(vaga)
+                balcao_desativada = Candidato.objects.filter(
+                    vaga=vaga.id, candidato_online=False)
+                if len(balcao_desativada) > 0:
+                    balcao2 += len(balcao_desativada)
+                online_desativada = Candidato.objects.filter(
+                    vaga=vaga.id, candidato_online=True)
+                if len(online_desativada) > 0:
+                    online2 += len(online_desativada)
+    if buscar:
+        context = {
+            'vagas': vagas_com_candidatos,
+            'balcao': balcao,
+            'online': online,
+            'balcao2': balcao2,
+            'online2': online2,
+            'buscar': buscar
+        }
+    else:
+        context={}
     return render(request, 'vagas/vagas_com_candidatos.html', context)
 
 
