@@ -597,7 +597,7 @@ def vagascomcandidatos(request):
     vagas_desativadas = Vaga_Emprego.objects.filter(ativo=False)
     
     if request.method=='POST':
-        vagas_filtradas = Vaga_Emprego.objects.filter(ativo=True)
+        vagas = Vaga_Emprego.objects.filter(ativo=True, dt_inclusao__range=[request.POST['data-inicial'], request.POST['data-final']])
         buscar=True
 
     vagas_com_candidatos = []
