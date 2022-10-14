@@ -1,23 +1,18 @@
 {% extends 'base_site.html' %} {% load static %} 
 {% block title %}Painel administrativo{% endblock %} 
 {% block css %} {{block.super}} {% endblock%}
+
+{% block head_js %}
+<script src="{% static 'assets/js/modal.js' %}"></script>
+{% endblock %}
+
 {% block main_conteudo %}
+
+
 <div class="col">
 
-    <div class="modal hidden" id='modal' tabindex="-1" role="dialog">
-        <div class="message">
-
-        </div>
-
-        <div>
-            <button class="btn btn-danger" id='decline'>DECLINE</button>
-            <button class="btn btn-primary" id='agree'>AGREE</button>
-
-        </div>
-      </div>
-
-  <form id="excluir_candidato">
-    <div>
+  <form id="excluir_candidato" >
+    <div >
     <label for="cpf">CPF:</label>
     <input
       id="cpf"
@@ -65,18 +60,23 @@
               },
               body: JSON.stringify({ cpf, step: 0 }),
             });
+
+            if (!response.ok){
+                console.log(response)
+                Message.push("CPF Inválido", '1')
+                return
+            }
+
             const data = await response.json();
 
-            console.log(data);
-            const modal = document.querySelector('#modal')
-            const agree = document.querySelector('#agree')
-            const decline = document.querySelector('#decline')
+            if(data.qnt_excluidos == 0){
+                Message.push(`Nenhum registro encontrado com o CPF especificado!`, 1)
+                return
+            }
 
-            modal.classlist.remove('hidden')
+            const promessinha = await AcceptDeclineModal.dispatch(`Você realmente deseja excluir ${data.qnt_excluidos == 1 ? "o" : "os"} <b>${data.qnt_excluidos}</b> ${data.qnt_excluidos == 1 ? "registro" : "registros"} com o CPF ${document.getElementById("cpf").value}?`)
 
-            modal.querySelector('.message').innerText = `Você realmente deseja excluir os ${data.qnt_excluidos} registros com o CPF ${document.getElementById("cpf").value}?`
-
-            agree.addEventListener('click', async ()=>{
+            if(promessinha){
                 const response = await fetch("/excluir_cpf", {
                     method: "POST",
                     headers: {
@@ -85,21 +85,12 @@
                     },
                     body: JSON.stringify(data),
                   });
-                  const data = await response.json();
-                  console.log(data)
-            })
-
-            decline.addEventListener('click', ()=>{
-                return
-            })
-            
-          });
+                  const finalData = await response.json();
+                  Message.push(`Registros excluídos com sucesso!`, 1)
+            } else{
+                console.log('ação cancelada')
+            }
+        })
       </script>
-
-      <style>
-        .hidden{
-            display: hidden;
-        }
-      </style>
 
 {% endblock %}
