@@ -2,6 +2,7 @@
 import json
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 # AUTH
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -663,11 +664,17 @@ def candidatosporfuncionario(request):
 @login_required
 def funcionario_encaminhados(request, id):
     candidatos = Candidato.objects.filter(funcionario_encaminhamento=id)
+    paginator = Paginator(candidatos, 25)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    page_obj.page_range = paginator.page_range
+    
     context = {
-        'candidatos': candidatos,
+        'candidatos': page_obj,
         'fulano': User.objects.get(id=id).first_name,
         'id': id
     }
+
     return render(request, 'vagas/candidatos_por_funcionarios_detalhe.html', context)
 
 
