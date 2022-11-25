@@ -52,5 +52,26 @@
             </tbody>
         </table>
     </div>
+
+    <nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center">
+
+		{% if candidatos.has_previous %}
+		{% comment %} <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li> {% endcomment %}
+			<li class="page-item"><a class="page-link" href="?page={{ candidatos.previous_page_number }}">&laquo; anterior</a></li>
+		{% endif %}
+
+		{% for x in candidatos.page_range %}
+		  <li class="page-item {% if x == candidatos.number  %} disabled {% endif %}"><a class="page-link" href="?page={{ x }}">{{x}}</a></li>
+		{% endfor %}
+
+			{% if candidatos.has_next %}
+			<li class="page-item"><a class="page-link" href="?page={{ candidatos.next_page_number }}">próximo &raquo;</a></li>
+				{% comment %} <li class="page-item"><a class="page-link" href="?page={{ candidatos.paginator.num_pages }}">last &raquo;</a></li> {% endcomment %}
+		{% endif %}
+		  </li>
+		</ul>
+	  </nav>
+      
   </div>
 {% endblock %}

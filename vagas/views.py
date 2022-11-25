@@ -549,10 +549,17 @@ def candidatarse(request, id):
 @login_required
 def candidatosporvaga(request, id):
     candidatos = Candidato.objects.filter(vaga=id).order_by('dt_inclusao')
+
+    paginator = Paginator(candidatos, 30)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    page_obj.page_range = paginator.page_range
+
     context = {
-        'candidatos': candidatos,
+        'candidatos': page_obj,
         'id': id
     }
+
     return render(request, 'vagas/listar_candidatos.html', context)
 
 
