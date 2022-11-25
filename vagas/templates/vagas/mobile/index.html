@@ -29,12 +29,14 @@
                 <tbody>
                 {% for vaga in vagas %}        
                 <tr>
+                    <a href="{% url 'vagas:visualizar_vaga' vaga.id %}">
                     <th scope="row">{{forloop.counter}}</th>
                     <td>{{vaga.vaga}}</td>            
                     <!-- <td>{{vaga.empresa}}</td>
                     <td>{{vaga.quantidadeVagas}}</td> -->
                     <td>{{vaga.experiencia}}</td>      
-                    <td>{{vaga.escolaridade}}</td>      
+                    <td>{{vaga.escolaridade}}</td>    
+                    <a>
                 </tr>
                 {% endfor %}
             </tbody>
