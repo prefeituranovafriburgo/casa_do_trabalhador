@@ -475,17 +475,17 @@ def encaminhamento(request, id, user_id=0):
     if str(int(user_id)) != str(int(0)):
         user = User.objects.get(id=user_id)
     else:
-        user=False
+        user = False
 
     from datetime import date
-    today = date.today()    
-    context={
-                'vaga': candidato.vaga,
-                'date': today,
-                'candidato': candidato,
-                'sistema': True,   
-                'user': user             
-            }
+    today = date.today()
+    context = {
+        'vaga': candidato.vaga,
+        'date': today,
+        'candidato': candidato,
+        'sistema': True,
+        'user': user
+    }
     if request.user.is_authenticated:
         return render(request, 'vagas/encaminhar.html', context)
     return render(request, 'vagas/encaminhamento_online.html', context)
@@ -523,7 +523,7 @@ def candidatarse(request, id):
 
             try:
                 cpf = validate_CPF(request.POST['cpf'])
-                candidato = Candidato.objects.get(cpf=cpf, vaga_id = id)
+                candidato = Candidato.objects.get(cpf=cpf, vaga_id=id)
                 form = Form_Candidato(request.POST, instance=candidato)
 
             except Exception as e:
@@ -549,10 +549,17 @@ def candidatarse(request, id):
 @login_required
 def candidatosporvaga(request, id):
     candidatos = Candidato.objects.filter(vaga=id).order_by('dt_inclusao')
+
+    paginator = Paginator(candidatos, 30)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    page_obj.page_range = paginator.page_range
+
     context = {
-        'candidatos': candidatos,
+        'candidatos': page_obj,
         'id': id
     }
+
     return render(request, 'vagas/listar_candidatos.html', context)
 
 
@@ -593,18 +600,20 @@ def vagascomcandidatos(request):
     online = 0
     balcao2 = 0
     online2 = 0
-    buscar=False
+    buscar = False
+    context = {}
 
-    vagas = Vaga_Emprego.objects.filter(ativo=True)
-    vagas_desativadas = Vaga_Emprego.objects.filter(ativo=False)
-    
-    if request.method=='POST':
-        if request.POST['data-inicial']!='' and request.POST['data-final']:
-            vagas  = Vaga_Emprego.objects.filter(ativo=True, dt_inclusao__range=[request.POST['data-inicial'], request.POST['data-final']])
-        buscar=True
+    if request.method == 'POST':
+        vagas = Vaga_Emprego.objects.filter(ativo=True)
+        vagas_desativadas = Vaga_Emprego.objects.filter(ativo=False)
+        if request.POST['data-inicial'] != '' and request.POST['data-final']:
+            vagas = vagas.filter(dt_inclusao__range=[
+                                                request.POST['data-inicial'], request.POST['data-final']])
+        buscar = True
 
         vagas_com_candidatos = []
         vagas_desativadas_com_candidatos = []
+
         for vaga in vagas:
             candidatos = Candidato.objects.filter(vaga=vaga.id)
             if len(candidatos) > 0:
@@ -630,17 +639,21 @@ def vagascomcandidatos(request):
                     vaga=vaga.id, candidato_online=True)
                 if len(online_desativada) > 0:
                     online2 += len(online_desativada)
-    if buscar:
+
+        paginator = Paginator(vagas_com_candidatos, 25)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        page_obj.page_range = paginator.page_range
+
         context = {
-            'vagas': vagas_com_candidatos,
+            'vagas': page_obj,
             'balcao': balcao,
             'online': online,
             'balcao2': balcao2,
             'online2': online2,
             'buscar': buscar
         }
-    else:
-        context={}
+
     return render(request, 'vagas/vagas_com_candidatos.html', context)
 
 
@@ -668,7 +681,7 @@ def funcionario_encaminhados(request, id):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     page_obj.page_range = paginator.page_range
-    
+
     context = {
         'candidatos': page_obj,
         'fulano': User.objects.get(id=id).first_name,
@@ -686,18 +699,21 @@ def sair(request):
     else:
         return redirect('/accounts/login')
 
+
 @login_required
 def painel_administrativo(request):
 
     return render(request, 'vagas/painel_administrativo.html')
-    
+
+
 @login_required
 def excluir_cpf(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode("utf-8"))
         if data['step'] == 0:
             cpf = validate_CPF(data['cpf'])
-            potencialmente_excluidos = Candidato.objects.filter(cpf=cpf).count()
+            potencialmente_excluidos = Candidato.objects.filter(
+                cpf=cpf).count()
 
             return JsonResponse({'qnt_excluidos': potencialmente_excluidos, 'cpf': cpf, 'step': 1})
 
@@ -705,7 +721,7 @@ def excluir_cpf(request):
             cpf = validate_CPF(data['cpf'])
             excluidos = Candidato.objects.filter(cpf=cpf).delete()
             return JsonResponse({'qnt_excluidos': excluidos[0], 'cpf': cpf, 'step': 1})
-            
+
 
 def euOdeioOLuis(request):
     candidatos = Candidato.objects.all()
@@ -715,9 +731,7 @@ def euOdeioOLuis(request):
             candidato.cpf = validate_CPF(candidato.cpf)
         except Exception as e:
             candidato.cpf = 0
-        
+
         candidato.save()
 
     return redirect('vagas/index.html')
-
-
