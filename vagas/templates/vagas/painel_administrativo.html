@@ -1,5 +1,5 @@
 {% extends 'base_site.html' %} {% load static %} 
-{% block title %}Painel administrativo{% endblock %} 
+{% block title %}Painel Administrativo{% endblock %} 
 {% block css %} {{block.super}} {% endblock%}
 
 {% block head_js %}
@@ -8,89 +8,27 @@
 
 {% block main_conteudo %}
 
-
-<div class="col">
-
-  <form id="excluir_candidato" >
-    <div >
-    <label for="cpf">CPF:</label>
-    <input
-      id="cpf"
-      type="text"
-      class="form-control mb-2"
-      onkeydown="mascara(this, icpf)"
-      required
-    />
-    </div>
-    <button class="btn btn-danger">Excluir CPF</button>
-    <form />
+<div class="row">
+  <div class="col">
+    <h1 class="text-start mb-0 pb-0">
+      Painel Administrativo
+    </h1>
+  </div>
 </div>
-
-      <script>
-        function mascara(o, f) {
-          v_obj = o;
-          v_fun = f;
-          setTimeout("execmascara()", 1);
-        }
-        function execmascara() {
-          v_obj.value = v_fun(v_obj.value);
-        }
-        function icpf(v) {
-          v = v.replace(/\D/g, ""); //Remove tudo o que nao e digito
-          v = v.replace(/(\d{3})(\d)/, "$1.$2"); //Coloca um ponto entre o terceiro e o quarto digitos
-          v = v.replace(/(\d{3})(\d)/, "$1.$2"); //Coloca um ponto entre o terceiro e o quarto digitos
-          //de novo (para o segundo bloco de numeros)
-          v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2"); //Coloca um hifen entre o terceiro e o quarto digitos
-          return v;
-        }
-
-        document
-          .getElementById("excluir_candidato")
-          .addEventListener("submit", async (e) => {
-            e.preventDefault();
-            cpf = document.getElementById("cpf").value;
-            cpf.replace("-", "");
-            cpf.replace(".", "");
-
-            const response = await fetch("/excluir_cpf", {
-              method: "POST",
-              headers: {
-                "X-CSRFToken": "{{ csrf_token }}",
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ cpf, step: 0 }),
-            });
-
-            if (!response.ok){
-                console.log(response)
-                Message.push("CPF Inválido", '1')
-                return
-            }
-
-            const data = await response.json();
-
-            if(data.qnt_excluidos == 0){
-                Message.push(`Nenhum registro encontrado com o CPF especificado!`, 1)
-                return
-            }
-
-            const promessinha = await AcceptDeclineModal.dispatch(`Você realmente deseja excluir ${data.qnt_excluidos == 1 ? "o" : "os"} <b>${data.qnt_excluidos}</b> ${data.qnt_excluidos == 1 ? "registro" : "registros"} com o CPF ${document.getElementById("cpf").value}?`)
-
-            if(promessinha){
-                const response = await fetch("/excluir_cpf", {
-                    method: "POST",
-                    headers: {
-                      "X-CSRFToken": "{{ csrf_token }}",
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(data),
-                  });
-                  const finalData = await response.json();
-                  Message.push(`Registros excluídos com sucesso!`, 1)
-            } else{
-                console.log('ação cancelada')
-            }
-        })
-      </script>
+<div id="painelMenu" class="col">
+  <a class="btn btn-primary" href="{% url 'vagas:vagas_com_candidatos' %}"><i class="fas fa-th-list me-2"></i><span class="mobile_hidden">Vagas com Candidatos</span></a>  
+  <a class="btn btn-primary" href="{% url 'vagas:pesquisar_candidatos' %}"><i class="fas fa-search me-2"></i><span class="mobile_hidden">Procurar candidato</span></a>  <br>
+  <a class="btn btn-primary" href="{% url 'vagas:painel_administrativo_excluir_cpf' %}"><i class="fas fa-trash me-2"></i><span class="mobile_hidden">Excluir CPF</span></a>  
+  <a class="btn btn-primary" href="#"><i class="fas fa-chart-pie me-2"></i><span class="mobile_hidden">Indicadores</span></a>    
+</div>
+<style>
+  #painelMenu .btn{
+    width: 300px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-bottom: 5px;    
+  }
+  
+</style>
 
 {% endblock %}

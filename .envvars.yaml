@@ -1,7 +1,7 @@
 db_host: localhost
-db_name: casa_do_trabalhador
+db_name: casadotrabalhador
 db_user: root
-db_pw: '302933'
+db_pw: '26Yzkmfx*'
 django_secret_key: rooog4mcx6k5=f=+y4
 debug_mode: True
 email_sistema: senhas_turismo@sme.novafriburgo.rj.gov.br

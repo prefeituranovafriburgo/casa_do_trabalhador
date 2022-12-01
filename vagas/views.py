@@ -595,7 +595,7 @@ def visualizar_candidato(request, id):
 
 
 @login_required
-def vagascomcandidatos(request):
+def vagascomcandidatos(request):    
     balcao = 0
     online = 0
     balcao2 = 0
@@ -606,9 +606,9 @@ def vagascomcandidatos(request):
     if request.method == 'POST':
         vagas = Vaga_Emprego.objects.filter(ativo=True)
         vagas_desativadas = Vaga_Emprego.objects.filter(ativo=False)
-        if request.POST['data-inicial'] != '' and request.POST['data-final']:
-            vagas = vagas.filter(dt_inclusao__range=[
-                                                request.POST['data-inicial'], request.POST['data-final']])
+    #     if request.POST['data-inicial'] != '' and request.POST['data-final']:
+    #         vagas = vagas.filter(dt_inclusao__range=[
+    #                                             request.POST['data-inicial'], request.POST['data-final']])
         buscar = True
 
         vagas_com_candidatos = []
@@ -644,16 +644,35 @@ def vagascomcandidatos(request):
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         page_obj.page_range = paginator.page_range
+        
+        mes=request.POST['mes']
+        ano=request.POST['ano']
+        print(ano, mes)
 
+        queryOnline=f'''
+        SELECT DISTINCT id, cpf
+        FROM vagas_candidato 
+        WHERE MONTH(dt_inclusao)='{mes}' 
+        AND YEAR(dt_inclusao)='{ano}' AND candidato_online=1;'''
+
+        queryBalcao=f'''
+        SELECT DISTINCT id, cpf
+        FROM vagas_candidato 
+        WHERE MONTH(dt_inclusao)='{mes}' 
+        AND YEAR(dt_inclusao)='{ano}' AND candidato_online=0;'''             
+        
         context = {
             'vagas': page_obj,
-            'balcao': balcao,
-            'online': online,
-            'balcao2': balcao2,
-            'online2': online2,
-            'buscar': buscar
+            # 'balcao': balcao,
+            'balcao':len(list(Vaga_Emprego.objects.raw(queryBalcao))),
+            'online': len(list(Vaga_Emprego.objects.raw(queryOnline))),
+            # 'balcao2': balcao2,
+            # 'online2': online2,
+            'buscar': buscar,
+            'ano': ano,
+            'mes': mes
         }
-
+   
     return render(request, 'vagas/vagas_com_candidatos.html', context)
 
 
@@ -704,6 +723,11 @@ def sair(request):
 def painel_administrativo(request):
 
     return render(request, 'vagas/painel_administrativo.html')
+
+
+@login_required
+def painel_administrativo_excluir_cpf(request):
+    return render(request, 'vagas/painel_administrativo_excluir_cpf.html')
 
 
 @login_required
