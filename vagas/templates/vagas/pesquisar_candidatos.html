@@ -18,20 +18,23 @@
 {% endif %}                  
 <div class="row">    
     <div class="col d-flex">
-        <h2 class="text-start text-uppercase">PESQUISAR CANDIDATOS</h2>   
+        <h2 class="text-start text-uppercase">PESQUISAR CANDIDATOS POR CPF OU NOME</h2>   
 		<div class="ms-auto">
 			<a href="{% url 'vagas:vagas_com_candidatos' %}" class="btn btn-btfl me-2"><i class="fas fa-undo-alt me-2"></i>Voltar</a>			
 		</div>
     </div>
   </div>
  
-<form id="form_cadastro_vaga" {% if tipo_cadastro != '' %}method="post"{% endif %} class="form w-100 text-start">
     <div class="row px-4 text-center my-3">
 		<div class="col py-4 me-2 d-flex flex-column">
             <div class="input-group mb-3" style="max-width: 400px;">
+        <form id='search_form' class='d-flex'>
+
 				<span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
-				<input type="text" onkeyup="searchCandidatos(this)" class="form-control" placeholder="Pesquisar candidato" aria-label="pesquisar" aria-describedby="basic-addon1">
-			  </div>
+				<input type="text" oninput="potencial_mask(this)" id='search_input' class="form-control" placeholder="Pesquisar candidato" aria-label="pesquisar" aria-describedby="basic-addon1">
+                <button id='pesquisar' class="mx-2 btn btn-primary">Pesquisar</button>
+        </form>
+            </div>
 			  
         </div>        
     </div>
@@ -67,13 +70,80 @@
     
 
 <script>
+
+    document.querySelector('#search_form').addEventListener('submit', (e)=>{
+        e.preventDefault()
+        pesquisar(document.querySelector('#search_input'))
+    })
+
+    function potencial_mask(element){
+        if(/\d/.test(element.value)){
+            execmascara(element, icpf)
+        } else {
+            execmascara(element, inome)
+        }
+    }
 	
-	function searchCandidatos(e){        
-        if (3<=String(e.value).length){
-            // console.log('buscando '+e.value)
-            getCandidatos(e.value)
-        }        
-    }    
+    function execmascara(element, fn){
+        element.value=fn(element.value)
+    }
+    function icpf(v){
+        v = v.substring(0, 14)
+        v=v.replace(/\D/g,"")                    //Remove tudo o que nao e digito
+        v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto digitos
+        v=v.replace(/(\d{3})(\d)/,"$1.$2")       //Coloca um ponto entre o terceiro e o quarto digitos
+                                                            //de novo (para o segundo bloco de numeros)
+        v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2") //Coloca um hifen entre o terceiro e o quarto digitos
+        return v
+    }
+    function inome(v){
+        v=v.replace(/[0-9]/g,"")
+        return v
+    }
+
+    function pesquisar(element){
+
+        if(/\d/.test(element.value)){
+            console.log(element.value)
+            get_canditado_by_cpf(element.value.replaceAll('.','').replace('-', ''))
+
+        } else {
+            get_candidato_by_nome(element.value)
+        }
+
+    }
+
+    async function get_canditado_by_cpf(value){
+        console.log(value)
+        const response = await fetch('/get_candidatos/',
+        {
+            method: 'POST',
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({cpf: value})
+        })
+
+        const data = await response.text()
+        document.querySelector("#search_candidato_result").innerHTML = data
+        
+    }
+
+    async function get_candidato_by_nome(value){
+        const response = await fetch('/get_candidatos/',
+        {
+            method: 'POST',
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({nome: value})
+        })
+
+        const data = await response.text()
+        document.querySelector("#search_candidato_result").innerHTML = data
+    }
 
    function getCandidatos(value){
         var url = '/get_candidatos/';  

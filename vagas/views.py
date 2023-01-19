@@ -571,16 +571,37 @@ def pesquisar_candidatos(request):
 
 @login_required
 def get_candidatos(request):
-    try:
-        # empresas=Empresa.objects.filter(nome__startswith=request.GET.get('nome')).order_by('nome')
-        candidatos = Candidato.objects.filter(
-            nome__icontains=request.GET.get('candidatos')).order_by('nome')
-    except Exception as E:
-        candidatos = None
+    if request.method == 'POST':
+        data = json.loads(request.body.decode("utf-8"))
+        cpf = ''
+        nome = ''
+        try:
+            cpf = data['cpf']
+        except:
+            nome = data['nome']
+        
+        if cpf:
+            try:
+                # empresas=Empresa.objects.filter(nome__startswith=request.GET.get('nome')).order_by('nome')
+                candidatos = Candidato.objects.filter(cpf=cpf)
+            except Exception as E:
+                candidatos = None
+        elif nome:
+            try:
+                # empresas=Empresa.objects.filter(nome__startswith=request.GET.get('nome')).order_by('nome')
+                candidatos = Candidato.objects.filter(
+                    nome__icontains=nome).order_by('nome')
+            except Exception as E:
+                candidatos = None
 
-    context = {
-        'candidatos': candidatos,
-    }
+        else:
+            print('dados informados não são os esperados')
+            candidatos = None
+
+        context = {
+            'candidatos': candidatos,
+        }
+
     return render(request, 'vagas/pesquisar_candidatos_result.html', context)
 
 
