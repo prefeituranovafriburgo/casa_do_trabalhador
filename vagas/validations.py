@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 error_messages = {
     'invalid_CNPJ': _("CNPJ inválido."),  
+    'invalid_CPF': _("CPF inválido."),  
     'max_digits_cpf': _("O CPF deve conter 11 dígitos"),  
     'max_digits': _("Este campo requer 14 dígitos."),
 

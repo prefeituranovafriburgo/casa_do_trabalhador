@@ -221,6 +221,11 @@ body{
     z-index: 9;
 }
 
+.errorlist{
+    color: red;
+    margin-top: 8px;
+}
+
 /* .modaladm::before{
     content: "";
     width: 100vw;
