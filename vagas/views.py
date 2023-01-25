@@ -783,7 +783,6 @@ def indicadores(request):
 
     top_x = 11
 
-    candidatos_faixa = Candidato.objects.filter(dt_inclusao__gte = start_date, dt_inclusao__lt = end_date)
     vagas_emprego_faixa = Vaga_Emprego.objects.filter(dt_inclusao__gte = start_date, dt_inclusao__lt = end_date)
 
     # -------------------- #
@@ -808,8 +807,9 @@ def indicadores(request):
 
     escolaridades = Escolaridade.objects.all()
     escolaridades_quantidades = []
+
     for escolaridade in escolaridades:
-        total = candidatos_faixa.filter(escolaridade=escolaridade).count()
+        total = Candidato.objects.filter(dt_inclusao__gte = start_date, dt_inclusao__lt = end_date, escolaridade=escolaridade).values('email').distinct().count()
         if total == None:
             total = 0
 
@@ -822,7 +822,8 @@ def indicadores(request):
 
     while start_date <= end_date:
         next_month = start_date + delta
-        total = candidatos_faixa.filter(dt_inclusao__gte = start_date, dt_inclusao__lt = next_month).count()
+        candidatos = Candidato.objects.filter(dt_inclusao__gte = start_date, dt_inclusao__lt = next_month).values('email').distinct()
+        total = candidatos.count()
         if total == None:
             total = 0
 
