@@ -5,6 +5,9 @@ app_name='vagas'
 urlpatterns = [
     path('', views.home, name='home'),  
 
+    path('indicadores', views.indicadores, name='indicadores'),  
+
+
     path('cadastrar-escolaridade', views.cadastrar_escolaridade, name='cadastrar_escolaridade'),
     path('cadastrar-vaga-ofertada/', views.cadastrar_vagaOfertada, name='cadastrar'),    
     path('cadastrar-empresa/', views.cadastrar_empresa, name='cadastrar_empresa'),    

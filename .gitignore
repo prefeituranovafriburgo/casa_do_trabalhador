@@ -1,4 +1,4 @@
-.envvars.yaml
+*.sqlite3
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -25,6 +25,7 @@ pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
+.envvars.yaml
 *.egg
 MANIFEST
 
@@ -120,7 +121,6 @@ venv.bak/
 
 # mkdocs documentation
 /site
-design/
 
 # mypy
 .mypy_cache/
@@ -130,5 +130,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Database
 migrations/
+balcao_de_emprego/static/
+balcao_de_emprego/media/
