@@ -6,16 +6,22 @@ from django.core.paginator import Paginator
 # AUTH
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.utils.timezone import make_aware
 # MODELS E FORMS
 from .forms import *
 from django.contrib.auth.models import User
+from django.db.models import Q
+from datetime import date, timedelta
+from dateutil.relativedelta import relativedelta
 # OUTROS
 from django.http import FileResponse, Http404, JsonResponse
 import requests
 import pdfkit
 from datetime import date, datetime
 # VIEWS
-
+from django.db.models import Sum
+from django.utils import timezone
+from django.conf import settings
 
 def home(request):
     vagas_destaque = Vaga_Emprego.objects.filter(destaque=True)
@@ -766,6 +772,86 @@ def excluir_cpf(request):
             cpf = validate_CPF(data['cpf'])
             excluidos = Candidato.objects.filter(cpf=cpf).delete()
             return JsonResponse({'qnt_excluidos': excluidos[0], 'cpf': cpf, 'step': 1})
+
+
+@login_required
+def indicadores(request):
+    timezone.activate(settings.TIME_ZONE)
+    start_date = date(2022, 9, 1)
+    end_date = date.today()
+
+    top_x = 11
+
+    candidatos_faixa = Candidato.objects.filter(dt_inclusao__gte = start_date, dt_inclusao__lt = end_date)
+    vagas_emprego_faixa = Vaga_Emprego.objects.filter(dt_inclusao__gte = start_date, dt_inclusao__lt = end_date)
+
+    # -------------------- #
+
+    cargos = Cargo.objects.all()
+    cargos_ofertados = []
+
+    for cargo in cargos:
+        total = vagas_emprego_faixa.filter(cargo=cargo).aggregate(Sum('quantidadeVagas'))['quantidadeVagas__sum']
+        if total == None:
+            total = 0
+
+        cargos_ofertados.append({'nome': cargo.nome, 'total': total})
+    
+    cargos_ofertados = sorted(cargos_ofertados, key=lambda x: x['total'], reverse=True)
+
+
+
+    #top.append({'nome': 'Outros', 'total': sum(x['total'] for x in cargos_ofertados[top_x:])})
+    
+    # ------------------------- #
+
+    escolaridades = Escolaridade.objects.all()
+    escolaridades_quantidades = []
+    for escolaridade in escolaridades:
+        total = candidatos_faixa.filter(escolaridade=escolaridade).count()
+        if total == None:
+            total = 0
+
+        escolaridades_quantidades.append({'nome': escolaridade.nome, 'total': total})
+
+    # --------------------------- #
+
+    delta = relativedelta(months=1)
+    candidatos_por_mes = []
+
+    while start_date <= end_date:
+        next_month = start_date + delta
+        total = candidatos_faixa.filter(dt_inclusao__gte = start_date, dt_inclusao__lt = next_month).count()
+        if total == None:
+            total = 0
+
+        candidatos_por_mes.append({'nome': start_date, 'total': total})
+        start_date += delta
+
+    # ----------------------------- #
+
+    empresas = Empresa.objects.all()
+    vagas_por_empresa = []
+
+    for empresa in empresas:
+        total = vagas_emprego_faixa.filter(empresa=empresa).aggregate(Sum('quantidadeVagas'))['quantidadeVagas__sum']
+
+        if total == None:
+            total = 0
+
+        vagas_por_empresa.append({'nome': empresa.nome, 'total': total})
+
+    vagas_por_empresa = sorted(vagas_por_empresa, key=lambda x: x['total'], reverse=True)
+
+    context = {
+        'top_x': top_x,
+        'top_cargos_ofertados': cargos_ofertados[:top_x],
+        'escolaridades': escolaridades_quantidades,
+        'candidatos_por_mes': candidatos_por_mes,
+        'vagas_por_empresa': vagas_por_empresa[:top_x]
+    }
+
+    return render(request, 'vagas/indicadores.html', context)
 
 
 def euOdeioOLuis(request):
