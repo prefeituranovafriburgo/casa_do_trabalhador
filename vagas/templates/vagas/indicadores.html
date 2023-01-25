@@ -67,7 +67,7 @@
         var data = google.visualization.arrayToDataTable([
         ['Cargo', 'Quantidade'],
           {% for candidato_por_mes in candidatos_por_mes %}
-                  ["{{ candidato_por_mes.nome}}",     {{ candidato_por_mes.total }}],
+                  ["{{ candidato_por_mes.nome|date:"m Y"}}",     {{ candidato_por_mes.total }}],
           {% endfor %}
         ]);
 
@@ -88,7 +88,7 @@
         ]);
 
         var options = {
-            title: 'Vagas por empresa',
+            title: '{{top_x}} empresas com maior número de oferta de vagas',
             pieHole: 0.4,
         };
 
