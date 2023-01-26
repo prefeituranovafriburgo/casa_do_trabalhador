@@ -20,7 +20,7 @@ import requests
 import pdfkit
 from datetime import date, datetime
 # VIEWS
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from django.utils import timezone
 from django.conf import settings
 
@@ -554,8 +554,17 @@ def candidatarse(request, id):
 
 
 @login_required
-def candidatosporvaga(request, id):
+def candidatosporvaga(request, id, mes, ano):
     candidatos = Candidato.objects.filter(vaga=id).order_by('dt_inclusao')
+
+    if mes and ano:
+        date = datetime(int(ano), int(mes), 1)
+
+        _, last_day = calendar.monthrange(date.year, date.month + 1)
+        end_date = date + timedelta(days=last_day)
+
+        candidatos = candidatos.filter(dt_inclusao__range=(date, end_date))
+
 
     paginator = Paginator(candidatos, 30)
     page_number = request.GET.get('page')
@@ -564,7 +573,9 @@ def candidatosporvaga(request, id):
 
     context = {
         'candidatos': page_obj,
-        'id': id
+        'id': id,
+        'mes': mes,
+        'ano': ano
     }
 
     return render(request, 'vagas/listar_candidatos.html', context)
@@ -624,81 +635,54 @@ def visualizar_candidato(request, id):
 
 @login_required
 def vagascomcandidatos(request):    
-    balcao = 0
-    online = 0
-    balcao2 = 0
-    online2 = 0
     buscar = False
     context = {}
 
     if request.method == 'POST':
-        vagas = Vaga_Emprego.objects.filter(ativo=True)
-        vagas_desativadas = Vaga_Emprego.objects.filter(ativo=False)
-    #     if request.POST['data-inicial'] != '' and request.POST['data-final']:
-    #         vagas = vagas.filter(dt_inclusao__range=[
-    #                                             request.POST['data-inicial'], request.POST['data-final']])
+
+        month=request.POST['mes']
+        year=request.POST['ano']
+
         buscar = True
+        date = datetime(int(year), int(month), 1)
+
+        _, last_day = calendar.monthrange(date.year, date.month + 1)
+        end_date = date + timedelta(days=last_day)
+
+        candidatos_interval = Candidato.objects.filter(dt_inclusao__range=(date, end_date))
 
         vagas_com_candidatos = []
-        vagas_desativadas_com_candidatos = []
 
+        vagas = Vaga_Emprego.objects.all()
         for vaga in vagas:
-            candidatos = Candidato.objects.filter(vaga=vaga.id)
-            if len(candidatos) > 0:
-                vagas_com_candidatos.append(vaga)
-                balcao_ = Candidato.objects.filter(
-                    vaga=vaga.id, candidato_online=False)
-                if len(balcao_) > 0:
-                    balcao += len(balcao_)
-                online_ = Candidato.objects.filter(
-                    vaga=vaga.id, candidato_online=True)
-                if len(online_) > 0:
-                    online += len(online_)
+            candidatos = candidatos_interval.filter(vaga=vaga.id).count()
+            if candidatos > 0:
+                vagas_com_candidatos.append({'informacao': vaga, 'total': candidatos})
 
-        for vaga in vagas_desativadas:
-            candidatos_desativados = Candidato.objects.filter(vaga=vaga.id)
-            if len(candidatos_desativados) > 0:
-                vagas_desativadas_com_candidatos.append(vaga)
-                balcao_desativada = Candidato.objects.filter(
-                    vaga=vaga.id, candidato_online=False)
-                if len(balcao_desativada) > 0:
-                    balcao2 += len(balcao_desativada)
-                online_desativada = Candidato.objects.filter(
-                    vaga=vaga.id, candidato_online=True)
-                if len(online_desativada) > 0:
-                    online2 += len(online_desativada)
-
-        paginator = Paginator(vagas_com_candidatos, 25)
-        page_number = request.GET.get('page')
+        paginator = Paginator(vagas_com_candidatos, 100)
+        page_number = request.GET.get('page', 1)
         page_obj = paginator.get_page(page_number)
-        page_obj.page_range = paginator.page_range
         
-        mes=request.POST['mes']
-        ano=request.POST['ano']
-        print(ano, mes)
 
         queryOnline=f'''
         SELECT DISTINCT id, cpf
         FROM vagas_candidato 
-        WHERE MONTH(dt_inclusao)='{mes}' 
-        AND YEAR(dt_inclusao)='{ano}' AND candidato_online=1;'''
+        WHERE MONTH(dt_inclusao)='{month}' 
+        AND YEAR(dt_inclusao)='{year}' AND candidato_online=1;'''
 
         queryBalcao=f'''
         SELECT DISTINCT id, cpf
         FROM vagas_candidato 
-        WHERE MONTH(dt_inclusao)='{mes}' 
-        AND YEAR(dt_inclusao)='{ano}' AND candidato_online=0;'''             
+        WHERE MONTH(dt_inclusao)='{month}' 
+        AND YEAR(dt_inclusao)='{year}' AND candidato_online=0;'''             
         
         context = {
             'vagas': page_obj,
-            # 'balcao': balcao,
             'balcao':len(list(Vaga_Emprego.objects.raw(queryBalcao))),
             'online': len(list(Vaga_Emprego.objects.raw(queryOnline))),
-            # 'balcao2': balcao2,
-            # 'online2': online2,
             'buscar': buscar,
-            'ano': ano,
-            'mes': mes
+            'ano': year,
+            'mes': month
         }
    
     return render(request, 'vagas/vagas_com_candidatos.html', context)

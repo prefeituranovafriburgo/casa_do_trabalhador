@@ -24,7 +24,13 @@
       {% endif %}
     </div>
   </div>
+
+  {% if form.errors %}
+  <h5 class="errorlist my-3">Corrija os erros apresentados abaixo</h5>
+  {% endif %}
+
 <form id="form_cadastro_vaga" method="POST" class="form w-100 text-start">
+
     <div class="row">
         <div class="col px-5">
            

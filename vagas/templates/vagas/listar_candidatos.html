@@ -16,9 +16,9 @@
 {% endif %}                  
 <div class="row">    
     <div class="col d-flex">
-        <h2 class="text-start text-uppercase">{{ tipo_cadastro }} VAGA OFERTADA</h2>
+        <h2 class="text-start text-uppercase">{{ tipo_cadastro }} VAGA OFERTADA{% if mes and ano%} - {{mes}}/{{ano}}{% endif %}</h2>
       
-            <span class="ms-auto"><a class="btn btn-btfl bg-primary" href="{% url 'vagas:visualizar_vaga' id %}">Voltar</a></span>
+            <span class="ms-auto"><a class="btn btn-btfl bg-primary" href="{% url 'vagas:painel_administrativo' %}">Voltar</a></span>
    
     </div>
   </div>
