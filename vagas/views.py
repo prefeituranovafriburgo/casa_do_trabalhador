@@ -892,7 +892,7 @@ def download_emails(request, month, year):
         _, last_day = calendar.monthrange(date.year, date.month + 1)
         end_date = date + timedelta(days=last_day)
 
-    candidatos = Candidato.objects.filter(dt_inclusao__range=(date, end_date), email__isnull = False).exclude(email__exact='').values('email').distinct()
+    candidatos = Candidato.objects.filter(dt_inclusao__range=(date, end_date), email__isnull = False).exclude(email__exact='').values('nome','email').distinct()
 
     context = {
         'listas': candidatos,
