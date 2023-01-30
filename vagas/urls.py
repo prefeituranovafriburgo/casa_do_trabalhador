@@ -49,6 +49,8 @@ urlpatterns = [
     path('painel_administrativo', views.painel_administrativo, name="painel_administrativo"),
     path('painel_administrativo/excluir_cpf', views.painel_administrativo_excluir_cpf, name="painel_administrativo_excluir_cpf"),
     path('excluir_cpf', views.excluir_cpf, name="excluir_cpf"),
+    path('emails', views.emails, name="emails"),
+    path('emails/csv/<month>/<year>', views.download_emails, name='download_emails')
 
     #path('euOdeioOLuis', views.euOdeioOLuis, name="euOdeioOLuis")
 ]

@@ -560,8 +560,12 @@ def candidatosporvaga(request, id, mes, ano):
     if mes and ano:
         date = datetime(int(ano), int(mes), 1)
 
-        _, last_day = calendar.monthrange(date.year, date.month + 1)
-        end_date = date + timedelta(days=last_day)
+        if date.month == 12:
+            _, last_day = calendar.monthrange(date.year + 1, 1)
+            end_date = datetime(date.year + 1, 1, 1) + timedelta(days=last_day - 1)
+        else:
+            _, last_day = calendar.monthrange(date.year, date.month + 1)
+            end_date = date + timedelta(days=last_day)
 
         candidatos = candidatos.filter(dt_inclusao__range=(date, end_date))
 
@@ -646,8 +650,12 @@ def vagascomcandidatos(request):
         buscar = True
         date = datetime(int(year), int(month), 1)
 
-        _, last_day = calendar.monthrange(date.year, date.month + 1)
-        end_date = date + timedelta(days=last_day)
+        if date.month == 12:
+            _, last_day = calendar.monthrange(date.year + 1, 1)
+            end_date = datetime(date.year + 1, 1, 1) + timedelta(days=last_day - 1)
+        else:
+            _, last_day = calendar.monthrange(date.year, date.month + 1)
+            end_date = date + timedelta(days=last_day)
 
         candidatos_interval = Candidato.objects.filter(dt_inclusao__range=(date, end_date))
 
@@ -839,16 +847,55 @@ def indicadores(request):
 
     return render(request, 'vagas/indicadores.html', context)
 
+@login_required
+def emails(request):
 
-def euOdeioOLuis(request):
-    candidatos = Candidato.objects.all()
+    context = {
+        'buscar': False
+    }
 
-    for candidato in candidatos:
-        try:
-            candidato.cpf = validate_CPF(candidato.cpf)
-        except Exception as e:
-            candidato.cpf = 0
+    if request.method == 'POST':
 
-        candidato.save()
+        month=request.POST['mes']
+        year=request.POST['ano']
 
-    return redirect('vagas/index.html')
+        date = datetime(int(year), int(month), 1)
+
+        if date.month == 12:
+            _, last_day = calendar.monthrange(date.year + 1, 1)
+            end_date = datetime(date.year + 1, 1, 1) + timedelta(days=last_day - 1)
+        else:
+            _, last_day = calendar.monthrange(date.year, date.month + 1)
+            end_date = date + timedelta(days=last_day)
+
+        candidatos = Candidato.objects.filter(dt_inclusao__range=(date, end_date), email__isnull = False).exclude(email__exact='').values('email', 'nome').distinct()
+
+        context = {
+            'data': date,
+            'mes': month,
+            'ano': year,
+            'candidatos': candidatos,
+            'buscar': True,
+        }
+
+    return render(request, 'vagas/emails.html', context) 
+
+@login_required
+def download_emails(request, month, year):
+
+    date = datetime(int(year), int(month), 1)
+
+    if date.month == 12:
+        _, last_day = calendar.monthrange(date.year + 1, 1)
+        end_date = datetime(date.year + 1, 1, 1) + timedelta(days=last_day - 1)
+    else:
+        _, last_day = calendar.monthrange(date.year, date.month + 1)
+        end_date = date + timedelta(days=last_day)
+
+    candidatos = Candidato.objects.filter(dt_inclusao__range=(date, end_date), email__isnull = False).exclude(email__exact='').values('email').distinct()
+
+    context = {
+        'listas': candidatos,
+    }
+
+    return render(request, 'vagas/email_csv.html', context) 
