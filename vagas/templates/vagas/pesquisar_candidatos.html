@@ -33,6 +33,14 @@
 				<span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
 				<input type="text" oninput="potencial_mask(this)" id='search_input' class="form-control" placeholder="Pesquisar candidato" aria-label="pesquisar" aria-describedby="basic-addon1">
                 <button id='pesquisar' class="mx-2 btn btn-primary">Pesquisar</button>
+                <div class="loading">
+                    <svg viewBox="0 0 50 50">
+                      <circle cx="25" cy="25" r="20" fill="none" stroke="#fff" stroke-width="5"></circle>
+                      <path d="M25,5 a20,20 0 1,0 10,0" fill="none" stroke="#fff" stroke-width="5">
+                        <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.8s" repeatCount="indefinite"></animateTransform>
+                      </path>
+                    </svg>
+                  </div>                  
         </form>
             </div>
 			  
