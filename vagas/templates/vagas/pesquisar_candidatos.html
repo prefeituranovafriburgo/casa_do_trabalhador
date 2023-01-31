@@ -33,20 +33,13 @@
 				<span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
 				<input type="text" oninput="potencial_mask(this)" id='search_input' class="form-control" placeholder="Pesquisar candidato" aria-label="pesquisar" aria-describedby="basic-addon1">
                 <button id='pesquisar' class="mx-2 btn btn-primary">Pesquisar</button>
-                <div class="loading">
-                    <svg viewBox="0 0 50 50">
-                      <circle cx="25" cy="25" r="20" fill="none" stroke="#fff" stroke-width="5"></circle>
-                      <path d="M25,5 a20,20 0 1,0 10,0" fill="none" stroke="#fff" stroke-width="5">
-                        <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.8s" repeatCount="indefinite"></animateTransform>
-                      </path>
-                    </svg>
-                  </div>                  
+               
         </form>
             </div>
 			  
         </div>        
     </div>
-    <div class="row">
+    <div class="row d-flex flex-column">
         <div class="col pt-3 px-5">
 			<table class="table table-hover text-center">
 				<thead>
@@ -74,13 +67,17 @@
 				}
 			  </style>
         </div>      
+
+        <div class="loading d-none" id="loading">
+            <img src="/static/images/Spinner-1s-200px.svg"/>
+          </div>   
     </div>    
     
 
 <script>
 
     document.querySelector('#search_form').addEventListener('submit', (e)=>{
-        e.preventDefault()
+        e.preventDefault('#')
         pesquisar(document.querySelector('#search_input'))
     })
 
@@ -111,6 +108,10 @@
 
     function pesquisar(element){
 
+        document.querySelector("#search_candidato_result").innerHTML = ''
+        remove_class(document.querySelector('#loading'), 'd-none')
+        add_class(document.querySelector('#pesquisar'), 'disabled')
+
         if(/\d/.test(element.value)){
             console.log(element.value)
             get_canditado_by_cpf(element.value.replaceAll('.','').replace('-', ''))
@@ -122,7 +123,7 @@
     }
 
     async function get_canditado_by_cpf(value){
-        console.log(value)
+        
         const response = await fetch('/get_candidatos/',
         {
             method: 'POST',
@@ -134,6 +135,9 @@
         })
 
         const data = await response.text()
+        add_class(document.querySelector('#loading'), 'd-none')
+        remove_class(document.querySelector('#pesquisar'), 'disabled')
+
         document.querySelector("#search_candidato_result").innerHTML = data
         
     }
@@ -150,7 +154,17 @@
         })
 
         const data = await response.text()
+        add_class(document.querySelector('#loading'), 'd-none')
+        remove_class(document.querySelector('#pesquisar'), 'disabled')
+
         document.querySelector("#search_candidato_result").innerHTML = data
+    }
+
+    function remove_class(el, class_name){
+        el.classList.remove(class_name)
+    }
+    function add_class(el, class_name){
+        el.classList.add(class_name)
     }
 
    function getCandidatos(value){
