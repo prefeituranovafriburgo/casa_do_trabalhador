@@ -769,18 +769,30 @@ def excluir_cpf(request):
 
 @login_required
 def indicadores(request):
+
     timezone.activate(settings.TIME_ZONE)
     start_date = date(2022, 9, 1)
     end_date = date.today()
 
     top_x = 11
 
+    # -------------------- #
+
     vagas_emprego_faixa = Vaga_Emprego.objects.filter(dt_inclusao__gte = start_date, dt_inclusao__lt = end_date)
+    cargos = Cargo.objects.all()
+    escolaridades = Escolaridade.objects.all()
+    empresas = Empresa.objects.all()
 
     # -------------------- #
 
-    cargos = Cargo.objects.all()
     cargos_ofertados = []
+    escolaridades_quantidades = []
+    vagas_por_empresa = []
+    candidatos_por_mes = []
+    vagas_cadastradas_por_mes = []
+    relacao_online_balcao = []
+
+    # -------------------- #
 
     for cargo in cargos:
         total = vagas_emprego_faixa.filter(cargo=cargo).aggregate(Sum('quantidadeVagas'))['quantidadeVagas__sum']
@@ -791,14 +803,7 @@ def indicadores(request):
     
     cargos_ofertados = sorted(cargos_ofertados, key=lambda x: x['total'], reverse=True)
 
-
-
-    #top.append({'nome': 'Outros', 'total': sum(x['total'] for x in cargos_ofertados[top_x:])})
-    
     # ------------------------- #
-
-    escolaridades = Escolaridade.objects.all()
-    escolaridades_quantidades = []
 
     for escolaridade in escolaridades:
         total = Candidato.objects.filter(dt_inclusao__gte = start_date, dt_inclusao__lt = end_date, escolaridade=escolaridade).values('email').distinct().count()
@@ -808,14 +813,12 @@ def indicadores(request):
         escolaridades_quantidades.append({'nome': escolaridade.nome, 'total': total})
 
     # --------------------------- #
-
+    
     delta = relativedelta(months=1)
-    candidatos_por_mes = []
 
     while start_date <= end_date:
         next_month = start_date + delta
-        candidatos = Candidato.objects.filter(dt_inclusao__gte = start_date, dt_inclusao__lt = next_month).values('email').distinct()
-        total = candidatos.count()
+        total = Candidato.objects.filter(dt_inclusao__gte = start_date, dt_inclusao__lt = next_month).values('email').distinct().count()
         if total == None:
             total = 0
 
@@ -824,8 +827,18 @@ def indicadores(request):
 
     # ----------------------------- #
 
-    empresas = Empresa.objects.all()
-    vagas_por_empresa = []
+    start_date = date(2022, 9, 1)
+
+    while start_date <= end_date:
+        next_month = start_date + delta
+        total = vagas_emprego_faixa.filter(dt_inclusao__gte = start_date, dt_inclusao__lt = next_month).aggregate(Sum('quantidadeVagas'))['quantidadeVagas__sum']
+        if total == None:
+            total = 0
+
+        vagas_cadastradas_por_mes.append({'nome': start_date, 'total': total})
+        start_date += delta
+
+    # ----------------------------- #
 
     for empresa in empresas:
         total = vagas_emprego_faixa.filter(empresa=empresa).aggregate(Sum('quantidadeVagas'))['quantidadeVagas__sum']
@@ -837,12 +850,32 @@ def indicadores(request):
 
     vagas_por_empresa = sorted(vagas_por_empresa, key=lambda x: x['total'], reverse=True)
 
+    # ----------------------------- #
+
+    start_date = date(2022, 9, 1)
+
+    while start_date <= end_date:
+        next_month = start_date + delta
+        candidatos = Candidato.objects.filter(dt_inclusao__gte = start_date, dt_inclusao__lt = next_month).values('email').distinct()
+        
+        candidatos_online = candidatos.filter(candidato_online = True).count()
+        candidatos_balcao = candidatos.filter(candidato_online = False).count()
+
+        if total == None:
+            total = 0
+
+        relacao_online_balcao.append({'nome': start_date, 'online': candidatos_online, 'balcao': candidatos_balcao})
+        start_date += delta
+
+        
     context = {
         'top_x': top_x,
         'top_cargos_ofertados': cargos_ofertados[:top_x],
         'escolaridades': escolaridades_quantidades,
         'candidatos_por_mes': candidatos_por_mes,
-        'vagas_por_empresa': vagas_por_empresa[:top_x]
+        'vagas_por_empresa': vagas_por_empresa[:top_x],
+        'vagas_cadastradas_por_mes': vagas_cadastradas_por_mes,
+        'relacao_online_balcao': relacao_online_balcao
     }
 
     return render(request, 'vagas/indicadores.html', context)
