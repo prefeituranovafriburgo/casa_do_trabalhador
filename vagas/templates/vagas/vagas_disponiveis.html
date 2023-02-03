@@ -160,7 +160,7 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
               <div>
                 <div class="d-flex">
                   <h4 id="{{forloop.counter}}-cargo" class="cargo">
-                    {% if request.user.is_staff %}{{vaga.empresa}} - {{vaga.dt_inclusao | date:"d/m/Y"}} - {% endif%}{{vaga.cargo}}
+                    {% if request.user.is_staff %}{{vaga.empresa}} - {% endif%}{{vaga.cargo}}{% if request.user.is_staff %} - {{vaga.dt_inclusao | date:"d/m/Y"}}{% endif%}
                   </h4>
                 </div>
 
