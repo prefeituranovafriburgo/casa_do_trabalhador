@@ -700,14 +700,36 @@ def vagascomcandidatos(request):
 def candidatosporfuncionario(request):
     usuarios = User.objects.filter(groups__name='atendente')
     lista = []
+    month = ''
+    year = ''
+    
+    if request.method == 'POST':
+
+        month=request.POST['mes']
+        year=request.POST['ano']
+
+        date = datetime(int(year), int(month), 1)
+
+        if date.month == 12:
+            _, last_day = calendar.monthrange(date.year + 1, 1)
+            end_date = datetime(date.year + 1, 1, 1) + timedelta(days=last_day - 1)
+        else:
+            _, last_day = calendar.monthrange(date.year, date.month + 1)
+            end_date = date + timedelta(days=last_day)
+
+        candidatos_interval = Candidato.objects.filter(dt_inclusao__range=(date, end_date))
+
+    else: 
+        candidatos_interval = Candidato.objects.all()
+
     for i in usuarios:
         lista.append([i.first_name, len(
-            Candidato.objects.filter(funcionario_encaminhamento=i)), i.id])
-
-    # deletar abaixo
-
+            candidatos_interval.filter(funcionario_encaminhamento=i)), i.id])
+        
     context = {
-        'lista': lista
+        'lista': lista,
+        'mes': month,
+        'ano': year
     }
 
     return render(request, 'vagas/candidatos_por_funcionarios.html', context)
