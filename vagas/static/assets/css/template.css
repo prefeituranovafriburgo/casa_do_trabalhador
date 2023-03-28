@@ -134,6 +134,9 @@ body{
 #div_menu #myNavBar{
     display: flex;
 }
+#myNavBar{
+    position: relative;
+}
 #div_menu #myNavBar .btn{
     min-width: 160px;
 }
@@ -224,6 +227,12 @@ body{
 .errorlist{
     color: red;
     margin-top: 8px;
+}
+.btn-insta{
+    position: absolute;
+    right: 0;
+    margin-top: 8px;
+    margin-right: 20px;
 }
 
 /* .modaladm::before{

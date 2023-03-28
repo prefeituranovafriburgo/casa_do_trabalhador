@@ -89,7 +89,7 @@ DATABASES = {
 
         'USER': db_user,
         'PASSWORD': db_passwd,
-        'HOST': '127.0.0.1',
+        'HOST': '192.168.1.159',
     }
 }
 
