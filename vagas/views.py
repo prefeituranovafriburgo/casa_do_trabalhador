@@ -954,3 +954,7 @@ def download_emails(request, month, year):
     }
 
     return render(request, 'vagas/email_csv.html', context) 
+
+# Função temporária
+def manutencao(request):
+    return render(request, 'vagas/manutencao.html')
