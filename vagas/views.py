@@ -37,7 +37,9 @@ def home(request):
         'qnt_vagas': cont,
         'qnt_destaque': len(vagas_destaque)
     }
-    return render(request, 'vagas/index.html', context)
+    if request.user.is_staff:
+        return render(request, 'vagas/index.html', context)
+    return render(request, 'vagas/manutencao.html', context)
 
 
 @login_required
@@ -378,7 +380,9 @@ def vagas(request):
         'bairros': Empresa.objects.order_by('bairro').values_list('bairro').distinct(),
         'escolaridades': Escolaridade.objects.all().values()
     }
-    return render(request, 'vagas/vagas_disponiveis.html', context)
+    if request.user.is_staff:
+        return render(request, 'vagas/vagas_disponiveis.html', context)
+    return render(request, 'vagas/manutencao.html', context)
 
 
 def empresas(request):

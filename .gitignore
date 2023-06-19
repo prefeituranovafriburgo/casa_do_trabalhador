@@ -62,6 +62,8 @@ coverage.xml
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+*.db
+*.sqlite3
 
 # Flask stuff:
 instance/
@@ -130,6 +132,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-migrations/
 balcao_de_emprego/static/
 balcao_de_emprego/media/

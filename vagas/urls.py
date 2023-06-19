@@ -3,8 +3,8 @@ from . import views
 app_name='vagas'
 
 urlpatterns = [
-    # path('', views.home, name='home'),  
-    path('', views.manutencao, name = 'manutencao'),
+    path('', views.home, name='home'),  
+    # path('', views.manutencao, name = 'manutencao'),
     path('indicadores', views.indicadores, name='indicadores'),  
 
 

@@ -14,8 +14,10 @@ db_host = env_vars['db_host']
 db_passwd = env_vars['db_pw']
 SECRET_KEY = env_vars['django_secret_key']
 debug_mode = env_vars['debug_mode']
+sqlite_mode = env_vars['sqlite_mode']
 email_user = env_vars['email_sistema']
 email_pass = env_vars['email_pw']
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = debug_mode
@@ -81,18 +83,26 @@ WSGI_APPLICATION = 'balcao_de_emprego.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-
-        'NAME': db_name,
-        'PORT': '',
-
-        'USER': db_user,
-        'PASSWORD': db_passwd,
-        'HOST': db_host,
+if sqlite_mode:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': db_name + ".db",
+        }
     }
-}
+else: 
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+
+            'NAME': db_name,
+            'PORT': '',
+
+            'USER': db_user,
+            'PASSWORD': db_passwd,
+            'HOST': '127.0.0.1',
+        }
+    }
 
 
 
