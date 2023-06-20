@@ -1,0 +1,71 @@
+<div id="navegacao" class="container">
+  <div class="row">
+    <div class="col d-flex flex-wrap">
+      <a href="/" class="">
+        <div class="d-flex flex-column align-items-center">
+          <div
+            id="s-index"
+            class="s-nav rounded-circle ms-5 {% block index %}{% endblock %}"
+          ></div>
+          <p class="text-dark ms-5">Página<br>Inicial</p>
+        </div>
+      </a>
+      <a href="{% url 'vagas:vagas' %}" class="">
+        <div class="d-flex flex-column align-items-center">
+          <div
+            id="s-vagas"
+            class="s-nav rounded-circle"
+          ></div>
+          <p class="text-dark">Vagas<br>Ofertadas</p>
+        </div>
+      </a>
+      <a href="#" class="">
+        <div class="d-flex flex-column align-items-center">
+          <div
+            id="s-status"
+            class="s-nav rounded-circle"
+          ></div>
+          <p class="text-dark">Status de<br>inscrição</p>
+        </div>
+      </a>
+      {% if request.user.is_staff %}
+      <a href="#" class="">
+        <div class="d-flex flex-column align-items-center">
+          <div id="s-admin" class="s-nav rounded-circle destaque"></div>
+          <p class="text-dark">Admin</p>
+        </div>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<style>
+  #s-index {
+    margin-right: 1rem !important;
+    background-color: white !important;
+    background-image: url(/static/images/icones/curso_home.png);
+    background-size: contain;
+  }
+  #s-vagas {
+    margin-right: 1rem !important;
+    background-color: white !important;
+    background-image: url(/static/images/icones/curso_home.png);
+    background-size: contain;
+  }
+  #s-status {
+    margin-right: 1rem !important;
+    background-color: white !important;
+    background-image: url(/static/images/icones/curso_home.png);
+    background-size: contain;
+  }
+  #s-admin {
+    margin-right: 1rem !important;
+    background-color: white !important;
+    background-image: url(/static/images/icones/curso_admin.png);
+    background-size: contain;
+  }
+  p{
+    text-align: center;
+    margin-right: 1rem !important;
+  }
+</style>

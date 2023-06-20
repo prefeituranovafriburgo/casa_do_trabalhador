@@ -1,63 +1,121 @@
-{% extends 'base_site.html' %} {% load static %} 
-{% block title %}Bem vindo{% endblock %} 
-{% block css %} {{block.super}} {% endblock%} 
-{% block main_conteudo %}
-<div class="col">
-  <h1 class="titulo"><span class="mobile_hidden">SEJA </span>BEM-VINDO</h1>
-  <p style="margin-top: 50px; margin-bottom: 15px">
-    Seja muito bem-vindo ao Portal da Casa do Trabalhador
-    <span class="mobile_hidden">de Nova Friburgo</span>!
-  </p>
-  <p style="margin-bottom: 40px">
-    Temos no total
-    <b
-      >{{qnt_cargos}} {% if qnt_cargos > 1 %}cargos{% else %}cargo{% endif %}</b
-    >
-    e
-    <b
-      >{{qnt_vagas}} {% if qnt_vagas > 1 %}vagas disponiveis{% else %}vaga
-      disponivel{% endif %}</b
-    >! Veja nossas vagas agora!
-  </p>
-  <a class="btn btn-btfl" href="/vagas">
-    <h1 class="px-5">
-      VER TODAS AS VAGAS <span class="mobile_hidden">DISPONÍVEIS</span>
-    </h1>
-  </a>
-  <div id="vagas_destaque">
-    {% if qnt_destaque != 0 %}
-    <h3>VAGAS EM DESTAQUE</h3>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">Vagas</th>
-          <th scope="col">Cargo</th>
-          <!-- <th scope="col">Empresa</th>
-                    <th scope="col">Vagas</th> -->
-          <th scope="col">Experiência</th>
-          <th scope="col">Escolaridade</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for vaga in vagas %}
-        <tr class="align-middle">
-          <td>{{vaga.quantidadeVagas}}</td>
-          <td>{{vaga.cargo}}</td>
-          <!-- <td>{{vaga.empresa}}</td>
-                        <td>{{vaga.quantidadeVagas}}</td> -->
-          <td>{{vaga.experiencia}}</td>
-          <td>{{vaga.escolaridade}}</td>
-          <td>
-          <a class="btn btn-success" href="{% url 'vagas:visualizar_vaga' vaga.id %}">
-            Detalhes da vaga
-          </a>
-        </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% endif %}
+{% extends 'template.html' %}
+{% load static %}
+{% block nav %}
+{% include 'nav_cursos.html' %}
+{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+{% endblock %}
+{% block main %}
+<div class="row">
+  <div class="col">
+    <p style="margin-bottom: 40px">
+      Temos no total
+      <b
+        >{{qnt_cargos}} {% if qnt_cargos > 1 %}cargos{% else %}cargo{% endif %}</b
+      >
+      e
+      <b
+        >{{qnt_vagas}} {% if qnt_vagas > 1 %}vagas disponiveis{% else %}vaga
+        disponivel{% endif %}</b
+      >! Veja nossas vagas agora!
+    </p>
   </div>
 </div>
+<div class="container">
+<div class="row mx-auto ps-4 pb-5 pt-1">
+  {% include 'slide.html' %}
+</div>
+<div class="row">
+  <div class="col d-flex pe-4">
+    <h2 class="ms-5 pt-5 pb-4">{{msg}}</h2>
+    <a class="ms-auto mt-auto mb-5 me-5" href="{% url 'vagas:vagas' %}">
+      <small>Ver mais</small>
+    </a>
+  </div>
+</div>
+
+<div class="row mx-auto px-5">
+  <div class="d-flex flex-wrap">
+   {% for vaga in vagas %}
+    <div class="item me-2 ">
+      <div class="c-img" style="position: relative;">
+        <img class="banner-img" src="{% if vaga.banner_img %}{{vaga.banner_img.url}}{% endif %}" >
+        <!-- <span class="badge_item" style="background-color: red; position: absolute; top:0; right: 0; margin: 5px; padding: 0px 4px; border-radius: 6px; font-size: 10pt; color: white;">
+         dsadsa         
+        </span> -->
+      </div>
+      <div class="curso-text mx-2 d-flex flex-column py-1">
+        <h6 class="mt-2">{{vaga.cargo}}</h6>
+        <p class="time">{{vaga.tipo_vaga}}</p>
+        <a href="#" class="btn btn-outline-primary rounded-1 btn-details py-1 mt-auto mb-3" id="esp-2">Ver detalhes</a>
+      </div>
+    </div>
+   {% endfor %}
+  </div>
+</div>
+<div class="row mx-auto px-5">
+  <script>
+    document.getElementById('s-index').classList.add('s-nav-active');
+  </script>
+</div>
+</div>
+
+{% if messages %}              
+<!-- MODAL -->
+<div class="modal fade" id="resposta" aria-hidden="true" aria-labelledby="respostaLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        {% for message in messages %}
+        <div class="modal-header {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          <h5 class="modal-title text-dark text-center" id="exampleModalToggleLabel"></h5>
+          <button type="button" onclick="myModal.hide();" class="btn-close"></button>
+        </div>
+        <div class="modal-body px-5 {% if message.tags %}{{message.tags}}{% endif %}">   
+           
+          <p class="px-4 py-3 text-center">
+            {{ message|escape }}
+          </p>
+          
+          
+        </div>
+        <div class="modal-footer {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>   
+  <script>
+   var myModal = new bootstrap.Modal(document.getElementById('resposta'))
+   myModal.toggle()
+
+   
+
+</script>
+  <style>
+
+
+
+    .error{
+      background-color: rgb(238, 171, 171);
+      color: darkred;
+      font-weight: 600;
+    }
+    .success{
+      background-color: rgb(182, 238, 171);
+      color: rgb(0, 139, 19);
+      font-weight: 600
+    }
+    .warning{
+      background-color: rgb(238, 226, 171);
+      color: rgb(139, 107, 0);
+      font-weight: 600
+    }
+  </style>
+{% endif %} 
+{% endblock %}
+{% block footer %}
+{% include 'instagram_desenvolve.html' %}
 {% endblock %}

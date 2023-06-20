@@ -1,11 +1,17 @@
-{% extends 'base_site.html' %} {% load static %} {% block title %}Vagas
-Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block main_conteudo %}
+{% extends 'template.html' %} 
+{% load static %} 
+{% block title %}Vagas Ofertadas{% endblock %} 
+{% block nav %}
+{% include 'nav_cursos.html' %}
+{% endblock %}
+{% block css %} {{block.super}} {% endblock%}
+{% block main %}
 <script
   src="https://code.jquery.com/jquery-3.6.0.js"
   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
   crossorigin="anonymous"
 ></script>
-<div class="col">
+<div class="col-8 mx-auto">
   <!-- <h2 class="text-start">VAGAS DISPONÍVEIS</h2> -->
   <div class="row">
     <div class="col d-flex">
@@ -111,19 +117,20 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
       </div>
 
       <div class="removeFiltersContainer">
-      <button class="btn btn-primary" id="removeFilters">
+      <button class="btn btn-primary ms-auto" id="removeFilters">
         Remover Filtros
       </button>
     </div>
     </div>
   </div>
-  <div class="row mt-4">
+  <div class="row mt-4 mb-4">
     <div class="col d-flex">
       <input
         type="text"
         id="buscador"
         class="w-100"
         placeholder="Procurar..."
+        style="border-radius: 30px !important; border-color: white;"
       />
     </div>
   </div>
@@ -154,7 +161,7 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
         data-bairro="{{vaga.empresa.bairro}}"
 
         style="background-color: rgba(230, 230, 230, 0.274)">
-        <div id="{{forloop.counter}}-div" class="text-start py-4">
+        <div id="{{forloop.counter}}-div" class="text-start py-4 mb-3" style="background-color: white; padding: 20px 30px; border-radius: 30px;">
           <div class="row">
             <div class="col d-flex">
               <div>
@@ -367,9 +374,9 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
 
         const filtros = document.getElementById("opcoes-filtros");
 
-        if (filtros.classList.contains("filter-hidden")) filtros.classList.remove("filter-hidden");
-        else {
-          
+        if (filtros.classList.contains("filter-hidden")){
+          filtros.classList.remove("filter-hidden");
+        } else {
           filtros.classList.add("filter-hidden");
           //clear()
         }
@@ -405,4 +412,7 @@ Ofertadas{% endblock %} {% block css %} {{block.super}} {% endblock%} {% block m
     src="https://www.googletagmanager.com/gtag/js?id=G-J1XYYXN5V6"
   ></script>
 </div>
+<script>
+  document.getElementById('s-vagas').classList.add('s-nav-active');
+</script>
 {% endblock %}

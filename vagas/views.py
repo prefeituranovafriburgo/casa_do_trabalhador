@@ -24,6 +24,8 @@ from django.db.models import Sum, Count
 from django.utils import timezone
 from django.conf import settings
 
+from .models import Evento
+
 def home(request):
     vagas_destaque = Vaga_Emprego.objects.filter(destaque=True)
     vagas = Vaga_Emprego.objects.filter(ativo=True)
@@ -31,15 +33,19 @@ def home(request):
     cont = 0
     for i in vagas:
         cont += i.quantidadeVagas
+    if len(vagas_destaque)>0:
+        msg='Vaga em destaque'
+    else:
+        msg='Vagas em destaques'
     context = {
+        'msg': msg,
         'vagas': vagas_destaque,
         'qnt_cargos': qnt_vagas,
         'qnt_vagas': cont,
-        'qnt_destaque': len(vagas_destaque)
+        'qnt_destaque': len(vagas_destaque),
+        'eventos': Evento.objects.filter(is_destaque=True).order_by('data_inicio'),
     }
-    if request.user.is_staff:
-        return render(request, 'vagas/index.html', context)
-    return render(request, 'vagas/manutencao.html', context)
+    return render(request, 'vagas/index.html', context)
 
 
 @login_required
@@ -380,9 +386,7 @@ def vagas(request):
         'bairros': Empresa.objects.order_by('bairro').values_list('bairro').distinct(),
         'escolaridades': Escolaridade.objects.all().values()
     }
-    if request.user.is_staff:
-        return render(request, 'vagas/vagas_disponiveis.html', context)
-    return render(request, 'vagas/manutencao.html', context)
+    return render(request, 'vagas/vagas_disponiveis.html', context)
 
 
 def empresas(request):
