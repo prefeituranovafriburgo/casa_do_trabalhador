@@ -1,20 +1,22 @@
-{% extends 'base_site.html' %}
+{% extends 'template.html' %}
 {% block title %}{{tipo_cadastro}} Vaga{% endblock %}
 {% block css %}
 {{block.super}}
 {% endblock%}
-{% block main_conteudo %}
+{% block main %}
 {% load widget_tweaks %}   
 {% load bootstrap5 %} 
-{% if success.0 %}
-<div class="row px-4 mb-3">
+<div class="row">
+    <div class="col-8 mx-auto">
+        {% if success.0 %}
+<div class="row pt-5 px-4 mb-3">
     <div class="col d-flex bg-success py-2">
         <p class="m-auto text-white">{{success.1}}</p>
     </div>
 </div>
 {% endif %}                
-<div class="row">
-    <div class="col d-flex">
+<div class="row pt-5 mt-5 " >
+    <div class="col d-flex pt-5">
         
       <h2 class="text-start text-uppercase mb-4">CANDIDATAR-SE A VAGA</h2>
       {% if request.user.is_staff %}
@@ -29,7 +31,7 @@
   <h5 class="errorlist my-3">Corrija os erros apresentados abaixo</h5>
   {% endif %}
 
-<form id="form_cadastro_vaga" method="POST" class="form w-100 text-start">
+<form id="form_cadastro_vaga" method="POST" class="form w-100 text-start"  style="background-color: white; padding: 25px 10px; border-radius: 25px;">
 
     <div class="row">
         <div class="col px-5">
@@ -78,6 +80,8 @@
         }
     </style>
 </form>
+    </div>
+</div>
 <script>
         function mascara(o,f){
             v_obj=o

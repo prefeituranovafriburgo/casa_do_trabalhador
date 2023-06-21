@@ -672,3 +672,18 @@ h4 {
     width: 90vw;
   }
 }
+.btn-btfl{
+  /* box-shadow:  1px 1px 2px #507b9ba9; */
+  background-color: #547E9E !important;
+  color: white;  
+  transition: transform 0.8s;
+}
+.btn-btfl:hover{
+  color: white;  
+  /* box-shadow:  0.8px 0.8px 2px #507b9b; */
+}
+.btn-btfl:focus{
+  padding: 8px 16px;
+  color: white;
+  box-shadow:  4px 4px 2px #507b9b;
+}

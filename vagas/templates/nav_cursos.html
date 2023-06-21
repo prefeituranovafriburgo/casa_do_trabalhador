@@ -1,7 +1,7 @@
-<div id="navegacao" class="container">
+<div id="navegacao">
   <div class="row">
-    <div class="col d-flex flex-wrap">
-      <a href="/" class="">
+    <div class="col-8 mx-auto d-flex flex-wrap">
+      <!-- <a href="/" class="">
         <div class="d-flex flex-column align-items-center">
           <div
             id="s-index"
@@ -9,14 +9,14 @@
           ></div>
           <p class="text-dark ms-5">Página<br>Inicial</p>
         </div>
-      </a>
-      <a href="{% url 'vagas:vagas' %}" class="">
+      </a> -->
+      <!-- <a href="{% url 'vagas:vagas' %}" class="">
         <div class="d-flex flex-column align-items-center">
           <div
             id="s-vagas"
             class="s-nav rounded-circle"
           ></div>
-          <p class="text-dark">Vagas<br>Ofertadas</p>
+          <p class="text-dark">Vagas<br>ofertadas</p>
         </div>
       </a>
       <a href="#" class="">
@@ -27,7 +27,7 @@
           ></div>
           <p class="text-dark">Status de<br>inscrição</p>
         </div>
-      </a>
+      </a> -->
       {% if request.user.is_staff %}
       <a href="#" class="">
         <div class="d-flex flex-column align-items-center">
@@ -40,32 +40,33 @@
   </div>
 </div>
 <style>
-  #s-index {
-    margin-right: 1rem !important;
+  #s-index {    
+    margin-right: 2.5rem !important;
     background-color: white !important;
     background-image: url(/static/images/icones/curso_home.png);
     background-size: contain;
   }
   #s-vagas {
-    margin-right: 1rem !important;
+    margin-right: 2.5rem !important;
     background-color: white !important;
     background-image: url(/static/images/icones/curso_home.png);
     background-size: contain;
   }
   #s-status {
-    margin-right: 1rem !important;
+    margin-right: 2.5rem !important;
     background-color: white !important;
     background-image: url(/static/images/icones/curso_home.png);
     background-size: contain;
   }
   #s-admin {
-    margin-right: 1rem !important;
+    margin-right: 2.5rem !important;
     background-color: white !important;
     background-image: url(/static/images/icones/curso_admin.png);
     background-size: contain;
   }
   p{
+    margin-top: 10px;
     text-align: center;
-    margin-right: 1rem !important;
+    margin-right: 2.5rem !important;
   }
 </style>

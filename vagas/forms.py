@@ -6,7 +6,7 @@ class CadastroVagasForm(ModelForm):
     class Meta:
         model = Vaga_Emprego
         widgets = {'user': forms.HiddenInput()}
-        exclude = ['dt_inclusao', 'dt_desativacao']
+        exclude = ['banner_img','dt_inclusao', 'dt_desativacao']
 
 # class Form_Candidato(ModelForm):
 #     class Meta:

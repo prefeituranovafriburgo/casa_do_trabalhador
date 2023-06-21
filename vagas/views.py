@@ -24,7 +24,73 @@ from django.db.models import Sum, Count
 from django.utils import timezone
 from django.conf import settings
 
-from .models import Evento
+from .models import Slide
+
+def visualizar_vaga(request, id):
+    if request.method == 'POST':
+        gambiarra = {}
+        for item in request.POST:
+            if item == 'vaga':
+                gambiarra[item] = Cargo.objects.get(nome=request.POST[item]).id
+            elif item == 'empresa':
+                gambiarra[item] = Empresa.objects.get(
+                    nome=request.POST[item]).id
+            else:
+                gambiarra[item] = request.POST[item]
+        form = CadastroVagasForm(gambiarra)
+        vaga = Vaga_Emprego.objects.get(id=id)
+        if form.is_valid():
+
+            form = CadastroVagasForm(gambiarra, instance=vaga)
+            form.save()
+            return redirect('vagas:vagas')
+    else:
+        vaga = Vaga_Emprego.objects.get(id=id)
+        form = CadastroVagasForm(instance=vaga)
+
+    if request.user.is_authenticated:
+        import datetime
+        data_atual = datetime.datetime.now()        
+        context = {
+            'visualizar': True,
+            'mes': data_atual.month,
+            'ano': data_atual.year,
+            'id': id,
+            'tipo_cadastro': '',
+            'form': form,
+            'hidden': ['user', 'ativo', 'destaque'],
+            'cargo': vaga.cargo.nome,
+            'empresa': vaga.empresa.nome
+        }
+    else:
+        context = {
+            'visualizar': True,
+            'id': id,
+            'tipo_cadastro': '',
+            'form': form,
+            'hidden': ['user', 'ativo', 'destaque', 'empresa'],
+            'cargo': vaga.cargo.nome,
+            'empresa': vaga.empresa.nome
+        }
+
+    return render(request, 'vagas/cadastrar_vagaOfertada.html', context)
+
+def vagas(request):    
+    vagas = Vaga_Emprego.objects.filter(ativo=True)
+    qnt_vagas = len(vagas)
+    cont = 0
+    for i in vagas:
+        cont += i.quantidadeVagas
+
+    context = {
+        'vagas': Vaga_Emprego.objects.filter(ativo=True).order_by('cargo__nome'),
+        'bairros': Empresa.objects.order_by('bairro').values_list('bairro').distinct(),
+        'escolaridades': Escolaridade.objects.all().values(),        
+        'qnt_cargos': qnt_vagas,
+        'qnt_vagas': cont,        
+        'eventos': Slide.objects.all(),
+    }
+    return render(request, 'vagas/vagas_disponiveis.html', context)
 
 def home(request):
     vagas_destaque = Vaga_Emprego.objects.filter(destaque=True)
@@ -43,7 +109,7 @@ def home(request):
         'qnt_cargos': qnt_vagas,
         'qnt_vagas': cont,
         'qnt_destaque': len(vagas_destaque),
-        'eventos': Evento.objects.filter(is_destaque=True).order_by('data_inicio'),
+        'eventos': Slide.objects.all(),
     }
     return render(request, 'vagas/index.html', context)
 
@@ -295,48 +361,6 @@ def get_cargo(request):
     return render(request, 'vagas/resultVagaSearchs.html', context)
 
 
-def visualizar_vaga(request, id):
-    if request.method == 'POST':
-        gambiarra = {}
-        for item in request.POST:
-            if item == 'vaga':
-                gambiarra[item] = Cargo.objects.get(nome=request.POST[item]).id
-            elif item == 'empresa':
-                gambiarra[item] = Empresa.objects.get(
-                    nome=request.POST[item]).id
-            else:
-                gambiarra[item] = request.POST[item]
-        form = CadastroVagasForm(gambiarra)
-        vaga = Vaga_Emprego.objects.get(id=id)
-        if form.is_valid():
-
-            form = CadastroVagasForm(gambiarra, instance=vaga)
-            form.save()
-            return redirect('vagas:vagas')
-    else:
-        vaga = Vaga_Emprego.objects.get(id=id)
-        form = CadastroVagasForm(instance=vaga)
-
-    if request.user.is_authenticated:
-        context = {
-            'id': id,
-            'tipo_cadastro': '',
-            'form': form,
-            'hidden': ['user', 'ativo', 'destaque'],
-            'cargo': vaga.cargo.nome,
-            'empresa': vaga.empresa.nome
-        }
-    else:
-        context = {
-            'id': id,
-            'tipo_cadastro': '',
-            'form': form,
-            'hidden': ['user', 'ativo', 'destaque', 'empresa'],
-            'cargo': vaga.cargo.nome,
-            'empresa': vaga.empresa.nome
-        }
-
-    return render(request, 'vagas/cadastrar_vagaOfertada.html', context)
 
 
 @login_required
@@ -380,13 +404,7 @@ def alterar_vaga(request, id):
     return render(request, 'vagas/cadastrar_vagaOfertada.html', context)
 
 
-def vagas(request):
-    context = {
-        'vagas': Vaga_Emprego.objects.filter(ativo=True).order_by('cargo__nome'),
-        'bairros': Empresa.objects.order_by('bairro').values_list('bairro').distinct(),
-        'escolaridades': Escolaridade.objects.all().values()
-    }
-    return render(request, 'vagas/vagas_disponiveis.html', context)
+
 
 
 def empresas(request):
