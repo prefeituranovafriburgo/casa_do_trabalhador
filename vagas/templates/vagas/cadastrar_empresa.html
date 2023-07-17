@@ -55,6 +55,12 @@
                 {{f|add_class:'form-check-input my-2'|attr:'type:checkbox'|attr:'role=switch'|attr:"onclick=fcontato_whatsapp()"}}
                 <span id="span_contato_whatsapp">{% if f.value %}Sim.{% else %}Não.{% endif %}</span>
             </div>
+            {% elif f.name == 'contato_link' %}
+            <div class="form-check form-switch" style="margin: 0; padding-left: 0;">                                                
+                {{f|add_class:'form-check-input my-2'|attr:'type:checkbox'|attr:'role=switch'|attr:"onclick=fcontato_link()"}}
+                <span id="span_contato_whatsapp">{% if f.value %}Sim.{% else %}Não.{% endif %}</span>
+            </div>
+            {% else %}
             {% else %}
                 {%if f.name == 'cnpj' %}
                 {{f|add_class:'form-control bg-light my-2'|attr:'onkeydown:mascara(this,icnpj)'|attr:'maxlength:18'}}
@@ -136,6 +142,14 @@
     }
     function fcontato_whatsapp(){
         span=document.getElementById('span_contato_whatsapp')
+        if (span.innerText=='Sim.'){
+            span.innerText='Não.';
+        }else{
+            span.innerText='Sim.';
+        }
+    }
+    function fcontato_link(){
+        span=document.getElementById('span_contato_link')
         if (span.innerText=='Sim.'){
             span.innerText='Não.';
         }else{
