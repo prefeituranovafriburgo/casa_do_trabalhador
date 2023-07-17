@@ -46,7 +46,7 @@ class Empresa(models.Model):
     contato_email=models.BooleanField(default=False, verbose_name='Contato por email')    
     contato_telefone=models.BooleanField(default=False, verbose_name='Contato por telefone')
     contato_whatsapp=models.BooleanField(default=False, verbose_name='Contato por whatsapp')
-    contato_link=models.BooleanField(default=False, verbose_name='Contato por whatsapp')
+    contato_link=models.BooleanField(default=False, verbose_name='Contato via link')
     observacao=models.TextField(default='', blank=True, verbose_name='Observações internas')
     # formaDeContato=models.CharField(max_length=1, choices=FORMA_CONTATO_CHOICES, verbose_name='Forma de contato')    
     user=models.ForeignKey(User, on_delete=models.PROTECT)                    
