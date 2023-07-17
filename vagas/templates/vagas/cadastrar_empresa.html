@@ -59,8 +59,7 @@
             <div class="form-check form-switch" style="margin: 0; padding-left: 0;">                                                
                 {{f|add_class:'form-check-input my-2'|attr:'type:checkbox'|attr:'role=switch'|attr:"onclick=fcontato_link()"}}
                 <span id="span_contato_whatsapp">{% if f.value %}Sim.{% else %}Não.{% endif %}</span>
-            </div>
-            {% else %}
+            </div>            
             {% else %}
                 {%if f.name == 'cnpj' %}
                 {{f|add_class:'form-control bg-light my-2'|attr:'onkeydown:mascara(this,icnpj)'|attr:'maxlength:18'}}
