@@ -82,3 +82,11 @@ Comece criando as tabelas do banco com o seguinte comando: <br>
 Para utilizar o projeto, você precisa criar um usuário utilizando o seguinte comando: <br>
 `python manage.py createsuperuser`  <br> <br>
 No campo de usuário, você **deverá** informar o seu **e-mail**. As credenciais (e-mail e senha) serão utilizadas para realizar o login no site.
+
+## Como Contribuir:
+
+- Comentar na issue para qual você deseja se voluntariar ou solicitar mais informações.
+- Criar um fork deste repositório.
+- Desenvolver o sistema de seguindo as funcionalidades e critérios de aceitação.
+- Criar um pull request detalhando as alterações realizadas.
+<br>Vamos trabalhar juntos para fornecer aos candidatos uma experiência aprimorada em nossa plataforma!
