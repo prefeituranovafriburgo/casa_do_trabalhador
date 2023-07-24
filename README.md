@@ -77,8 +77,8 @@ FACEBOOK_DEVELOPER_SECRET_KEY: '494d231479ff65cb6307b3'
 
 
 ## Usando o projeto
-Comece criando as tabelas do banco com o seguinte comando:
-`python manage.py migrate` <br>
+Comece criando as tabelas do banco com o seguinte comando: <br>
+`python manage.py migrate` <br> <br>
 Para utilizar o projeto, você precisa criar um usuário utilizando o seguinte comando: <br>
-`python manage.py createsuperuser`  <br>
+`python manage.py createsuperuser`  <br> <br>
 No campo de usuário, você **deverá** informar o seu **e-mail**. As credenciais (e-mail e senha) serão utilizadas para realizar o login no site.
