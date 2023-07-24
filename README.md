@@ -1,6 +1,11 @@
-# Controle de Turismo <br>
+# Casa do Trabalhador <br>
 
-> Gerador de senhas para controle de transporte turístico. <br>
+
+> <p>Através de seus serviços, a Casa do Trabalhador oferece diversas oportunidades de emprego, seja para aqueles que buscam uma colocação profissional ou para empresas que desejam contratar novos colaboradores. </p>
+
+> <p>Além disso, o órgão também pode fornecer informações sobre direitos trabalhistas, programas de capacitação e formação profissional, bem como orientações para a elaboração de currículos e preparação para entrevistas de emprego.</p>
+
+> <p>A Casa do Trabalhador de Nova Friburgo atua como um importante elo entre empregadores e trabalhadores, contribuindo para o desenvolvimento econômico da região ao fomentar o emprego e a qualificação profissional da população. Seu compromisso é promover uma relação harmoniosa e justa entre o mercado de trabalho e os cidadãos, contribuindo para o fortalecimento do setor produtivo e o progresso da comunidade local.</p> <br>
 
 
 ### Principais tecnologias
@@ -14,7 +19,7 @@
 
 ## 💻 Pré-requisitos
 - Versão 3 ou mais recente de Python.
-- MariaDB ou MySql (Algumas consultar foram otimizadas usando querys customizadas ao invés da padrão da ORM do Django)
+- MariaDB ou MySql (Algumas consultas foram otimizadas usando querys p/ MariaDB)
 
 
 
