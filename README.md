@@ -89,4 +89,5 @@ No campo de usuário, você **deverá** informar o seu **e-mail**. As credenciai
 - Criar um fork deste repositório.
 - Desenvolver o sistema de seguindo as funcionalidades e critérios de aceitação.
 - Criar um pull request detalhando as alterações realizadas.
-<br>Vamos trabalhar juntos para fornecer aos candidatos uma experiência aprimorada em nossa plataforma!
+<br><br>
+<p>Os projetos Open Source, como o sistema da Casa do Trabalhador, desempenham um papel fundamental em nossa sociedade tecnológica atual. Eles são a encarnação da colaboração e do compartilhamento de conhecimento, promovendo o desenvolvimento conjunto de soluções inovadoras. Ao adotar um modelo aberto, tornamos possível que a comunidade participe, contribua e melhore constantemente a plataforma. A transparência e a acessibilidade do código-fonte inspiram confiança, permitindo que candidatos e empresas encontrem oportunidades de emprego de maneira mais eficiente e confiável. Juntos, impulsionamos a inclusão e o crescimento econômico, alinhando nossa missão com o espírito da comunidade global de código aberto. Junte-se a nós nessa jornada de empoderamento e transformação!</p>
