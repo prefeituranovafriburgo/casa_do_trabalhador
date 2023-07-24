@@ -101,7 +101,7 @@ else:
 
             'USER': db_user,
             'PASSWORD': db_passwd,
-            'HOST': '127.0.0.1',
+            'HOST': db_host,
         }
     }
 
