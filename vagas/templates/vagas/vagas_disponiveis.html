@@ -8,14 +8,15 @@
   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
   crossorigin="anonymous"
 ></script>
+<link rel="stylesheet" href="/static/css/template.css">
 <div class="row pt-5">
-  <div class="col pt-5 mt-5">
+  <div class="col div-vagas-ofertadas">
     <div class="row">
       <div class="col">
         {% include 'slide.html' %}
       </div>
     </div>
-    <div class="col-8 mx-auto">
+    <div class="col-8 div-principal-vagas-ofertadas">
       <div class="row">
         <div class="col pt-5 text-center">
           <p style="margin-bottom: 40px">
@@ -33,9 +34,9 @@
       </div>
       <!-- <h2 class="text-start">VAGAS DISPONÍVEIS</h2> -->
       <div class="row">
-        <div class="col d-flex">
+        <div class="col d-flex div-vaga-container">
           <h2 class="text-start">VAGAS OFERTADAS</h2>
-          <div class="ms-auto px-3">
+          <div class="div-vaga-container-links">
             <!-- <button class="btn btn-btfl2 me-2" id="filtros">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
@@ -180,23 +181,27 @@
             data-bairro="{{vaga.empresa.bairro}}"
     
             style="background-color: rgba(230, 230, 230, 0.274)">
-            <div id="{{forloop.counter}}-div" class="text-start py-4 mb-3" style="background-color: white; padding: 20px 30px; border-radius: 30px;">
+            <div id="{{forloop.counter}}-div" class="div-vaga">
               <div class="row">
-                <div class="col d-flex">
+                <div class="col">
                   <div>
-                    <div class="d-flex">
+                    <div>
                       <h4 id="{{forloop.counter}}-cargo" class="cargo">
                         {% if request.user.is_staff %}{{vaga.empresa}} - {% endif%}{{vaga.cargo}}{% if request.user.is_staff %} - {{vaga.dt_inclusao | date:"d/m/Y"}}{% endif%}
                       </h4>
                     </div>
     
-                    <div>
-                      <small>Vagas: {{vaga.quantidadeVagas}}</small>
+                    <div class="qtd-vaga">
+                      <p>Vagas: {{vaga.quantidadeVagas}}</p>
                       {% if vaga.experiencia == 'Sim' %}
                       <span class="ms-4 text-gray"><i>Requer experiência!</i></span>
                       {% endif %}
                     </div>
                   </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col pt-1 div-detalhes-vaga">
                   <div class="ms-auto text-center">
                     <a
                       href="{% url 'vagas:visualizar_vaga' vaga.id %}"
@@ -204,39 +209,25 @@
                     >
                       DETALHES DA VAGA
                     </a>
-                    {% if vaga.tipo_de_vaga != 'NML' %}
-                    <span class="d-flex">
-                      <h6 class="me-auto mt-3">[</h6>
-                      <h6 class="ms-auto mt-3">
-                        {{vaga.get_tipo_de_vaga_display}}
-                      </h6>
-                      <h6 class="ms-auto mt-3">]</h6>
-                    </span>
-                    {% endif %}
                   </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col pt-1">
-                  <div>
-                    <span
-                      ><b class="me-1">Escolaridade:</b>
-                        {{vaga.escolaridade}}
-                      </span
-                    >
-                    <span class="ms-4"
-                      ><b>Carga hóraria:</b> {{vaga.carga_horaria}}</span
-                    >
-                    <span class="ms-4">
+                  <div class="detalhamento-vaga">
+                    {% if vaga.tipo_de_vaga != 'NML' %}
+                    <p class="d-flex"><b>Tipo:</b> {{vaga.get_tipo_de_vaga_display}}</p>
+                    {% endif %}
+                    <p><b>Escolaridade:</b>{{vaga.escolaridade}}</p>
+                    <p><b>Carga hóraria:</b> {{vaga.carga_horaria}}</p>
+                    <p>
                       {% if vaga.regime != '' %}
-                      <b>Regime:</b> {{vaga.regime}} {% endif %}</span
-                    >
-                    <span class="ms-4"><b>Bairro:</b> {{vaga.empresa.bairro}}</span>
+                      <b>Regime:</b> {{vaga.regime}}
+                      {% endif %}
+                    </p>
+                    <p><b>Bairro:</b> {{vaga.empresa.bairro}}</p>
                   </div>
                 </div>
               </div>
             </div>
-          </tr>{% endfor %}
+          </tr>
+          {% endfor %}
         </tbody>
       </table>
       <style>
