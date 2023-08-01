@@ -3,7 +3,7 @@ from . import views
 app_name='vagas'
 
 urlpatterns = [
-    path('', views.vagas, name='home'),  
+    path('', views.vagas, name='home'), 
     # path('', views.manutencao, name = 'manutencao'),
     path('indicadores', views.indicadores, name='indicadores'),  
 
@@ -38,8 +38,8 @@ urlpatterns = [
     path('get_vaga/', views.get_cargo, name='get_vaga' ),
     path('get_empresa/', views.get_empresa, name='get_empresa' ),
     path('get_candidatos/', views.get_candidatos, name='get_candidatos' ),
-    path('logout/', views.sair, name='logout'),
-    path('login/', views.login_view, name='login'),
+    # path('logout/', views.sair, name='logout'),
+    # path('login/', views.login_view, name='login'),
     path('visualizar-vaga/alt0x#<id>001/<mes>/<ano>/listar-canditados/', views.candidatosporvaga, name='listar_candidatos'),
     path('vagas-com-candidatos/', views.vagascomcandidatos, name='vagas_com_candidatos'),
     path('candidatos-por-funcionario/', views.candidatosporfuncionario, name='candidatosporfuncionario'),

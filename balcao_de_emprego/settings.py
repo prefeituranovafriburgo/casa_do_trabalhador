@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'bootstrap5',
     'vagas',
     'api',
-    'fontawesomefree'
+    'fontawesomefree',
+    'autenticacao',
+    'curriculo'
 
 ]
 

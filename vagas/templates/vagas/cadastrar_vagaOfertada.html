@@ -19,7 +19,7 @@
         <div class="row">    
             <div class="col d-flex">
                 <h2 class="text-start text-uppercase">{{ tipo_cadastro }} VAGA OFERTADA</h2>
-                {% if request.user.is_authenticated %}
+                {% if request.user.is_staff %}
                     {% if tipo_cadastro == 'Alterar' %}
                     <span class="ms-auto"><a class="btn btn-btfl bg-danger" href="{% url 'vagas:remover_vaga' id%}">Remover</a></span>
                     {% endif %}      
@@ -28,9 +28,9 @@
                     {% endif %}
                 {% endif %}
 
-                    <span class="{% if not request.user.is_authenticated %}ms-auto{% else %}{% if tipo_cadastro == 'cadastrar' %}ms-auto{% else %}ms-2{% endif %}{% endif %}"><a class="btn btn-btfl bg-primary" href="{% url 'vagas:vagas' %}">Voltar para ver vagas</a></span>
+                    <span class="{% if not request.user.is_staff %}ms-auto{% else %}{% if tipo_cadastro == 'cadastrar' %}ms-auto{% else %}ms-2{% endif %}{% endif %}"><a class="btn btn-btfl bg-primary " href="{% url 'vagas:vagas' %}">Voltar para ver vagas</a></span>
                 
-                    {% if request.user.is_authenticated %}
+                    {% if request.user.is_staff %}
                     {% if tipo_cadastro == '' %}
                     <span class="ms-2"><a class="btn btn-btfl bg-primary" href="{% url 'vagas:alterar_vaga' id %}"><i class="fas fa-edit"></i></a></span>
                     {% endif %}

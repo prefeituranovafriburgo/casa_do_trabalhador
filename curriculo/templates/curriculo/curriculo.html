@@ -1,0 +1,66 @@
+<!-- resume/templates/resume.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meu Currículo</title>
+</head>
+<body>
+    <div class="resume">
+        <h1>{{ nome }}</h1>
+        <p class="contact-info">
+            Email: {{ email }} | Telefone: {{ telefone }}
+        </p>
+        <h2>Objetivo</h2>
+        <p>{% if objectivo %}{{ objetivo }}{% endif %}</p>
+
+        <h2>Educação</h2>
+        {% for educacao in educacoes %}
+            <div class="education">
+                <p><strong>{{ educacao.instituicao }}</strong></p>
+                <p>{{ educacao.curso }}</p>
+                <p>{{ educacao.periodo }}</p>
+            </div>
+        {% endfor %}
+
+        <h2>Experiência Profissional</h2>
+        {% for experiencia in experiencias %}
+            <div class="experience">
+                <p><strong>{{ experiencia.empresa }}</strong></p>
+                <p>{{ experiencia.cargo }}</p>
+                <p>{{ experiencia.periodo }}</p>
+                <p>{{ experiencia.descricao }}</p>
+            </div>
+        {% endfor %}
+    </div>
+<style>
+    /* resume/static/resume/style.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+}
+
+h1, h2 {
+    margin-bottom: 5px;
+}
+
+.resume {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-info {
+    margin-bottom: 20px;
+}
+
+.education, .experience {
+    margin-bottom: 15px;
+}
+
+/* Estilize o currículo conforme sua preferência */
+
+</style>
+</body>
+</html>

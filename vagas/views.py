@@ -25,30 +25,42 @@ from django.utils import timezone
 from django.conf import settings
 
 from .models import Slide
+from django.http import HttpResponseForbidden
+
+from autenticacao.models import Pessoa
+
+def staff_required(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        if not request.user.is_staff:
+            return HttpResponseForbidden("Acesso negado. Você não é um funcionário.")
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
 
 def visualizar_vaga(request, id):
     if request.method == 'POST':
-        gambiarra = {}
-        for item in request.POST:
-            if item == 'vaga':
-                gambiarra[item] = Cargo.objects.get(nome=request.POST[item]).id
-            elif item == 'empresa':
-                gambiarra[item] = Empresa.objects.get(
-                    nome=request.POST[item]).id
-            else:
-                gambiarra[item] = request.POST[item]
-        form = CadastroVagasForm(gambiarra)
-        vaga = Vaga_Emprego.objects.get(id=id)
-        if form.is_valid():
+        if request.user.is_staff:
+            gambiarra = {}
+            for item in request.POST:
+                if item == 'vaga':
+                    gambiarra[item] = Cargo.objects.get(nome=request.POST[item]).id
+                elif item == 'empresa':
+                    gambiarra[item] = Empresa.objects.get(
+                        nome=request.POST[item]).id
+                else:
+                    gambiarra[item] = request.POST[item]
+            form = CadastroVagasForm(gambiarra)
+            vaga = Vaga_Emprego.objects.get(id=id)
+            if form.is_valid():
 
-            form = CadastroVagasForm(gambiarra, instance=vaga)
-            form.save()
-            return redirect('vagas:vagas')
+                form = CadastroVagasForm(gambiarra, instance=vaga)
+                form.save()
+                return redirect('vagas:vagas')
     else:
         vaga = Vaga_Emprego.objects.get(id=id)
         form = CadastroVagasForm(instance=vaga)
 
-    if request.user.is_authenticated:
+    if request.user.is_staff:
         import datetime
         data_atual = datetime.datetime.now()        
         context = {
@@ -115,6 +127,7 @@ def home(request):
 
 
 @login_required
+@staff_required
 def cadastrar_empresa(request):
     if request.method == 'POST':
         form = Form_Empresa(request.POST)
@@ -137,6 +150,7 @@ def cadastrar_empresa(request):
 
 
 @login_required
+@staff_required
 def alterar_empresa(request, id):
     empresa = Empresa.objects.get(id=id)
     if request.method == 'POST':
@@ -161,6 +175,7 @@ def alterar_empresa(request, id):
 
 
 @login_required
+@staff_required
 def cadastrar_cargo(request):
     if request.method == 'POST':
         form = Form_Cargo(request.POST)
@@ -183,6 +198,7 @@ def cadastrar_cargo(request):
 
 
 @login_required
+@staff_required
 def alterar_cargo(request, id):
     cargo = Cargo.objects.get(id=id)
     if request.method == 'POST':
@@ -207,6 +223,7 @@ def alterar_cargo(request, id):
 
 
 @login_required
+@staff_required
 def cadastrar_escolaridade(request):
     if request.method == 'POST':
         form = Form_Escolaridade(request.POST)
@@ -229,6 +246,7 @@ def cadastrar_escolaridade(request):
 
 
 @login_required
+@staff_required
 def alterar_escolaridade(request, id):
     escolaridade = Escolaridade.objects.get(id=id)
     if request.method == 'POST':
@@ -253,6 +271,7 @@ def alterar_escolaridade(request, id):
 
 
 @login_required
+@staff_required
 def cadastrar_vagaOfertada(request):
     if request.method == 'POST':
         gambiarra = {}
@@ -292,6 +311,7 @@ def cadastrar_vagaOfertada(request):
 
 
 @login_required
+@staff_required
 def remover_vaga(request, id):
     if request.method == 'POST':
         try:
@@ -309,6 +329,7 @@ def remover_vaga(request, id):
 
 
 @login_required
+@staff_required
 def cadastrar_vaga_emLote(request):
     if request.method == 'POST':
         try:
@@ -364,6 +385,7 @@ def get_cargo(request):
 
 
 @login_required
+@staff_required
 def alterar_vaga(request, id):
     if request.method == 'POST':
         gambiarra = {}
@@ -406,28 +428,28 @@ def alterar_vaga(request, id):
 
 
 
-
+@staff_required
 def empresas(request):
     context = {
         'empresas': Empresa.objects.all()
     }
     return render(request, 'vagas/listar_empresas.html', context)
 
-
+@staff_required
 def escolaridades(request):
     context = {
         'escolaridades': Escolaridade.objects.all()
     }
     return render(request, 'vagas/listar_escolaridade.html', context)
 
-
+@staff_required
 def listar_cargos(request):
     context = {
         'vagas': Cargo.objects.all()
     }
     return render(request, 'vagas/listar_cargos.html', context)
 
-
+@staff_required
 def imprimir_vagas(request):
     vagas = Vaga_Emprego.objects.filter(ativo=True).order_by('cargo__nome')
     cont = 0
@@ -506,7 +528,10 @@ def encaminhar(request, id):
 def encaminhamento(request, id, user_id=0):
     candidato = Candidato.objects.get(id=id)
     if str(int(user_id)) != str(int(0)):
-        user = User.objects.get(id=user_id)
+        if request.user.is_staff:
+            user = User.objects.get(id=user_id)
+        else:
+            user = False    
     else:
         user = False
 
@@ -519,7 +544,7 @@ def encaminhamento(request, id, user_id=0):
         'sistema': True,
         'user': user
     }
-    if request.user.is_authenticated:
+    if request.user.is_staff:
         return render(request, 'vagas/encaminhar.html', context)
     return render(request, 'vagas/encaminhamento_online.html', context)
 
@@ -545,7 +570,7 @@ def gera_encaminhamento_to_pdf(request, id, user_id=0):
 
 
 def candidatarse(request, id):
-    if request.user.is_authenticated:
+    if request.user.is_staff:
         form = Form_Candidato(initial={'vaga': id, 'candidato_online': False})
     else:
         form = Form_Candidato(initial={'vaga': id, 'candidato_online': True})
@@ -564,7 +589,7 @@ def candidatarse(request, id):
 
             candidato = form.save()
             # return render(request, 'vagas/encaminhar.html', context)
-            if request.user.is_authenticated:
+            if request.user.is_staff:
                 candidato.funcionario_encaminhamento = request.user
                 candidato.dt_atualizacao = datetime.today()
                 candidato.save()
@@ -580,6 +605,7 @@ def candidatarse(request, id):
 
 
 @login_required
+@staff_required
 def candidatosporvaga(request, id, mes, ano):
     candidatos = Candidato.objects.filter(vaga=id).order_by('dt_inclusao')
 
@@ -612,6 +638,7 @@ def candidatosporvaga(request, id, mes, ano):
 
 
 @login_required
+@staff_required
 def pesquisar_candidatos(request):
     context = {}
     return render(request, 'vagas/pesquisar_candidatos.html', context)
@@ -654,6 +681,7 @@ def get_candidatos(request):
 
 
 @login_required
+@staff_required
 def visualizar_candidato(request, id):
     candidato = Candidato.objects.get(id=id)
     context = {
@@ -664,6 +692,7 @@ def visualizar_candidato(request, id):
 
 
 @login_required
+@staff_required
 def vagascomcandidatos(request):    
     buscar = False
     context = {}
@@ -723,6 +752,7 @@ def vagascomcandidatos(request):
 
 
 @login_required
+@staff_required
 def candidatosporfuncionario(request):
     usuarios = User.objects.filter(groups__name='atendente')
     lista = []
@@ -762,6 +792,7 @@ def candidatosporfuncionario(request):
 
 
 @login_required
+@staff_required
 def funcionario_encaminhados(request, id):
     candidatos = Candidato.objects.filter(funcionario_encaminhamento=id)
     paginator = Paginator(candidatos, 25)
@@ -788,17 +819,20 @@ def sair(request):
 
 
 @login_required
+@staff_required
 def painel_administrativo(request):
 
     return render(request, 'vagas/painel_administrativo.html')
 
 
 @login_required
+@staff_required
 def painel_administrativo_excluir_cpf(request):
     return render(request, 'vagas/painel_administrativo_excluir_cpf.html')
 
 
 @login_required
+@staff_required
 def excluir_cpf(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode("utf-8"))
@@ -816,6 +850,7 @@ def excluir_cpf(request):
 
 
 @login_required
+@staff_required
 def indicadores(request):
 
     timezone.activate(settings.TIME_ZONE)
@@ -929,6 +964,7 @@ def indicadores(request):
     return render(request, 'vagas/indicadores.html', context)
 
 @login_required
+@staff_required
 def emails(request):
 
     context = {
@@ -962,6 +998,7 @@ def emails(request):
     return render(request, 'vagas/emails.html', context) 
 
 @login_required
+@staff_required
 def download_emails(request, month, year):
 
     date = datetime(int(year), int(month), 1)

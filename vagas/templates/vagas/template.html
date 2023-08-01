@@ -84,9 +84,9 @@
 							<section>
 								<ul class="actions stacked">
                                     {% if user.is_authenticated %}
-									<li><a href="{% url 'vagas:logout' %}" class="button large fit">Logout</a></li>
+									<li><a href="{% url 'autenticacao:logout' %}" class="button large fit">Logout</a></li>
                                     {% else %}
-                                    <li><a href="{% url 'vagas:login' %}" class="button large fit">Login</a></li>
+                                    <li><a href="{% url 'autenticacao:login' %}" class="button large fit">Login</a></li>
                                     {% endif %}
 								</ul>
 							</section>

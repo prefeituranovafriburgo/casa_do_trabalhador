@@ -1,0 +1,175 @@
+{% extends 'template.html' %}
+{% block title %}{{tipo_cadastro}} Vaga{% endblock %}
+{% block css %}
+{{block.super}}
+{% endblock%}
+{% block main %}
+{% load widget_tweaks %}   
+{% load bootstrap5 %}  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+<div class="row pt-5 mt-5">
+    <div class="col-8 mx-auto pt-5 mt-5">
+        {% if success.0 %}
+        <div class="row px-4 mb-3">
+            <div class="col d-flex bg-success py-2">
+                <p class="m-auto text-white">{{success.1}}</p>
+            </div>
+        </div>
+        {% endif %}                  
+        <div class="row">    
+            <div class="col d-flex">
+                <h2 class="text-start text-uppercase">EDUCAÇÃO</h2>
+    
+                    <span class="ms-auto"><a class="btn btn-btfl bg-primary ms-auto" href="{% url 'cv:index' %}">Voltar</a></span>
+                          
+            </div>
+        </div>
+        <form id="form_cadastro_vaga" {% if tipo_cadastro != '' %}method="post"{% endif %} class="form w-100 text-start mt-3">
+            <div class="row">
+                <div class="col pt-3">
+                    <h4 class="px-4">Novo item educacional:</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col pt-3 px-5">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <button type="submit" class="btn btn-primary text-white w-100 mt-3">
+                        CADASTRAR NOVO ITEM
+                        </button>
+                    </form>
+                </div>      
+            </div>   
+            <div class="row">
+                <div class="col pt-4 pb-5 mb-5">
+                    <h2>Itens educacionais cadastrados</h2>
+                    <ul class="d-flex flex-wrap">
+                        {% for item in educacoes %}
+                            <li class="d-flex ms-2">
+                                <div class="border mx-auto p-3" style="background-color: white; border-radius: 12px;">
+                                    <div class="mb-2">
+                                        <p><strong>{{ item.instituicao }}</strong></p>
+                                        <p>{{ item.curso }}</p>
+                                        <p>{{ item.periodo }}</p>
+                                    </div>
+                                    <form method="post" action="{% url 'cv:excluir_educacao' item.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="w-100  btn btn-btfl mx-auto">Excluir item</button>
+                                    </form>
+                                </div>
+                            </li>
+                            {% if empty %}
+                                Nada cadastrado
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+    </div>
+</div> 
+    <style>
+        #form_cadastro_vaga ul, li{
+            list-style: none;
+        }
+        #form_cadastro_vaga button:hover{
+            background-color: #329787 !important;
+            border-color: #329787;
+            color: white !important;
+        }
+        #form_cadastro button, .btn-primary{
+            background-color: #329787 !important;
+            border-color: #329787;
+        }
+        #id_ativo{
+            opacity: 0;
+        }
+        .form-check{
+            display: flex;            
+        }
+        .form-switch span{
+            margin-left: 10px;
+            padding-top: 4px;
+        }
+
+        .form-switch .form-check-input{
+            margin-left: 0;
+        }
+        .form-check-input:checked[type=checkbox]{
+            background-color:#329787;
+        }
+        ul, li{
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    function searchVaga(e){        
+        if (3<=String(e.value).length){
+            // console.log('buscando '+e.value)
+            getVaga(e.value)
+        }        
+    }    
+    function searchEmpresa(e){        
+        if (3<=String(e.value).length){
+            // console.log('buscando '+e.value)
+            getEmpresa(e.value)
+        }        
+    }    
+    function getEmpresa(value){
+        var url = '/get_empresa/';  
+        $.ajax({ 
+            url: url,
+            data: {
+                'empresa': value,
+            },
+            success: function(data) {                               
+                $("#search_empresa_result").html(data);
+            }
+        });                
+    };
+    function getVaga(value){
+        var url = '/get_vaga/';         
+        $.ajax({ 
+            url: url,
+            data: {
+                'vaga': value,
+            },
+            success: function(data) {                               
+                $("#search_vaga_result").html(data);
+            }
+        });                
+    };
+    function selectThisVaga(e){
+        document.getElementById('id_vaga').value=e.value
+        document.getElementById('search_vaga_result').innerHTML=''
+    }
+    function selectThisEmpresa(e){
+        document.getElementById('id_empresa').value=e.value
+        document.getElementById('search_empresa_result').innerHTML=''
+    }
+</script>
+{% if visualizar %}
+<style>
+#form_cadastro_vaga{
+    background-color: white;
+    border-radius: 20px;
+}
+label{
+    font-weight: 600;
+}
+.form-control{
+    margin-bottom: 10px !important;
+    margin-top: 5px !important;
+}
+.bg-light{
+    border-radius: 30px !important;
+    background-color: white !important;
+    border-color: rgba(116, 116, 116, 0.112) !important;
+}
+</style>
+{% endif %}
+{% endblock %}
