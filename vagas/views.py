@@ -1023,9 +1023,12 @@ def manutencao(request):
     return render(request, 'vagas/manutencao.html')
 
 def meus_encaminhamentos(request):    
-    pessoa = Pessoa.objects.get(user=request.user)
-    candidato_encaminhamentos = Candidato.objects.filter(cpf=pessoa.cpf, vaga__ativo=True)
-    
+    try:
+        pessoa = Pessoa.objects.get(user=request.user)
+        candidato_encaminhamentos = Candidato.objects.filter(cpf=pessoa.cpf, vaga__ativo=True)
+    except:
+        candidato_encaminhamentos = None
+        
     context = {
        'encaminhamentos': candidato_encaminhamentos
     }
