@@ -1,0 +1,90 @@
+{% extends 'template.html' %}
+{% block title %}{{tipo_cadastro}} Vaga{% endblock %}
+{% block css %}
+{{block.super}}
+{% endblock%}
+{% block main %}
+{% load widget_tweaks %}   
+{% load bootstrap5 %}  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+<div class="row pt-5 mt-5">
+    <div class="col-8 mx-auto pt-5 mt-5">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}                  
+        <div class="row">    
+            <div class="col d-flex">
+                <h2 class="text-start text-uppercase">Atualizar dados</h2>
+    
+                    <span class="ms-auto"><a class="btn btn-btfl bg-primary ms-auto" href="{% url 'cv:index' %}">Voltar</a></span>
+                          
+            </div>
+        </div>
+        {% if foto %}
+        <div class="row">
+            <div class="col-12 d-flex">
+                <img src="/media/{{foto}}" style="height: 150px;" class="img-thumbnail img-fluid mx-auto" alt="Foto de perfil">
+            </div>
+        {% else %}
+        {{foto}}
+        {% endif %}
+
+            <div class="row">
+                <div class="col pt-3 px-5">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <h5 class="mb-3 text-start text-uppercase">Dados do currículo</h2>
+                        {% bootstrap_form form_objetivo %}
+                        <h5 class="mb-3 text-start text-uppercase">Dados pessoais</h2>
+                        {% bootstrap_form form_pessoa %}
+                        
+                        <button type="submit" class="btn btn-primary text-white w-100 mt-3 mb-5">
+                        Atualizar dados
+                        </button>
+                    </form>
+                </div>      
+            </div>   
+          
+    </div>
+</div> 
+    <style>
+        #form_cadastro_vaga ul, li{
+            list-style: none;
+        }
+        #form_cadastro_vaga button:hover{
+            background-color: #329787 !important;
+            border-color: #329787;
+            color: white !important;
+        }
+        #form_cadastro button, .btn-primary{
+            background-color: #329787 !important;
+            border-color: #329787;
+        }
+        #id_ativo{
+            opacity: 0;
+        }
+        .form-check{
+            display: flex;            
+        }
+        .form-switch span{
+            margin-left: 10px;
+            padding-top: 4px;
+        }
+
+        .form-switch .form-check-input{
+            margin-left: 0;
+        }
+        .form-check-input:checked[type=checkbox]{
+            background-color:#329787;
+        }
+        ul, li{
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+{% endblock %}

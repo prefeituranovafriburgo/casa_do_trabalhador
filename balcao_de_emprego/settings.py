@@ -168,12 +168,13 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = '/home/turismo/site/turismo/equipamentos/static'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'settings/media')
+
+
 LOGIN_URL='/login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'settings/media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

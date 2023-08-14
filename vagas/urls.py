@@ -4,6 +4,7 @@ app_name='vagas'
 
 urlpatterns = [
     path('', views.vagas, name='home'), 
+    path('meus-encaminhamentos/', views.meus_encaminhamentos, name='meus_encaminhamentos'),
     # path('', views.manutencao, name = 'manutencao'),
     path('indicadores', views.indicadores, name='indicadores'),  
 

@@ -43,9 +43,12 @@
               </svg>
             </button> -->
           {% if request.user.is_authenticated %}
-          <a class="btn btn-btfl ms-auto me-2 my-auto" href="{% url 'cv:index' %}">
-            Currículo
+          <a class="btn btn-btfl ms-auto my-auto" style="width: auto !important;" href="{% url 'vagas:meus_encaminhamentos' %}">
+              Encaminhamentos
           </a>
+          <a class="btn btn-btfl ms-1 me-1 my-auto" href="{% url 'cv:index' %}">
+            Currículo
+          </a>  
           {% endif %}
           {% if request.user.is_staff %}
     

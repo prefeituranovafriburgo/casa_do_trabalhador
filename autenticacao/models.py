@@ -9,6 +9,7 @@ class Pessoa(models.Model):
     def __str__(self):
         return '%s - Email: %s' % (self.nome, self.email)
     
+    foto = models.ImageField(upload_to='fotos', verbose_name='Foto', null=True, blank=True)
     objetivo = models.CharField(max_length=380, verbose_name='Objetivo', null=True, blank=True)
     user=models.OneToOneField(User, on_delete=models.CASCADE)
     nome=models.CharField(max_length=64, verbose_name='Nome')

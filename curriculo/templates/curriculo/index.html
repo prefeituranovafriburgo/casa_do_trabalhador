@@ -20,7 +20,8 @@
             <div class="col d-flex w-100 text-center flex-column py-5 my-5">
                 <h2 class="text-uppercase">MEU CURRÍCULO</h2>
                 <div class="d-flex mx-auto mt-3">
-                    <a class="btn btn-btfl bg-primary" href="{% url 'cv:educacao' %}"><i class="fa-solid fa-plus-minus me-2"></i>Educação</a>
+                    <a class="btn btn-btfl bg-primary" href="{% url 'cv:editar_dados' %}"><i class="fa-solid fa-pen-to-square me-2"></i>Dados Pessoais</a>
+                    <a class="btn btn-btfl bg-primary ms-2" href="{% url 'cv:educacao' %}"><i class="fa-solid fa-plus-minus me-2"></i>Educação</a>
                     <a class="btn btn-btfl bg-primary ms-2" href="{% url 'cv:experiencia' %}"><i class="fa-solid fa-plus-minus me-2"></i>Experiência</a>                
                     <a class="btn btn-btfl bg-primary ms-2" href="{% url 'cv:curriculo' %}"><i class="fa-solid fa-eye me-2"></i>Currículo</a>
                 </div>

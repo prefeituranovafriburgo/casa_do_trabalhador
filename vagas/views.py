@@ -1021,3 +1021,12 @@ def download_emails(request, month, year):
 # Função temporária
 def manutencao(request):
     return render(request, 'vagas/manutencao.html')
+
+def meus_encaminhamentos(request):    
+    pessoa = Pessoa.objects.get(user=request.user)
+    candidato_encaminhamentos = Candidato.objects.filter(cpf=pessoa.cpf, vaga__ativo=True)
+    
+    context = {
+       'encaminhamentos': candidato_encaminhamentos
+    }
+    return render(request, 'vagas/meus_encaminhamentos.html', context)
