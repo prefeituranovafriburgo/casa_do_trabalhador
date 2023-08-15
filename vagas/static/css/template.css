@@ -481,26 +481,31 @@ h4 {
   box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
               0 32px 64px -48px rgba(0,0,0,0.5);
 }
-.div-vaga .cargo, .qtd-vaga{
+.div-vaga .qtd-vaga{
   text-align: center;
 }
-.div-vaga .cargo{
+.div-vaga{
   font-size: 20px;
 }
 .qtd-vaga{
   display: flex;
-  justify-content: space-between;
 }
 .qtd-vaga p{
   font-size: 12px;
 }
 .div-detalhes-vaga{
   margin-top: 10px;
+  position: relative;
+}
+.btn_detalhes{
+  position: absolute;
+  right: 0px;
+  top: -70px;
 }
 .detalhamento-vaga{
   display: grid;
   gap: 10px;
-  margin-top: 20px;
+  /* margin-top: 50px; */
   grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
 }
 .div-vagas-ofertadas{
@@ -527,6 +532,11 @@ h4 {
   .div-vaga .cargo{
     font-size: 16px;
     margin-bottom: 20px;
+  }
+  .btn_detalhes{
+    position: absolute;
+    /* right: 0px; */
+    /* top: 70px; */
   }
 }
 @media(max-width:768px){
@@ -557,6 +567,14 @@ h4 {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  .detalhamento-vaga{
+    margin-top: 50px;
+  }
+  .btn_detalhes{
+    position: absolute;
+    left: 0px;
+    top: 0px;
   }
 } 
 @media(max-width:425px){
