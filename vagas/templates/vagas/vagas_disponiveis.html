@@ -201,10 +201,17 @@
     
                     <div>
                       <p class="my-auto">
-                        <b>Vagas:</b> {{vaga.quantidadeVagas}}
+                        {% if vaga.tipo_de_vaga != 'NML' %}
+                        <b>[{{vaga.get_tipo_de_vaga_display}}]</b>
+                        {% endif %}
+                        {% if vaga.experiencia == 'Não' %}
+                        {% endif %}
                         {% if vaga.experiencia == 'Sim' %}
                         <span class="ms-3 text-gray"><i>Requer experiência!</i>
                         </span>
+                        {% else %}
+
+                        <br>
                         {% endif %}
                         {% if request.user.is_staff %}
                         <span class="me-3">
@@ -227,9 +234,7 @@
                     </a>  
                   </div>
                   <div class="detalhamento-vaga">
-                    {% if vaga.tipo_de_vaga != 'NML' %}
-                    <p class="d-flex"><b>Tipo:</b> {{vaga.get_tipo_de_vaga_display}}</p>
-                    {% endif %}
+                    <p><b>Vagas:</b><br>{{vaga.quantidadeVagas}}</p>
                     <p><b>Escolaridade:</b><br>{{vaga.escolaridade}}</p>
                     <p><b>Carga hóraria:</b><br>{{vaga.carga_horaria}}</p>
                     <p>
