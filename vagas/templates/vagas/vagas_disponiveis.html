@@ -210,8 +210,12 @@
                         <span class="{% if vaga.tipo_de_vaga != 'NML' %}ms-3{% endif %} text-gray"><i>Requer experiência!</i>
                         </span>
                         {% else %}
-
+                        {% if vaga.tipo_de_vaga == 'NML' %}
+                        {% if request.user.is_staff %}
+                        {% else %}
                         <br>
+                        {% endif %}
+                        {% endif %}
                         {% endif %}
                         {% if request.user.is_staff %}
                         <span class="me-3">
