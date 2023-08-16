@@ -195,15 +195,22 @@
                   <div>
                     <div>
                       <h4 id="{{forloop.counter}}-cargo" class="cargo">
-                        {% if request.user.is_staff %}{{vaga.empresa}} - {% endif%}{{vaga.cargo}}{% if request.user.is_staff %} - {{vaga.dt_inclusao | date:"d/m/Y"}}{% endif%}
+                        {% if request.user.is_staff %}{{vaga.empresa}} - {% endif%}{{vaga.cargo}}
                       </h4>
                     </div>
     
                     <div>
                       <p class="my-auto">
-                        <b>Vagas:</b> {{vaga.quantidadeVagas}}{% if vaga.experiencia == 'Sim' %}
-                      <span class="ms-3 text-gray"><i>Requer experiência!</i></span>
-                      {% endif %}
+                        <b>Vagas:</b> {{vaga.quantidadeVagas}}
+                        {% if vaga.experiencia == 'Sim' %}
+                        <span class="ms-3 text-gray"><i>Requer experiência!</i>
+                        </span>
+                        {% endif %}
+                        {% if request.user.is_staff %}
+                        <span class="me-3">
+                          {{vaga.dt_inclusao | date:"d/m/Y"}}
+                        </span>
+                        {% endif %}
                       </p>
                     </div>
                   </div>
