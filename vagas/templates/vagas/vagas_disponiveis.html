@@ -200,10 +200,10 @@
                     </div>
     
                     <div class="qtd-vaga">
-                      <p>Vagas: {{vaga.quantidadeVagas}}</p>
                       {% if vaga.experiencia == 'Sim' %}
                       <span class="ms-4 text-gray"><i>Requer experiência!</i></span>
                       {% endif %}
+                      <p>Vagas: {{vaga.quantidadeVagas}}</p>
                     </div>
                   </div>
                 </div>
@@ -222,14 +222,14 @@
                     {% if vaga.tipo_de_vaga != 'NML' %}
                     <p class="d-flex"><b>Tipo:</b> {{vaga.get_tipo_de_vaga_display}}</p>
                     {% endif %}
-                    <p><b>Escolaridade:</b>{{vaga.escolaridade}}</p>
-                    <p><b>Carga hóraria:</b> {{vaga.carga_horaria}}</p>
+                    <p><b>Escolaridade:</b><br>{{vaga.escolaridade}}</p>
+                    <p><b>Carga hóraria:</b><br>{{vaga.carga_horaria}}</p>
                     <p>
                       {% if vaga.regime != '' %}
-                      <b>Regime:</b> {{vaga.regime}}
+                      <b>Regime:</b> <br>{{vaga.regime}}
                       {% endif %}
                     </p>
-                    <p><b>Bairro:</b> {{vaga.empresa.bairro}}</p>
+                    <p><b>Bairro:</b> <br>{{vaga.empresa.bairro}}</p>
                   </div>
                 </div>
               </div>
