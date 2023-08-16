@@ -219,7 +219,7 @@
                         {% endif %}
                         {% if request.user.is_staff %}
                         <span class="me-3">
-                          {{vaga.dt_inclusao | date:"d/m/Y"}}
+                          [ {{vaga.dt_inclusao | date:"d/m/Y"}} ]
                         </span>
                         {% endif %}
                       </p>
