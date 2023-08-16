@@ -199,11 +199,12 @@
                       </h4>
                     </div>
     
-                    <div class="qtd-vaga">
-                      {% if vaga.experiencia == 'Sim' %}
-                      <span class="me-4 text-gray"><i>Requer experiência!</i></span>
+                    <div>
+                      <p class="my-auto">
+                        <b>Vagas:</b> {{vaga.quantidadeVagas}}{% if vaga.experiencia == 'Sim' %}
+                      <span class="ms-3 text-gray"><i>Requer experiência!</i></span>
                       {% endif %}
-                      <p class="my-auto">Vagas: {{vaga.quantidadeVagas}}</p>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -216,7 +217,7 @@
                       class="btn btn-success btn_detalhes"
                     >
                       DETALHES DA VAGA
-                    </a>
+                    </a>  
                   </div>
                   <div class="detalhamento-vaga">
                     {% if vaga.tipo_de_vaga != 'NML' %}
