@@ -199,7 +199,7 @@
                       </h4>
                     </div>
     
-                    <div>
+                    <div class="d-flex">
                       <p class="my-auto">
                         {% if vaga.tipo_de_vaga != 'NML' %}
                         <b class="text-secondary text-uppercase">[ {{vaga.get_tipo_de_vaga_display}} ]</b>
@@ -218,7 +218,7 @@
                         {% endif %}
                         {% endif %}
                         {% if request.user.is_staff %}
-                        <span class="me-3">
+                        <span class="me-3 span-date">
                           [ {{vaga.dt_inclusao | date:"d/m/Y"}} ]
                         </span>
                         {% endif %}

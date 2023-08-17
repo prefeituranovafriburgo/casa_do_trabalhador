@@ -499,8 +499,8 @@ h4 {
 }
 .btn_detalhes{
   position: absolute;
-  right: 0px;
-  top: -70px;
+  right: 130px;
+  top: 95px;
 }
 .detalhamento-vaga{
   display: grid;
@@ -535,8 +535,8 @@ h4 {
   }
   .btn_detalhes{
     position: absolute;
-    /* right: 0px; */
-    /* top: 70px; */
+    right: 150px;
+    top: 150px;
   }
 }
 @media(max-width:768px){
@@ -568,13 +568,19 @@ h4 {
     flex-direction: column;
     align-items: center;
   }
-  .detalhamento-vaga{
-    margin-top: 50px;
-  }
+  
   .btn_detalhes{
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 220px;
+    top: 160px;
+    width: 180px;
+  }
+  .div-vaga{
+    width: 470px;
+  }
+  .span-date{
+    display: flex;
+    width: 200px;
   }
 } 
 @media(max-width:425px){
