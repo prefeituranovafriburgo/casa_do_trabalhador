@@ -821,7 +821,6 @@ def sair(request):
 @login_required
 @staff_required
 def painel_administrativo(request):
-
     return render(request, 'vagas/painel_administrativo.html')
 
 
