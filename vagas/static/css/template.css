@@ -4,6 +4,9 @@ body {
   min-height: 100vh;
   min-width: 450px;
 }
+#mainBlock{
+  margin: auto;
+}
 :root {
   /* --main-color: #329787; */
   --secondary-color: #329787;
