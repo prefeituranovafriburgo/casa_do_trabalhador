@@ -265,24 +265,28 @@
               </div>
               <div class="row">
                 <div class="col pt-1 div-detalhes-vaga">
-                  <div class="ms-auto" id="detalhes_vaga">
+                  <div class="detalhamento-vaga d-flex justify-content-between flex-wrap">
+                    <div><b>Vagas:</b><br>{{vaga.quantidadeVagas}}</div>
+                    <div><b>Escolaridade:</b><br>{{vaga.escolaridade}}</div>
+                    <div><b>Carga hóraria:</b><br>{{vaga.carga_horaria}}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col d-flex justify-content-between flex-wrap">
+                  <div>
+                    {% if vaga.regime != '' %}
+                    <b>Regime:</b> <br>{{vaga.regime}}
+                    {% endif %}
+                  </div>
+                  <div><b>Bairro:</b> <br>{{vaga.empresa.bairro}}</div>
+                  <div class="mt-auto" id="detalhes_vaga">
                     <a
                       href="{% url 'vagas:visualizar_vaga' vaga.id %}"
-                      class="btn btn-success btn_detalhes"
+                      class="btn btn-success"
                     >
                       DETALHES DA VAGA
                     </a>  
-                  </div>
-                  <div class="detalhamento-vaga">
-                    <p><b>Vagas:</b><br>{{vaga.quantidadeVagas}}</p>
-                    <p><b>Escolaridade:</b><br>{{vaga.escolaridade}}</p>
-                    <p><b>Carga hóraria:</b><br>{{vaga.carga_horaria}}</p>
-                    <p>
-                      {% if vaga.regime != '' %}
-                      <b>Regime:</b> <br>{{vaga.regime}}
-                      {% endif %}
-                    </p>
-                    <p><b>Bairro:</b> <br>{{vaga.empresa.bairro}}</p>
                   </div>
                 </div>
               </div>
