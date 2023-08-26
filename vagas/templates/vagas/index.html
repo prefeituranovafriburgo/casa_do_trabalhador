@@ -38,20 +38,27 @@
 <div class="row mx-auto px-5">
   <div class="d-flex flex-wrap">
    {% for vaga in vagas %}
-    <div class="item me-2 ">
+    <!-- <div class="item me-2 ">
       <div class="c-img" style="position: relative;">
         <img class="banner-img" src="{% if vaga.banner_img %}{{vaga.banner_img.url}}{% endif %}" >
-        <!-- <span class="badge_item" style="background-color: red; position: absolute; top:0; right: 0; margin: 5px; padding: 0px 4px; border-radius: 6px; font-size: 10pt; color: white;">
-         dsadsa         
-        </span> -->
       </div>
       <div class="curso-text mx-2 d-flex flex-column py-1">
         <h6 class="mt-2">{{vaga.cargo}}</h6>
         <p class="time">{{vaga.tipo_vaga}}</p>
         <a href="#" class="btn btn-outline-primary rounded-1 btn-details py-1 mt-auto mb-3" id="esp-2">Ver detalhes</a>
       </div>
+    </div> -->
+    <div class="item me-2 ">
+      <div class="c-img" style="position: relative;">
+        <img class="banner-img" src="{% if vaga.banner_img %}{{vaga.banner_img.url}}{% endif %}" >
+      </div>
+      <div class="curso-text mx-2 d-flex flex-column py-1">
+        <h6 class="mt-2">{{vaga.cargo}} ué</h6>
+        <p class="time">{{vaga.tipo_vaga}}</p>
+        <a href="#" class="btn btn-outline-primary rounded-1 btn-details py-1 mt-auto mb-3" id="esp-2">Ver detalhes</a>
+      </div>
     </div>
-   {% endfor %}
+    {% endfor %}
   </div>
 </div>
 <div class="row mx-auto px-5">

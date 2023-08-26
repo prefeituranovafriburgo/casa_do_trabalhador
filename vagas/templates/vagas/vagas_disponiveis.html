@@ -9,17 +9,13 @@
   crossorigin="anonymous"
 ></script>
 <link rel="stylesheet" href="/static/css/template.css">
-<div class="row pt-5">
-  <div class="col div-vagas-ofertadas">
-    <div class="row">
-      <div class="col">
-        {% include 'slide.html' %}
-      </div>
-    </div>
-    <div class="col-8 div-principal-vagas-ofertadas">
+{% include 'slide.html' %}
+<div class="row">
+  <div class="col d-flex">
+    <div class="col-lg-8 mx-auto">
       <div class="row">
         <div class="col pt-5 text-center">
-          <p style="margin-bottom: 40px">
+          <p style="margin-bottom: 10px">
             Temos no total
             <b
               >{{qnt_cargos}} {% if qnt_cargos > 1 %}cargos{% else %}cargo{% endif %}</b
@@ -32,16 +28,9 @@
           </p>
         </div>
       </div>
-      <!-- <h2 class="text-start">VAGAS DISPONÍVEIS</h2> -->
       <div class="row">
         <div class="col d-flex div-vaga-container">
-          <h2 class="text-start">VAGAS OFERTADAS</h2>
-          <div class="div-vaga-container-links d-flex">
-            <!-- <button class="btn btn-btfl2 me-2" id="filtros">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
-              </svg>
-            </button> -->
+          <div class="div-vaga-container-links d-flex mt-3">
           {% if request.user.is_authenticated %}
           <a class="btn btn-btfl ms-auto my-auto" style="width: auto !important;" href="{% url 'vagas:meus_encaminhamentos' %}">
               Encaminhamentos
@@ -56,8 +45,8 @@
             <a class="btn btn-btfl me-2" href="{% url 'vagas:imprimir' %}"
               ><i class="fas fa-print"></i
             ></a>
-            <a class="btn btn-btfl" href="{% url 'vagas:cadastrar' %}">CADASTRAR</a>
           </span>
+          <a class="btn btn-btfl" style="width: auto !important;" href="{% url 'vagas:cadastrar' %}">CADASTRAR</a>
     
           {% endif %}
         </div>
@@ -162,23 +151,68 @@
           />
         </div>
       </div>
+      <!-- {% for vaga in vagas %}
+      <div class="row px-2 mb-3">
+        <div class="col border px-4 py-3" style="border-radius: 30px; background-color: white;">
+          <h4 id="{{forloop.counter}}-cargo" class="cargo">{% if request.user.is_staff %}{{vaga.empresa}} - {% endif%}{{vaga.cargo}}</h4>
+          <div class="row">
+            <div class="col d-flex justify-content-between flex-wrap">
+              <div class="d-flex flex-column">
+                <strong>Vagas:</strong><span>{{vaga.quantidadeVagas}}</span>
+              </div>
+              <div class="d-flex flex-column">
+                <strong>Escolaridade:</strong><span>{{vaga.escolaridade}}</span>
+              </div>
+              <div class="d-flex flex-column">
+                <strong>Carga hóraria:</strong><span>{{vaga.carga_horaria}}</span>
+              </div>
+              {% if vaga.regime != '' %}
+              <div class="d-flex flex-column">
+                <strong>Regime:</strong><span>{{vaga.regime}}</span>
+              </div>
+              {% endif %}
+              <div class="d-flex flex-column">
+                <strong>Bairro:</strong><span>{{vaga.empresa.bairro}}</span>
+              </div>
+          
+            </div>
+          </div>
+          <div class="row">
+            <div class="col d-flex pt-3">
+              <div class="d-flex">
+                <p class="my-auto">
+                  {% if request.user.is_staff %}
+                  <span class="me-3 span-date">
+                    {{vaga.dt_inclusao | date:"d/m/Y"}}
+                  </span>
+                  {% endif %}
+                  {% if vaga.tipo_de_vaga != 'NML' %}
+                  <b class="text-secondary text-uppercase">[ {{vaga.get_tipo_de_vaga_display}} ]</b>
+                  {% endif %}
+                  {% if vaga.experiencia == 'Não' %}
+                  {% endif %}
+                  {% if vaga.experiencia == 'Sim' %}
+                  <span class="{% if vaga.tipo_de_vaga != 'NML' %}ms-3{% endif %} text-gray"><i>Requer experiência!</i>
+                  </span>
+                  {% else %}
+                  {% if vaga.tipo_de_vaga == 'NML' %}
+                  {% if request.user.is_staff %}
+                  {% else %}
+                  {% endif %}
+                  {% endif %}
+                  {% endif %}
+                  
+                </p>
+              </div>
+              <a href="{% url 'vagas:visualizar_vaga' vaga.id %}" class="btn btn-success ms-auto">
+                DETALHES DA VAGA
+              </a>  
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %} -->
       <table class="table table-hover">
-        <!-- <thead>
-            <tr> 
-                {% if user.is_authenticated %}
-                <th></th>
-                {% endif %}
-                <th scope="col">Vagas</th>
-                <th scope="col">Cargo</th>
-                <th scope="col">Empresa</th>
-                <th scope="col">Vagas</th>
-                <th scope="col">Experiência</th>
-                <th scope="col">Escolaridade</th>      
-                {% if user.is_authenticated %}
-                <th>Empresa</th>                      
-                {% endif %}
-              </tr>
-            </thead>-->
         <tbody id="busca">
           {% for vaga in vagas %}
           <tr
@@ -217,12 +251,13 @@
                         {% endif %}
                         {% endif %}
                         {% endif %}
-                        {% if request.user.is_staff %}
-                        <span class="me-3 span-date">
-                          [ {{vaga.dt_inclusao | date:"d/m/Y"}} ]
+                        
+                      </p>
+                      {% if request.user.is_staff %}
+                        <span class="ms-auto me-3 span-date">
+                          {{vaga.dt_inclusao | date:"d/m/Y"}}
                         </span>
                         {% endif %}
-                      </p>
                     </div>
                   </div>
                 </div>

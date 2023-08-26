@@ -1,50 +1,6 @@
-<div id="slideContainer">
-    {% for evento in eventos %}
-    <div class="slide {% if forloop.first %}active{% endif %}" style="box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1); border-radius: 30px;">
-      <div class="row">
-        <div class="banner_destaque d-flex flex-column flex-xl-row bg-white img-txt">
-          <div class="img-destaque">
-            <img class="banner_img_destaque w-100" src="{{evento.banner_img.url}}">
-          </div>          
-        </div>
-      </div>
+{% load static %}
+<div class="row pt-5 mt-5">
+    <div class="col pt-5 d-flex">
+        <img style="max-height: 250px; border-radius: 30px;box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.11);" class="mt-3 mx-auto img-fluid" src="{% static 'images/banner.jpg' %}">
     </div>
-    {% endfor %}
-  </div>
-  <script>
-    const slides = document.querySelectorAll('.slide');
-    let currentSlide = 0;
-  
-    function showSlide(slideIndex) {
-      if (slideIndex >= slides.length) {
-        slideIndex = 0;
-      } else if (slideIndex < 0) {
-        slideIndex = slides.length - 1;
-      }
-  
-      for (let i = 0; i < slides.length; i++) {
-        slides[i].classList.remove('active');
-      }
-  
-      slides[slideIndex].classList.add('active');
-      currentSlide = slideIndex;
-    }
-  
-    function nextSlide() {
-      showSlide(currentSlide + 1);
-    }
-  
-    function previousSlide() {
-      showSlide(currentSlide - 1);
-    }
-      
-    document.getElementById('slideContainer').addEventListener('click', function(e) {
-      if (e.target.classList.contains('next')) {
-        nextSlide();
-      } else if (e.target.classList.contains('previous')) {
-        previousSlide();
-      }
-    });
-      
-    setInterval(nextSlide, 9000);
-  </script>
+</div>

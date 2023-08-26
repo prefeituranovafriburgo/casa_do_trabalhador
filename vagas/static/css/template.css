@@ -5,9 +5,10 @@ body {
   min-width: 450px;
 }
 :root {
-  --main-color: #329787;
+  /* --main-color: #329787; */
   --secondary-color: #329787;
-  /* --main-color: #084775; */
+  --main-color: #084775;
+  
 }
 body {
   overflow: hidden;
@@ -35,7 +36,7 @@ header {
   background-color: #ffffff;
 }
 .img-logo {
-  width: 45px;
+  width: 112px;
 }
 .logo-nf {
   width: 23px;
