@@ -4,6 +4,7 @@ app_name='vagas'
 
 urlpatterns = [
     path('', views.vagas, name='home'), 
+    path('exportar-vagas/', views.exportar_vagas_excel, name='exportar_vagas'), 
     path('meus-encaminhamentos/', views.meus_encaminhamentos, name='meus_encaminhamentos'),
     # path('', views.manutencao, name = 'manutencao'),
     path('indicadores', views.indicadores, name='indicadores'),  

@@ -46,10 +46,19 @@
             <a class="btn btn-btfl me-2" href="{% url 'vagas:imprimir' %}"
               ><i class="fas fa-print"></i
             ></a>
+            {% if request.user.is_superuser %}
+            <span class="ms-0">
+              <a class="ms-0 btn btn-success text-light me-2" href="{% url 'vagas:exportar_vagas' %}">
+                <i class="fa-solid fa-file-excel"></i>
+              </a>
+            </span>
+            {% endif %}
           </span>
+          
           <a class="btn btn-btfl" style="width: auto !important;" href="{% url 'vagas:cadastrar' %}">CADASTRAR</a>
     
           {% endif %}
+         
         </div>
         </div>
         <div class="opcoes-filtros filter-hidden" id="opcoes-filtros">

@@ -24,8 +24,11 @@ from django.db.models import Sum, Count
 from django.utils import timezone
 from django.conf import settings
 
+from openpyxl import Workbook
+from urllib.parse import quote
+
 from .models import Slide
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 
 from autenticacao.models import Pessoa
 
@@ -35,6 +38,40 @@ def staff_required(view_func):
             return HttpResponseForbidden("Acesso negado. Você não é um funcionário.")
         return view_func(request, *args, **kwargs)
     return _wrapped_view
+
+def superuser_required(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return HttpResponseForbidden("Acesso negado. Você não é um super usuário.")
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+@login_required
+@staff_required
+@superuser_required
+def exportar_vagas_excel(request):
+    # Filtrar os registros onde ativo=True
+    vagas_ativas = Vaga_Emprego.objects.filter(ativo=True)
+
+    # Criar um objeto Workbook
+    wb = Workbook()
+    ws = wb.active
+
+    # Adicionar cabeçalhos das colunas
+    ws.append(['ID da Vaga', 'Nome da Empresa', 'Nome do Cargo', 'Número de Vagas', 'Data de Inclusão'])
+
+    # Preencher os dados
+    for vaga in vagas_ativas:
+        ws.append([vaga.id, vaga.empresa.nome, vaga.cargo.nome, vaga.quantidadeVagas, vaga.dt_inclusao])
+
+    # Criar uma resposta HTTP
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = f'attachment; filename={quote("vagas_ativas.xlsx")}'
+
+    # Salvar o conteúdo do arquivo Excel na resposta
+    wb.save(response)
+
+    return response
 
 
 def visualizar_vaga(request, id):
