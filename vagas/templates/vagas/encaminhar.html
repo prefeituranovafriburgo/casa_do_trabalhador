@@ -75,6 +75,11 @@
             Por email, com seu currículo em anexo,  ao endereço: <br>
             <span style="text-decoration: underline; margin: 0px 30px;">{{vaga.empresa.email}}</span></p>
             {% endif %}
+            {% if vaga.empresa.contato_link %}
+            <p style="margin: 0 30px;">                
+            Pelo endereço eletronico: <br>
+            <span style="text-decoration: underline; margin: 0px 30px;">{{vaga.empresa.link}}</span></p>
+            {% endif %}
             {% if vaga.empresa.contato_presencial %}
             <p style="margin: 0 30px;">                
             O candidato deve seguir o link abaixo e seguir e efetuar o cadastro na plataforma da empresa: <br>

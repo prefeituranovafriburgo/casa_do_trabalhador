@@ -58,11 +58,11 @@ def exportar_vagas_excel(request):
     ws = wb.active
 
     # Adicionar cabeçalhos das colunas
-    ws.append(['ID da Vaga', 'Nome da Empresa', 'Nome do Cargo', 'Número de Vagas', 'Data de Inclusão'])
+    ws.append(['ID da Vaga', 'Nome da Empresa', 'Nome do Cargo', 'Número de Vagas', 'Data de Inclusão', 'Telefone', 'Whatsapp', 'Email'])
 
     # Preencher os dados
     for vaga in vagas_ativas:
-        ws.append([vaga.id, vaga.empresa.nome, vaga.cargo.nome, vaga.quantidadeVagas, vaga.dt_inclusao])
+        ws.append([vaga.id, vaga.empresa.nome, vaga.cargo.nome, vaga.quantidadeVagas, vaga.dt_inclusao, vaga.empresa.telefone, vaga.empresa.whatsapp, vaga.empresa.email])
 
     # Criar uma resposta HTTP
     response = HttpResponse(content_type='application/ms-excel')
