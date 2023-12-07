@@ -1,0 +1,53 @@
+{% extends 'base_site.html' %} {% load static %} 
+{% block title %}Painel Administrativo{% endblock %} 
+{% block css %} {{block.super}} {% endblock%}
+
+{% block head_js %}
+<script src="{% static 'assets/js/modal.js' %}"></script>
+{% endblock %}
+
+{% block main_conteudo %}
+
+<div class="row">
+  <div class="col">
+    <h1 class="text-start mb-0 pb-0">
+      Painel Administrativo
+    </h1>
+  </div>
+</div>
+<div id="painelMenu" class="col">
+  <div class="row">
+    <div class="col d-flex">
+      <input type="search" name="search" id="search" class="form-control" placeholder="Procurar...">
+    </div>
+  </div>
+  {% for empresa in empresas %}
+  <table class="table mt-5">
+    <thead>
+      <th>ID</th>
+      <th>CNPJ</th>
+      <th>Nome da empresa</th>
+      <th></th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{empresa.id}}</td>
+        <td>{{empresa.cnpj}}</td>
+        <td>{{empresa.nome}}</td>
+        <td><a href="#" style="text-decoration: none;"><i class="fa fa-eye"></i></a></td>
+      </tr>
+    </tbody>
+  </table>
+  {% endfor %}
+</div>
+<style>
+  #painelMenu .btn{
+    width: 300px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-bottom: 5px;    
+  }
+  
+</style>
+
+{% endblock %}

@@ -25,12 +25,14 @@ from django.utils import timezone
 from django.conf import settings
 
 from openpyxl import Workbook
+from openpyxl.styles import Alignment
 from urllib.parse import quote
 
 from .models import Slide
 from django.http import HttpResponseForbidden, HttpResponse
 
 from autenticacao.models import Pessoa
+from django.shortcuts import get_object_or_404
 
 def staff_required(view_func):
     def _wrapped_view(request, *args, **kwargs):
@@ -673,6 +675,48 @@ def candidatosporvaga(request, id, mes, ano):
 
     return render(request, 'vagas/listar_candidatos.html', context)
 
+def infoempresa(request):
+    empresas = Empresa.objects.all()
+    context={
+        'empresas': empresas
+    }
+    return render(request, 'vagas/infoempresa.html', context)
+
+def infoempresa_download(request, id):
+    empresa = get_object_or_404(Empresa, id=id)
+
+    # Obtém todos os candidatos encaminhados para a empresa específica
+    candidatos = Candidato.objects.filter(vaga__empresa=empresa)
+
+    # Cria um novo workbook e uma planilha
+    wb = Workbook()
+    ws = wb.active
+
+    # Configuração do cabeçalho do arquivo Excel
+    ws.append(["Informações da Empresa: " + empresa.nome + " - " + empresa.cnpj +" Data emissão: " + str(date.today())])
+    header = ["Nome", "CPF", "Data de Nascimento", "Sexo", "E-mail", "Celular", "Bairro", "Escolaridade", "Online", "Data de Inclusão"]
+
+    # Adiciona o cabeçalho à planilha
+    ws.append(header)
+
+    # Adiciona os dados dos candidatos à planilha
+    for candidato in candidatos:
+        data_row = [candidato.nome, candidato.cpf, candidato.data_nascimento, candidato.get_sexo_display(), candidato.email, candidato.celular, candidato.bairro, candidato.escolaridade.nome, candidato.candidato_online, candidato.dt_inclusao]
+        ws.append(data_row)
+
+    # Ajusta o alinhamento do texto na planilha
+    for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max_column):
+        for cell in row:
+            cell.alignment = Alignment(horizontal='left')
+
+    # Cria a resposta HTTP com o conteúdo Excel
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename=Candidatos_{empresa.nome}.xlsx'
+
+    # Salva o workbook na resposta HTTP
+    wb.save(response)
+
+    return response
 
 @login_required
 @staff_required
