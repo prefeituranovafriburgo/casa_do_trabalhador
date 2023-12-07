@@ -700,14 +700,21 @@ def infoempresa_download(request, id):
     ws.append(header)
 
     # Adiciona os dados dos candidatos à planilha
+     # Mantém o controle dos CPFs já adicionados
+    cpf_set = set()
+
+    # Adiciona os dados dos candidatos à planilha, evitando CPFs duplicados
     for candidato in candidatos:
-        data_row = [candidato.nome, candidato.cpf, candidato.data_nascimento, candidato.get_sexo_display(), candidato.email, candidato.celular, candidato.bairro, candidato.escolaridade.nome, candidato.candidato_online, candidato.dt_inclusao]
-        ws.append(data_row)
+        if candidato.cpf not in cpf_set:
+            data_row = [candidato.nome, candidato.cpf, candidato.data_nascimento, candidato.get_sexo_display(), candidato.email, candidato.celular, candidato.bairro, candidato.escolaridade.nome, candidato.candidato_online, candidato.dt_inclusao]
+            ws.append(data_row)
+            cpf_set.add(candidato.cpf)
 
     # Ajusta o alinhamento do texto na planilha
     for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max_column):
         for cell in row:
             cell.alignment = Alignment(horizontal='left')
+
 
     # Cria a resposta HTTP com o conteúdo Excel
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
