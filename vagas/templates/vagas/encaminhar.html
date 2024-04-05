@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Carta de encaminhamento</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@600&family=Roboto&display=swap" rel="stylesheet">
@@ -62,7 +62,7 @@
             {% endif %}
             {% if vaga.empresa.contato_whatsapp %}
             <p style="margin: 10px 30px;">                
-            Por whatsapp: <br>
+                O candidato deve enviar o seu currículo digital para o whatsapp abaixo:": <br>
             <span id="whatsapp" style="text-decoration: underline; margin: 0px 30px;">{{vaga.empresa.whatsapp}}</span></p>
             <script>
                  window.onload = function(){                    
@@ -79,12 +79,7 @@
             <p style="margin: 0 30px;">                
             Pelo endereço eletronico: <br>
             <span style="text-decoration: underline; margin: 0px 30px;">{{vaga.empresa.link}}</span></p>
-            {% endif %}
-            {% if vaga.empresa.contato_presencial %}
-            <p style="margin: 0 30px;">                
-            O candidato deve seguir o link abaixo e seguir e efetuar o cadastro na plataforma da empresa: <br>
-            <span style="text-decoration: underline; margin: 0px 30px;">{{vaga.empresa.link}}</span></p>
-            {% endif %}
+            {% endif %}            
             <p style="margin-top: 30px;">
                 <b>OBS.:</b>
                 As informações presentes nesta são de responsabilidade do candidato.

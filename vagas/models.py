@@ -73,7 +73,8 @@ class Vaga_Emprego(models.Model):
 
     EXPERIENCIA_CHOICES=(
                             ('Sim', 'Sim'),
-                            ('Não', 'Não')
+                            ('Não', 'Não'),
+                            ('Des', 'Desejável')
     )
     
     TIPO_DE_VAGA_CHOICES=(
