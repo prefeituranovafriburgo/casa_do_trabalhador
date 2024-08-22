@@ -7,7 +7,7 @@ class CadastroVagasForm(ModelForm):
     class Meta:
         model = Vaga_Emprego
         widgets = {'user': forms.HiddenInput()}
-        exclude = ['banner_img','dt_inclusao', 'dt_desativacao']
+        exclude = ['banner_img','dt_inclusao', 'dt_desativacao', 'observacao']
 
 # class Form_Candidato(ModelForm):
 #     class Meta:
@@ -67,7 +67,7 @@ class Form_Candidato(ModelForm):
             'escolaridade': forms.Select(attrs={'class': 'form-control mb-2'}),
             'candidato_online': forms.HiddenInput(),
         }
-        exclude = ['observacao', 'dt_inclusao', 'candidato_ativo', 'conseguiu_vaga','dt_aquisicao', 'funcionario_encaminhamento', 'dt_atualizacao']
+        exclude = ['dt_inclusao', 'candidato_ativo', 'conseguiu_vaga','dt_aquisicao', 'funcionario_encaminhamento', 'dt_atualizacao']
 
     def clean_cpf(self):
         cpf = validate_CPF(self.cleaned_data["cpf"])
