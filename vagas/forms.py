@@ -2,6 +2,7 @@ from django import forms
 from django.forms import ModelForm, ValidationError
 from .models import *
 from .validations import validate_CNPJ
+
 class CadastroVagasForm(ModelForm):    
     class Meta:
         model = Vaga_Emprego
@@ -66,7 +67,7 @@ class Form_Candidato(ModelForm):
             'escolaridade': forms.Select(attrs={'class': 'form-control mb-2'}),
             'candidato_online': forms.HiddenInput(),
         }
-        exclude = ['dt_inclusao', 'candidato_ativo', 'conseguiu_vaga','dt_aquisicao', 'funcionario_encaminhamento', 'dt_atualizacao']
+        exclude = ['observacao', 'dt_inclusao', 'candidato_ativo', 'conseguiu_vaga','dt_aquisicao', 'funcionario_encaminhamento', 'dt_atualizacao']
 
     def clean_cpf(self):
         cpf = validate_CPF(self.cleaned_data["cpf"])
