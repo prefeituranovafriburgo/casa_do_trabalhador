@@ -22,7 +22,7 @@ email_pass = env_vars['email_pw']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = debug_mode
 
-ALLOWED_HOSTS = ['localhost', '192.168.1.109', 'casadotrabalhador.pmnf.rj.gov.br', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '192.168.0.106', 'casadotrabalhador.pmnf.rj.gov.br', '127.0.0.1']
 
 try:
     hCAPTCHA_PUBLIC_KEY = env_vars['hCAPTCHA_Public_Key']
