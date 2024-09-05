@@ -366,18 +366,18 @@ def cadastrar_vagaOfertada(request):
                     gambiarra[item] = request.POST[item]
             else:
                 gambiarra[item] = request.POST[item]
-        form = CadastroVagasForm(gambiarra)
+        form = CadastroInternoVagasForm(gambiarra)
         if form.is_valid():
             form.save()
             context = {
                 'tipo_cadastro': 'cadastrar',
-                'form': CadastroVagasForm(initial={'ativo': True, 'user': request.user}),
+                'form': CadastroInternoVagasForm(initial={'ativo': True, 'user': request.user}),
                 'hidden': ['user', 'ativo'],
                 'success': [True, 'Vaga cadastrada com sucesso!']
             }
             return render(request, 'vagas/cadastrar_vagaOfertada.html', context)
     else:
-        form = CadastroVagasForm(initial={'ativo': True, 'user': request.user})
+        form = CadastroInternoVagasForm(initial={'ativo': True, 'user': request.user})
     context = {
         'tipo_cadastro': 'cadastrar',
         'form': form,
@@ -414,7 +414,7 @@ def cadastrar_vaga_emLote(request):
         except:
             success = False
         if success:
-            form = CadastroVagasForm(
+            form = CadastroInternoVagasForm(
                 initial={'ativo': True, 'user': request.user})
             context = {
                 'empresa': request.POST['empresa'],
@@ -423,7 +423,7 @@ def cadastrar_vaga_emLote(request):
                 'hidden': ['user', 'ativo']
             }
             return render(request, 'vagas/cadastrar_vagas_emLote_2.html', context)
-    form = CadastroVagasForm(initial={'ativo': True, 'user': request.user})
+    form = CadastroInternoVagasForm(initial={'ativo': True, 'user': request.user})
     context = {
         'tipo_cadastro': 'cadastrar',
         'form': form,
@@ -480,7 +480,7 @@ def alterar_vaga(request, id):
                     gambiarra[item] = request.POST[item]
             else:
                 gambiarra[item] = request.POST[item]
-        form = CadastroVagasForm(gambiarra)
+        form = CadastroInternoVagasForm(gambiarra)
         vaga = Vaga_Emprego.objects.get(id=id)
         if form.is_valid():
 
@@ -489,7 +489,7 @@ def alterar_vaga(request, id):
             return redirect('vagas:vagas')
     else:
         vaga = Vaga_Emprego.objects.get(id=id)
-        form = CadastroVagasForm(instance=vaga)
+        form = CadastroInternoVagasForm(instance=vaga)
 
     context = {
         'id': id,

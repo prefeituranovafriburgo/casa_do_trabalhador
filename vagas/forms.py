@@ -3,6 +3,12 @@ from django.forms import ModelForm, ValidationError
 from .models import *
 from .validations import validate_CNPJ
 
+class CadastroInternoVagasForm(ModelForm):    
+    class Meta:
+        model = Vaga_Emprego
+        widgets = {'user': forms.HiddenInput()}
+        exclude = ['banner_img','dt_inclusao', 'dt_desativacao']
+
 class CadastroVagasForm(ModelForm):    
     class Meta:
         model = Vaga_Emprego
