@@ -80,10 +80,19 @@
             Pelo endereço eletronico: <br>
             <span style="text-decoration: underline; margin: 0px 30px;">{{vaga.empresa.link}}</span></p>
             {% endif %}            
+            {% if vaga.observacao != '' %}
+            <p style="margin-top: 30px;">
+                <b>OBS.:</b>
+                {{vaga.observacao}} Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, eligendi. Natus veritatis voluptatibus accusantium maxime voluptatem exercitationem tenetur. Optio quam illum assumenda adipisci cupiditate obcaecati dolorum consectetur quaerat necessitatibus debitis.
+            </p>
+            <p><strong>As informações presentes nesta são de responsabilidade do candidato.</strong></p>
+            {% else %}
             <p style="margin-top: 30px;">
                 <b>OBS.:</b>
                 As informações presentes nesta são de responsabilidade do candidato.
             </p>
+            {% endif %}
+            
             <p style="margin-top: 0;">
                 Desde já agradecemos e continuamos a disposição de V. srª para maiores
                  informações no telefone (22)2525-9205.                 

@@ -94,6 +94,7 @@ class Vaga_Emprego(models.Model):
     carga_horaria=models.CharField(max_length=50, default='', blank=True, verbose_name='Carga Horária')
     regime=models.CharField(max_length=100, default='', blank=True)
     experiencia=models.CharField(max_length=3, choices=EXPERIENCIA_CHOICES, verbose_name='Experiência')    
+    observacao=models.TextField(default='', blank=True, verbose_name='Observação')
     atribuicoes=models.TextField(default='', blank=True, verbose_name='Atribuições')
     destaque=models.BooleanField(default=False)
     banner_img = models.ImageField(upload_to='banner_vaga', verbose_name='Arte da vaga', null=True, blank=True)

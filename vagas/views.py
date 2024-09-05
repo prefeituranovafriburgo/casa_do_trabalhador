@@ -34,6 +34,43 @@ from django.http import HttpResponseForbidden, HttpResponse
 from autenticacao.models import Pessoa
 from django.shortcuts import get_object_or_404
 
+
+import os
+import subprocess
+from django.http import HttpResponse
+from django.conf import settings
+from balcao_de_emprego.settings import db_name, db_user, db_host, db_passwd
+from django.views import View
+
+class BackupDatabaseView(View):
+    def get(self, request):
+        # Caminho para salvar o backup localmente
+        backup_file_path = os.path.join(settings.MEDIA_ROOT, f'{db_name}_backup.sql')
+
+        command = [
+            'mysqldump',
+            '-h', db_host,
+            '-P', '3306',
+            '-u', db_user,
+            f'--password={db_passwd}',
+            db_name
+        ]
+
+        try:
+            # Executando o comando e salvando o backup no arquivo
+            with open(backup_file_path, 'w') as backup_file:
+                subprocess.run(command, stdout=backup_file, check=True)
+
+            # Retornar o arquivo de backup como resposta para download
+            with open(backup_file_path, 'rb') as backup_file:
+                response = HttpResponse(backup_file.read(), content_type='application/sql')
+                response['Content-Disposition'] = f'attachment; filename={os.path.basename(backup_file_path)}'
+                return response
+
+        except subprocess.CalledProcessError as e:
+            # Lidar com erros durante o backup
+            return HttpResponse(f"Erro ao criar backup: {str(e)}", status=500)
+        
 def staff_required(view_func):
     def _wrapped_view(request, *args, **kwargs):
         if not request.user.is_staff:
