@@ -778,8 +778,7 @@ def get_candidatos(request):
         try:
             cpf = data['cpf']
         except:
-            nome = data['nome']
-        
+            nome = data['nome']        
         if cpf:
             try:
                 # empresas=Empresa.objects.filter(nome__startswith=request.GET.get('nome')).order_by('nome')
