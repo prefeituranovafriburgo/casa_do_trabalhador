@@ -126,7 +126,7 @@
         <tbody>
           {% for vaga in vagas_destaque %}
           <tr id="{{forloop.counter}}" data-tipo="{{vaga.tipo_de_vaga}}" data-escolaridade="{{vaga.escolaridade}}"
-            data-cargo="{{vaga.cargo}}" data-bairro="{{vaga.empresa.bairro}}"
+            data-cargo="{{vaga.cargo}}" data-bairro="{{vaga.empresa.bairro}}" data-empresa="{{vaga.empresa.nome}}"
             style="background-color: rgba(230, 230, 230, 0.274)">
             <div id="{{forloop.counter}}-div" class="div-vaga">
               <div class="row">
@@ -368,7 +368,7 @@
           </tr>
           {% for vaga in vagas %}
           <tr data-tipo="{{vaga.tipo_de_vaga}}" data-escolaridade="{{vaga.escolaridade}}" data-cargo="{{vaga.cargo}}"
-            data-bairro="{{vaga.empresa.bairro}}">
+            data-bairro="{{vaga.empresa.bairro}}" data-empresa="{{vaga.empresa.nome}}">
             <td>
               <div class="div-vaga">
                 <div class="row">
@@ -485,6 +485,7 @@
         function filtrar() {
           document.querySelectorAll("#busca tr[data-cargo]").forEach((tr) => {
             const cargo = tr.dataset.cargo.toLowerCase();
+            const empresa = tr.dataset.empresa.toLowerCase();
             const escolaridade = tr.dataset.escolaridade.toLowerCase();
             const tipo = tr.dataset.tipo.toLowerCase();
             const bairro = tr.dataset.bairro.toLowerCase();
@@ -493,7 +494,7 @@
               escolaridade.indexOf(activeFilters.escolaridade) >= 0 &&
               tipo.indexOf(activeFilters.tipo_de_vaga) >= 0 &&
               bairro.indexOf(activeFilters.bairro) >= 0 &&
-              cargo.indexOf(activeFilters.name) >= 0
+              (cargo.indexOf(activeFilters.name) >= 0 || empresa.indexOf(activeFilters.name) >= 0)
             ) {
               tr.style.display = "table-row";
             } else {
