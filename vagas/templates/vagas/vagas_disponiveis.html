@@ -375,7 +375,7 @@
                   <div class="col">
                     <h4 class="cargo" style="font-size: 3vh;">
                       {% if request.user.is_staff %}{{ vaga.empresa }} - {% endif %} Vaga {{forloop.counter}} <span
-                        style="opacity: 0;">{{vaga.cargo}}</span>
+                        style="opacity: 0; font-size: 1pt;">{{vaga.cargo}} {% if request.user.is_staff %}{{ vaga.empresa }}{% endif %}</span>
                     </h4>
                     <div class="d-flex">
                       <p class="my-auto">
