@@ -163,19 +163,54 @@ def visualizar_vaga(request, id):
 
     return render(request, 'vagas/cadastrar_vagaOfertada.html', context)
 
-def vagas(request):    
-    vagas = Vaga_Emprego.objects.filter(ativo=True)
-    qnt_vagas = len(vagas)
-    cont = 0
-    for i in vagas:
-        cont += i.quantidadeVagas
+# def vagas(request):    
+#     vagas = Vaga_Emprego.objects.filter(ativo=True)
+#     vagas_sem_repetir_cargo = Vaga_Emprego.objects.filter(ativo=True).values('cargo').distinct()
+#     vagas_em_destaque = Vaga_Emprego.objects.filter(ativo=True, destaque=True)
+#     qnt_vagas = len(vagas)
+#     cont = 0
+#     for i in vagas:
+#         cont += i.quantidadeVagas
 
+#     print(vagas_sem_repetir_cargo)
+#     context = {
+#         'vagas': Vaga_Emprego.objects.filter(ativo=True).order_by('cargo__nome'),
+#         'vagas_sem_repetir_cargo': vagas_sem_repetir_cargo,
+#         'vagas_destaque': vagas_em_destaque,
+#         'destaque': False if len(vagas_em_destaque) == 0 else True,
+#         'bairros': Empresa.objects.order_by('bairro').values_list('bairro').distinct(),
+#         'escolaridades': Escolaridade.objects.all().values(),        
+#         'qnt_cargos': qnt_vagas,
+#         'qnt_vagas': cont,        
+#         'eventos': Slide.objects.all(),
+#     }
+#     return render(request, 'vagas/vagas_disponiveis.html', context)
+
+def vagas(request):    
+    vagas = Vaga_Emprego.objects.filter(ativo=True).select_related('cargo').order_by('cargo__nome')
+    
+    # Criar dicionário para agrupar vagas por cargo
+    vagas_por_cargo = {}
+    for vaga in vagas:
+        cargo_nome = vaga.cargo.nome
+        if cargo_nome not in vagas_por_cargo:
+            vagas_por_cargo[cargo_nome] = []
+        vagas_por_cargo[cargo_nome].append(vaga)
+
+    vagas_em_destaque = vagas.filter(ativo=True, destaque=True)
+
+    # Contar total de vagas
+    total_vagas = sum(vaga.quantidadeVagas for vaga in vagas)
+    print('Vagas em destaque:', vagas_em_destaque)
     context = {
-        'vagas': Vaga_Emprego.objects.filter(ativo=True).order_by('cargo__nome'),
-        'bairros': Empresa.objects.order_by('bairro').values_list('bairro').distinct(),
+        'vagas': vagas,
+        'vagas_por_cargo': vagas_por_cargo,  
+        'vagas_destaque': vagas_em_destaque,
+        'destaque': bool(vagas_em_destaque),
+        'bairros': Empresa.objects.order_by('bairro').values_list('bairro', flat=True).distinct(),
         'escolaridades': Escolaridade.objects.all().values(),        
-        'qnt_cargos': qnt_vagas,
-        'qnt_vagas': cont,        
+        'qnt_cargos': len(vagas_por_cargo),
+        'qnt_vagas': total_vagas,        
         'eventos': Slide.objects.all(),
     }
     return render(request, 'vagas/vagas_disponiveis.html', context)

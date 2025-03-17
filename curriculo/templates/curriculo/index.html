@@ -8,7 +8,7 @@
 {% load bootstrap5 %}  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
 <div class="row pt-5 mt-5">
-    <div class="col-8 mx-auto pt-5 mt-5">
+    <div class="col mx-auto pt-5 mt-5">
         {% if success.0 %}
         <div class="row px-4 mb-3">
             <div class="col d-flex bg-success py-2">
@@ -18,12 +18,17 @@
         {% endif %}                  
         <div class="row mb-5">    
             <div class="col d-flex w-100 text-center flex-column py-5 my-5">
-                <h2 class="text-uppercase">MEU CURRÍCULO</h2>
+                <div class="row">
+                    <div class="col d-flex">
+                        <h2 class="text-uppercase">MEU CURRÍCULO</h2>
+                        <a href="/" class="ms-auto my-auto">Voltar</a>
+                    </div>
+                </div>
                 <div class="d-flex mx-auto mt-3">
                     <a class="btn btn-btfl bg-primary" href="{% url 'cv:editar_dados' %}"><i class="fa-solid fa-pen-to-square me-2"></i>Dados Pessoais</a>
                     <a class="btn btn-btfl bg-primary ms-2" href="{% url 'cv:educacao' %}"><i class="fa-solid fa-plus-minus me-2"></i>Educação</a>
                     <a class="btn btn-btfl bg-primary ms-2" href="{% url 'cv:experiencia' %}"><i class="fa-solid fa-plus-minus me-2"></i>Experiência</a>                
-                    <a class="btn btn-btfl bg-primary ms-2" href="{% url 'cv:curriculo' %}"><i class="fa-solid fa-eye me-2"></i>Currículo</a>
+                    <a class="btn btn-btfl bg-primary ms-2" href="{% url 'cv:curriculo' %}" target="_blank"><i class="fa-solid fa-eye me-2"></i>Currículo</a>
                 </div>
                       
             </div>

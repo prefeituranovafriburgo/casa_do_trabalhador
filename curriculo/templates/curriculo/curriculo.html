@@ -12,7 +12,7 @@
             Email: {{ email }} | Telefone: {{ telefone }}
         </p>
         <h2>Objetivo</h2>
-        <p>{% if objectivo %}{{ objetivo }}{% endif %}</p>
+        <p style="text-align: justify;">{% if objetivo %}{{ objetivo }}{% endif %}</p>
 
         <h2>Educação</h2>
         {% for educacao in educacoes %}
@@ -29,7 +29,7 @@
                 <p><strong>{{ experiencia.empresa }}</strong></p>
                 <p>{{ experiencia.cargo }}</p>
                 <p>{{ experiencia.periodo }}</p>
-                <p>{{ experiencia.descricao }}</p>
+                <p style="text-align: justify;">{{ experiencia.descricao }}</p>
             </div>
         {% endfor %}
     </div>
@@ -60,7 +60,11 @@ h1, h2 {
 }
 
 /* Estilize o currículo conforme sua preferência */
-
 </style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        print();
+    });
+</script>
 </body>
 </html>

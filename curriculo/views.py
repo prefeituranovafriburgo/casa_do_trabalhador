@@ -10,15 +10,23 @@ def index(request):
     return render(request, 'curriculo/index.html')
 
 def curriculo(request):
-    pessoa = Pessoa.objects.get(user=request.user)
+    try:
+        pessoa = Pessoa.objects.get(user=request.user)
+    except:
+        pessoa = {
+            'nome': None,
+            'email': None,
+            'telefone': None,
+            'objetivo': None,
+        }
     educacoes = Educacao.objects.filter(pessoa=pessoa)
     experiencias = ExperienciaProfissional.objects.filter(pessoa=pessoa)
 
     context = {
-        'nome': pessoa.nome,
-        'email': pessoa.email,
-        'telefone': pessoa.telefone,
-        'objetivo': pessoa.objetivo,
+        'nome': pessoa.nome if pessoa.nome else 'Cadastre seu nome',
+        'email': pessoa.email if pessoa.email else 'Cadastre seu email',
+        'telefone': pessoa.telefone if pessoa.telefone else 'Cadastre seu telefone',
+        'objetivo': pessoa.objetivo if pessoa.objetivo else 'Cadastre seu objetivo',
         'educacoes': educacoes,
         'experiencias': experiencias,
     }
