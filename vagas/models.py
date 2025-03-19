@@ -85,7 +85,8 @@ class Vaga_Emprego(models.Model):
 
     )
 
-    empresa=models.ForeignKey(Empresa, on_delete=models.CASCADE)        
+    empresa=models.ForeignKey(Empresa, on_delete=models.CASCADE) 
+    email=models.CharField(max_length=254, verbose_name="Email p/ encaminhamento", blank=True, null=True)     
     cargo=models.ForeignKey(Cargo, on_delete=models.CASCADE)
     quantidadeVagas=models.IntegerField(blank=False, null=False, verbose_name='Quantidade de vagas')
     tipo_de_vaga=models.CharField(max_length=3, choices=TIPO_DE_VAGA_CHOICES, default='NML')
