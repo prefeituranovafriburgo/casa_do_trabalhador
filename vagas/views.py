@@ -101,7 +101,7 @@ def exportar_vagas_excel(request):
 
     # Preencher os dados
     for vaga in vagas_ativas:
-        ws.append([vaga.id, vaga.empresa.nome, vaga.cargo.nome, vaga.quantidadeVagas, vaga.dt_inclusao, vaga.empresa.telefone, vaga.empresa.whatsapp, vaga.empresa.email])
+        ws.append([vaga.id, vaga.empresa.nome, vaga.cargo.nome, vaga.quantidadeVagas, str(vaga.dt_inclusao), vaga.empresa.telefone, vaga.empresa.whatsapp, vaga.empresa.email])
 
     # Criar uma resposta HTTP
     response = HttpResponse(content_type='application/ms-excel')
