@@ -778,7 +778,7 @@ def infoempresa_download(request, id):
     # Adiciona os dados dos candidatos à planilha, evitando CPFs duplicados
     for candidato in candidatos:
         if candidato.cpf not in cpf_set:
-            data_row = [candidato.nome, candidato.cpf, candidato.data_nascimento, candidato.get_sexo_display(), candidato.email, candidato.celular, candidato.bairro, candidato.escolaridade.nome, candidato.candidato_online, candidato.dt_inclusao]
+            data_row = [candidato.nome, candidato.cpf, candidato.data_nascimento, candidato.get_sexo_display(), candidato.email, candidato.celular, candidato.bairro, candidato.escolaridade.nome, candidato.candidato_online, str(candidato.dt_inclusao)]
             ws.append(data_row)
             cpf_set.add(candidato.cpf)
 
