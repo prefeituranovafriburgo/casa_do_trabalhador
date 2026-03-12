@@ -28,6 +28,7 @@
         }
     </style>
 </head>
+{% load qntvagas %}
 <body style="display: flex;">
     <div style="margin: auto; width: 100%;">
         <header style="display: flex; width: 800px; margin: auto; ">            
@@ -40,9 +41,9 @@
             <span style="margin-top: 40px;">Prezado(a),</span>
             <p>
                 A CASA DO TRABALHADOR, no exercício de suas atribuições legais e regimentais,  
-                encaminha pelo presente o candidato <b>{{candidato.nome}}</b>, portador do cpf de nº <b>{{candidato.cpf}}</b>, 
+                encaminha pelo presente o candidato <b>{{candidato.nome}}</b>, portador do cpf de nº <b>{{candidato.cpf|mascarar_cpf}}</b>, 
                 interessado na vaga de <b>{{vaga.cargo.nome}}</b>{% if not vaga.empresa.ocultar %},
-                à empresa <b>{{vaga.empresa.nome}}</b> de CNPJ <b id="cnpj">{{vaga.empresa.cnpj}}</b>{% endif %}.
+                à empresa <b>{{vaga.empresa.nome}}</b> de CNPJ <b id="cnpj">{{vaga.empresa.cnpj|mascarar_cnpj}}</b>{% endif %}.
             </p>
             <p>Pedimos ao candidato que busque fazer contato:</p>            
             {% if vaga.empresa.contato_presencial %}
@@ -116,11 +117,7 @@
     </div>
     <script>        
         
-        window.onload = function(){  
-            ocultar_info_empresa='{{vaga.empresa.ocultar}}'             
-            if(ocultar_info_empresa!='True'){                
-                document.getElementById('cnpj').innerHTML=cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
-            }            
+        window.onload = function(){           
             window.print()
         };
     </script>
